@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * {{MS_PLUGIN_SLUG}}
+ *<
+ * @author    Fugu <info@fugu.fr>
+ * @license   GPL-2.0+
+ * @copyright 2015 Fugu
+ */
+
 // Displaying this page during the maintenance mode
 $protocol = $_SERVER["SERVER_PROTOCOL"];
 if ( 'HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol )
@@ -9,7 +17,7 @@ header( 'Content-Type: text/html; charset=utf-8' );
 header( 'Retry-After: 600' );
 
 // Get the HTML code from plugin options ?>
-{{MS_MAINTENANCE_PAGE_HTML}}
+{{ms_page_html}}
 
 <?php 
 // end

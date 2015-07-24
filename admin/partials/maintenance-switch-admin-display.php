@@ -1,15 +1,15 @@
 <?php
+
 /**
- * Represents the view for the administration dashboard.
+ * Provide a admin area view for the plugin
  *
- * This includes the header, options, and other information that should provide
- * The User Interface to the end user.
+ * This file is used to markup the admin-facing aspects of the plugin.
  *
- * @package   Maintenance_Switch
- * @author    Fugu <info@fugu.fr>
- * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2015 Fugu
+ * @link       http://www.fugu.fr
+ * @since      1.0.0
+ *
+ * @package    Maintenance_Switch
+ * @subpackage Maintenance_Switch/admin/partials
  */
 ?>
 
@@ -45,10 +45,10 @@
 	
 	<tr><!-- Option: HTML Code -->
 	<th scope="row">
-		<label for="ms_maintenance_page_html"><?php _e( 'Maintenance page HTML:', 'maintenance-switch' ); ?></label>
+		<label for="ms_page_html"><?php _e( 'Maintenance page HTML:', 'maintenance-switch' ); ?></label>
 	</th>
 	<td>
-		<textarea class="" id="ms_maintenance_page_html" name="ms_maintenance_page_html" cols="70" rows="30"><?php echo get_option( 'ms_maintenance_page_html' ) ?></textarea>
+		<textarea class="" id="ms_page_html" name="ms_page_html" cols="70" rows="30"><?php echo get_option( 'ms_page_html' ) ?></textarea>
 		<p class="description"><?php _e( 'The entire HTML code of the maintenance page.', 'bruther-pack' ); ?></p>
 	</td>
 	</tr>
@@ -58,7 +58,7 @@
 	
 	<!-- Mise à jour des valeurs -->
 	<input type="hidden" name="action" value="update" />
-	<input type="hidden" name="page_options" value="ms_maintenance_page_html,ms_allowed_roles" />
+	<input type="hidden" name="page_options" value="ms_page_html,ms_allowed_roles" />
 	
 	<!-- Bouton de sauvegarde -->
 	<p class="submit">
@@ -67,3 +67,4 @@
 	</form>
 
 </div>
+

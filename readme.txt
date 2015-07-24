@@ -1,14 +1,14 @@
 === Maintenance Switch ===
 Contributors: fugudesign
-Donate link: http://example.com/
+Donate link: http://www.fugu.fr/donate/
 Tags: comments, spam
-Requires at least: 3.5.1
-Tested up to: 3.6
-Stable tag: 1.0.0
+Requires at least: 3.5
+Tested up to: 4.3.2
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin add a button to the admin bar for toggling the builtin maintenance mode.
+Switch easily and simply in maintenance mode from your backend or frontend.
 
 == Description ==
 
@@ -17,7 +17,7 @@ This plugin add a button to the admin bar for toggling the builtin maintenance m
 A .maintenance file is generated and copied to the Wordpress installation folder when turning on the maintenance mode.
 A maintenance.php file is generated and added to the wp-content folder for custom HTML code.
 
-The option page allows to set the roles can bypass the maintenance view on the frontend.
+The option page allows to set the roles can bypass the maintenance mode on the frontend.
 The option page allows to set the entire HTML code used for the maintenance page. 
 
 == Installation ==
@@ -61,25 +61,27 @@ Yes, the maintenance.php file is used.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. A button is added to the admin bar for simple toggling in maintenance mode.
+2. A setting page allows to define which roles can bypass the maintenance mode and to define the entire HTML code of the maintenance page.
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.1 =
+* Rewritted with http://wppb.me/ boilerplate.
+* Adding activate and deactivate functions.
+* Fix switch button from frontend.
+
+= 1.0.0 =
 * A change since the previous version.
 * Another change.
 
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+= 1.0-alpha =
+* First simple implementation of the main functionality
 
 == Upgrade Notice ==
 
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
+= 1.0.1 =
+This version is fully rewritten for best OOP implementation
 
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
+= 1.0.0 =
+This version is fully rewritten (OOP)
