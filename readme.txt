@@ -64,6 +64,9 @@ Yes, the maintenance.php file is used.
 
 == Changelog ==
 
+= 1.0.2 =
+* Ajusting the readme file
+
 = 1.0.1 =
 * Fully rewritten with http://wppb.me/ boilerplate.
 * Adding activate and deactivate functionalities.
