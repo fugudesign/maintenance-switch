@@ -1,6 +1,6 @@
 === Maintenance Switch ===
 Contributors: fugudesign
-Donate link: http://www.fugu.fr/donate/
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JYBDJCKL3FCE8
 Tags: comments, spam
 Requires at least: 3.5
 Tested up to: 4.3.2
@@ -23,8 +23,6 @@ The option page allows to set the entire HTML code used for the maintenance page
 == Installation ==
 
 This section describes how to install the plugin and get it working.
-
-e.g.
 
 = Using The WordPress Dashboard =
 
@@ -67,9 +65,9 @@ Yes, the maintenance.php file is used.
 == Changelog ==
 
 = 1.0.1 =
-* Rewritted with http://wppb.me/ boilerplate.
-* Adding activate and deactivate functions.
-* Fix switch button from frontend.
+* Fully rewritten with http://wppb.me/ boilerplate.
+* Adding activate and deactivate functionalities.
+* Fix switch button styles and actions from frontend.
 
 = 1.0.0 =
 * A change since the previous version.
