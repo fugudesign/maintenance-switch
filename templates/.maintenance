@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * {{MS_PLUGIN_SLUG}}
+ *<
+ * @author    Fugu <info@fugu.fr>
+ * @license   GPL-2.0+
+ * @copyright 2015 Fugu
+ */
+
+function MS_user_logged_in() {
+	$loggedin = false;
+	foreach ( (array) $_COOKIE as $cookie => $value ) {
+        if ( stristr($cookie, 'wordpress_logged_in_') ) {
+			$value_parts = explode( '|', $value );
+			$loggedin = $value_parts[0];
+        }
+    }
+    return $loggedin;
+}
+
+$allowed_users = array( {{MS_ALLOWED_USERS}} );
+$user_logged_in = MS_user_logged_in();
+$exception = false;
+
+if ( is_admin() ) $exception = true;
+if ( stristr($_SERVER['REQUEST_URI'], '/wp-admin') ) $exception = true;
+if ( stristr($_SERVER['REQUEST_URI'], '/wp-login.php') ) $exception = true;
+if ( ! empty( $user_logged_in ) && in_array( $user_logged_in, $allowed_users ) ) $exception = true;
+
+if ( ! $exception ) $upgrading = time();
+
+?>

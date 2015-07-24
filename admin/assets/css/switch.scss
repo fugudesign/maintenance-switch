@@ -1,0 +1,38 @@
+$red: #D54E21;
+$green: #87bf46;
+
+#wpadminbar {
+	
+	ul {
+		
+		li {
+			
+			&#wp-admin-bar-ms-switch-button {
+				
+				span.ab-label {
+					color:#eee !important;
+				}
+				
+				span.ab-icon:before {
+					color:rgba(240,245,250,.6) !important;
+				}
+				
+				&.active {
+					
+					.ab-item {
+						background: $red;
+					}
+				}
+				
+				&.active:hover {
+					
+					.ab-item {
+						background: $red;
+					}
+				}
+			}
+		}
+	}
+}
+
+
