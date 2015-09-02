@@ -69,7 +69,7 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.0.2';
+		$this->version = '1.0.3';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -332,8 +332,11 @@ class Maintenance_Switch {
 		
 		$content = file_get_contents( MS_DOT_FILE_TEMPLATE );
 		$allowed_users = "'" . implode( "', '", $this->get_allowed_users() ) . "'";
+		$login_url = str_replace( get_site_url(), '', wp_login_url() );
+		
 		$content = str_replace( '{{MS_ALLOWED_USERS}}' , $allowed_users, $content );
 		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->plugin_name, $content );
+		$content = str_replace( '{{MS_LOGIN_URL}}' , $login_url, $content );
 		
 		if ( file_exists( MS_DOT_FILE_USED ) ) {
 			wp_send_json_error( array( 'error' => __( 'Wordpress is under core maintenance.', 'maintenance-switch' ) ) );

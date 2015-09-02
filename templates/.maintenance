@@ -25,7 +25,7 @@ $exception = false;
 
 if ( is_admin() ) $exception = true;
 if ( stristr($_SERVER['REQUEST_URI'], '/wp-admin') ) $exception = true;
-if ( stristr($_SERVER['REQUEST_URI'], '/wp-login.php') ) $exception = true;
+if ( stristr($_SERVER['REQUEST_URI'], '{{MS_LOGIN_URL}}') ) $exception = true;
 if ( ! empty( $user_logged_in ) && in_array( $user_logged_in, $allowed_users ) ) $exception = true;
 
 if ( ! $exception ) $upgrading = time();

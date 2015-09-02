@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: maintenance, maintenance mode, coming soon, coming soon page, mode, wordpress maintenance mode, site maintenance, site offline, unavailable, switch, administration, construction, under construction, offline, fugu
 Requires at least: 3.5
 Tested up to: 4.3.2
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,12 +12,12 @@ Switch easily and simply in maintenance mode from your backend or frontend.
 
 == Description ==
 
-This plugin add a button to the admin bar for toggling the builtin maintenance mode.
+This plugin adds a button to the admin bar for toggling the builtin maintenance mode.
 
 A .maintenance file is generated and copied to the Wordpress installation folder when turning on the maintenance mode.
 A maintenance.php file is generated and added to the wp-content folder for custom HTML code.
 
-The option page allows to set the roles can bypass the maintenance mode on the frontend.
+The option page allows to set which roles can bypass the maintenance mode on the frontend.
 The option page allows to set the entire HTML code used for the maintenance page. 
 
 == Installation ==
@@ -57,12 +57,19 @@ The plugin allows you to set the entire HTML code of the maintenance page, you c
 
 Yes, the maintenance.php file is used.
 
+= Does the plugin automatically detects the url login? =
+
+Yes.
+
 == Screenshots ==
 
 1. A button is added to the admin bar for simple toggling in maintenance mode.
 2. A setting page allows to define which roles can bypass the maintenance mode and to define the entire HTML code of the maintenance page.
 
 == Changelog ==
+
+= 1.0.3 =
+* Adding automatic detection of the login url
 
 = 1.0.2 =
 * Ajusting the readme file
