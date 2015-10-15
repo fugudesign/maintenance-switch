@@ -69,7 +69,7 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.0.5';
+		$this->version = '1.0.6';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -389,7 +389,7 @@ class Maintenance_Switch {
 	public function get_allowed_ips() {
 		
 		$allowed_ips = get_option( 'ms_allowed_ips' );
-		$allowed_ips = explode( ',', trim( $allowed_ips ) );
+		$allowed_ips = explode( ',', str_replace( ' ', '', $allowed_ips ) );
 		return $allowed_ips;
 	}
 	

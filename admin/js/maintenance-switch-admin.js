@@ -8,12 +8,12 @@
 			
 			var ip = $(this).data('ip');
 			
-			var ipRegex = /bd{1,3}.d{1,3}.d{1,3}.d{1,3}b/;
+			var ipRegex = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
 			var valid = ipRegex.test(ip);
 			
 			if ( valid == true ) {
 				var ips = $('#ms_allowed_ips').val();
-				var new_ips = ips != '' ? ips + ',' + ip : ip;
+				var new_ips = ips != '' ? ips + ', ' + ip : ip;
 				$('#ms_allowed_ips').val( new_ips );
 			}
 		});
