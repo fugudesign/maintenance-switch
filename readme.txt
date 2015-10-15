@@ -3,8 +3,8 @@ Contributors: fugudesign
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JYBDJCKL3FCE8
 Tags: maintenance, maintenance mode, coming soon, coming soon page, mode, wordpress maintenance mode, site maintenance, site offline, unavailable, switch, administration, construction, under construction, offline, fugu
 Requires at least: 3.5
-Tested up to: 4.3.2
-Stable tag: 1.0.3
+Tested up to: 4.3.1
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,9 @@ Yes.
 2. A setting page allows to define which roles can bypass the maintenance mode and to define the entire HTML code of the maintenance page.
 
 == Changelog ==
+
+= 1.0.4 =
+* Adding exceptions for IP addresses
 
 = 1.0.3 =
 * Adding automatic detection of the login url

@@ -45,6 +45,17 @@
 	
 	<tr><!-- Option: HTML Code -->
 	<th scope="row">
+		<label for="ms_allowed_ips"><?php _e( 'Exception for IPs:', 'maintenance-switch' ); ?></label>
+	</th>
+	<td>
+		<input class="" id="ms_allowed_ips" name="ms_allowed_ips" size="60" value="<?php echo get_option( 'ms_allowed_ips' ) ?>">
+		<button id="addmyip" class="button-primary" data-ip="<?php echo $plugin->get_user_ip(); ?>"><?php _e( 'Add my IP', 'maintenance-switch') ?></button>
+		<p class="description"><?php _e( 'Authorized IPs, comma separated.', 'bruther-pack' ); ?></p>
+	</td>
+	</tr>
+	
+	<tr><!-- Option: HTML Code -->
+	<th scope="row">
 		<label for="ms_page_html"><?php _e( 'Maintenance page HTML:', 'maintenance-switch' ); ?></label>
 	</th>
 	<td>
@@ -58,13 +69,13 @@
 	
 	<!-- Mise à jour des valeurs -->
 	<input type="hidden" name="action" value="update" />
-	<input type="hidden" name="page_options" value="ms_page_html,ms_allowed_roles" />
+	<input type="hidden" name="page_options" value="ms_page_html,ms_allowed_roles,ms_allowed_ip" />
 	
 	<!-- Bouton de sauvegarde -->
 	<p class="submit">
 		<input class="button-primary" type="submit" value="<?php _e('Save Changes'); ?>" />
 	</p>
 	</form>
-
+	
 </div>
 

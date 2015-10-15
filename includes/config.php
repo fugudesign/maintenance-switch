@@ -11,11 +11,11 @@
  */
 
 
-$default_html = <<<EOD
+$default_html = <<<'EOD'
 <!DOCTYPE html><html lang="fr-FR">
 <head>
 	<meta charset="UTF-8">
-	<title>My Website</title>
+	<title>%1$s</title>
 	<style>
 		body { font-family: Helvetica, Arial, sans-serif; font-size:16px; color: #000; font-weight:normal; }
 		strong { font-weight:bold; }
@@ -26,7 +26,8 @@ $default_html = <<<EOD
 <body class="home">
 	<div id="container">
 		<h1>Maintenance</h1>
-		<p class="maintenance-text"><strong>My Website</strong> is currently under maintenance.<br />Please coming soon!</p>
+		<p class="maintenance-text"><strong>%1$s</strong> is currently under maintenance.</p>
+		<p>Please coming soon!</p>
 	</div>
 </body>
 </html>

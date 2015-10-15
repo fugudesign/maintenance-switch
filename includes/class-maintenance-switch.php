@@ -69,7 +69,7 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.0.3';
+		$this->version = '1.0.4';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -332,9 +332,11 @@ class Maintenance_Switch {
 		
 		$content = file_get_contents( MS_DOT_FILE_TEMPLATE );
 		$allowed_users = "'" . implode( "', '", $this->get_allowed_users() ) . "'";
+		$allowed_ips = "'" . implode( "', '", $this->get_allowed_ips() ) . "'";
 		$login_url = str_replace( get_site_url(), '', wp_login_url() );
 		
 		$content = str_replace( '{{MS_ALLOWED_USERS}}' , $allowed_users, $content );
+		$content = str_replace( '{{MS_ALLOWED_IPS}}' , $allowed_ips, $content );
 		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->plugin_name, $content );
 		$content = str_replace( '{{MS_LOGIN_URL}}' , $login_url, $content );
 		
@@ -382,6 +384,18 @@ class Maintenance_Switch {
 	/**
 	 * Add settings action link to the plugins page.
 	 *
+	 * @since    1.0.4
+	 */
+	public function get_allowed_ips() {
+		
+		$allowed_ips = get_option( 'ms_allowed_ips' );
+		$allowed_ips = explode( ',', trim( $allowed_ips ) );
+		return $allowed_ips;
+	}
+	
+	/**
+	 * Add settings action link to the plugins page.
+	 *
 	 * @since    1.0.0
 	 */	
 	public function get_users_by_role( $roles = array() ) { 
@@ -399,6 +413,33 @@ class Maintenance_Switch {
 	        }
 	    }
 	    return $users;
+	}
+	
+	/**
+	 * Get current user IP
+	 *
+	 * @since    1.0.4
+	 */
+	public function get_user_ip() {
+
+		$client  = @$_SERVER[ 'HTTP_CLIENT_IP' ];
+	    $forward = @$_SERVER[ 'HTTP_X_FORWARDED_FOR' ];
+	    $remote  = $_SERVER[ 'REMOTE_ADDR' ];
+	
+	    if( filter_var( $client, FILTER_VALIDATE_IP ) )
+	    {
+	        $ip = $client;
+	    }
+	    elseif( filter_var( $forward, FILTER_VALIDATE_IP ) )
+	    {
+	        $ip = $forward;
+	    }
+	    else
+	    {
+	        $ip = $remote;
+	    }
+	
+	    return $ip;
 	}
 	
 	/**

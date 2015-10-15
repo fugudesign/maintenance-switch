@@ -34,7 +34,7 @@ class Maintenance_Switch_Activator {
 		$plugin = new Maintenance_Switch();
 		
 		if ( ! get_option( 'ms_page_html') ) {
-			add_option( 'ms_page_html', MS_DEFAULT_PAGE_HTML );
+			add_option( 'ms_page_html', sprintf( MS_DEFAULT_PAGE_HTML, get_bloginfo() ) );
 		}
 		if ( ! get_option( 'ms_allowed_roles') ) {
 			add_option( 'ms_allowed_roles', explode( ',', MS_DEFAULT_ALLOWED_ROLES ) );
