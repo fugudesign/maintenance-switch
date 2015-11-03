@@ -19,7 +19,7 @@
 
 	<form method="post" action="options.php">
 	<!-- Ajoute 2 champs cachés pour savoir comment rediriger l'utilisateur -->
-	<? wp_nonce_field('update-options'); ?>
+	<?php wp_nonce_field('update-options'); ?>
 	
 	<table class="form-table">
 
@@ -69,7 +69,7 @@
 	
 	<!-- Mise à jour des valeurs -->
 	<input type="hidden" name="action" value="update" />
-	<input type="hidden" name="page_options" value="ms_page_html,ms_allowed_roles,ms_allowed_ip" />
+	<input type="hidden" name="page_options" value="ms_page_html,ms_allowed_roles,ms_allowed_ips" />
 	
 	<!-- Bouton de sauvegarde -->
 	<p class="submit">
