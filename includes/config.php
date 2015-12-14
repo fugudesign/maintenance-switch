@@ -45,6 +45,11 @@ define( 'MS_DEFAULT_PAGE_HTML', $default_html );
  */
 define( 'MS_DEFAULT_ALLOWED_ROLES', 'administrator' );
 
+/**
+ * Default value for ms_status option
+ * @since    1.1.1
+ */
+define( 'MS_DEFAULT_STATUS', 0 );
 
 /**
  * Path of the maintenance.php file.
@@ -53,25 +58,32 @@ define( 'MS_DEFAULT_ALLOWED_ROLES', 'administrator' );
 define( 'MS_SLUG', 'maintenance-switch' );
 
 /**
- * Path of the maintenance.php file.
- * @since    1.0.0
- */
-define( 'MS_PHP_FILE_USED', WP_CONTENT_DIR . '/maintenance.php' );
-
-/**
  * Path of the maintenance.php template file.
  * @since    1.0.0
  */
 define( 'MS_PHP_FILE_TEMPLATE', WP_PLUGIN_DIR . '/maintenance-switch/templates/maintenance.php' );
 
 /**
- * Path of the .maintenance file.
+ * Path of the maintenance.php file.
  * @since    1.0.0
  */
-define( 'MS_DOT_FILE_USED', ABSPATH . '/.maintenance' );
+define( 'MS_PHP_FILE_ACTIVE', WP_CONTENT_DIR . '/maintenance.php' );
 
 /**
  * Path of the .maintenance template file.
  * @since    1.0.0
  */
 define( 'MS_DOT_FILE_TEMPLATE', WP_PLUGIN_DIR . '/maintenance-switch/templates/.maintenance' );
+
+/**
+ * Path of the .maintenance file.
+ * @since    1.0.0
+ */
+define( 'MS_DOT_FILE_ACTIVE', ABSPATH . '/.maintenance' );
+
+/**
+ * Path of the maintenance.php file in theme.
+ * @since    1.1.1
+ */
+define( 'MS_THEME_FILENAME', 'maintenance.php' );
+

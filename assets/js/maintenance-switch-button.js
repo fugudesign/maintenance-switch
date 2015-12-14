@@ -1,27 +1,28 @@
-function MaintenanceSwitchToggleStatus() {
+/*
+ * Function to toggle status by admin bar button
+ */
+function MS_ToggleStatus() {
 	
+	// define icons
+	var iconBase = 'dashicons-admin-tools';
+	var iconUpdate = 'dashicons-admin-generic';
+	// get button element
 	var elt = jQuery('#wp-admin-bar-ms-switch-button');
-	
-	var status = elt.hasClass('active') ? 'off' : 'on';
-	console.log(status);
-	var data = {
-        'action': 'toggle_status',
-        'status': status,
-    };
-	    
+	// set ajax vars
+	var data = { 'action': 'toggle_status' };
+    // toggle icon for spinner
+    jQuery(elt).find('.ab-icon').removeClass(iconBase).addClass(iconUpdate);
+	//ajax request
 	jQuery.get( ajaxurl, data, 
 	    function(response){
-		    
+		    console.log(response);
+		    // toggle icon for no spinner
+		    jQuery(elt).find('.ab-icon').removeClass(iconUpdate).addClass(iconBase);
+		    // if success toggle button class
 		    if ( response.success ) {
-			    switch (status) {
-				    
-				    case 'on': 
-				    	elt.addClass('active'); 
-				    	break;
-				    	
-				    case 'off': 
-				    	elt.removeClass('active'); 
-				    	break;
+			    switch (response.status) {
+				    case 1: elt.addClass('active'); break;
+				    case 0: elt.removeClass('active'); break;
 			    }
 			    elt.removeClass(':hover');
 			}

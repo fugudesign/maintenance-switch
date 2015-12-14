@@ -1,7 +1,45 @@
 $red: #D54E21;
 $green: #87bf46;
+$orange: #f47920;
+
+@keyframes infinite-spinning {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 // Admin bar Button
+
+#ms-form {
+	
+	.themename {
+		display: inline-block;
+		font-style: italic;
+	}
+	
+	.inline-checkbox {
+		margin-right:1em;
+	}
+	
+	.inline-description {
+		display: inline-block;
+	}
+	
+	.infos {
+		margin-left:2.3em;
+	}
+	
+	.present {
+		color: green;
+	}
+	
+	.missing {
+		color: red;
+	}
+}
 
 #wpadminbar {
 	
@@ -11,18 +49,30 @@ $green: #87bf46;
 			
 			&#wp-admin-bar-ms-switch-button {
 				
-				span.ab-label {
+				.ab-label {
 					color:#eee !important;
 				}
 				
-				span.ab-icon:before {
+				.ab-icon:before {
 					color:rgba(240,245,250,.6) !important;
+				}
+				
+				.ab-icon.dashicons-admin-generic:before {
+					-webkit-animation: infinite-spinning 2s infinite linear;
+					   -moz-animation: infinite-spinning 2s infinite linear;
+					   		animation: infinite-spinning 2s infinite linear;
 				}
 				
 				&.active {
 					
 					.ab-item {
 						background: $red;
+					}
+					
+					&.core {
+						.ab-item {
+							background: $orange;
+						}
 					}
 				}
 				

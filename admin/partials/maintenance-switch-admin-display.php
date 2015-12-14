@@ -13,7 +13,7 @@
  */
 ?>
 
-<div class="wrap">
+<div id="ms-form" class="wrap">
 
 	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
@@ -59,8 +59,26 @@
 		<label for="ms_page_html"><?php _e( 'Maintenance page HTML:', 'maintenance-switch' ); ?></label>
 	</th>
 	<td>
-		<textarea class="" id="ms_page_html" name="ms_page_html" cols="70" rows="30"><?php echo get_option( 'ms_page_html' ) ?></textarea>
+		<textarea class="" id="ms_page_html" name="ms_page_html" cols="70" rows="20"><?php echo get_option( 'ms_page_html' ) ?></textarea>
 		<p class="description"><?php _e( 'The entire HTML code of the maintenance page.', 'bruther-pack' ); ?></p>
+	</td>
+	</tr>
+	
+	<tr><!-- Option: Use theme file -->
+	<th scope="row">
+		<label for="ms_use_theme"><?php _e( 'Use theme file:', 'maintenance-switch' ); ?></label>
+	</th>
+	<td>
+		<p class="inline-checkbox"><input name="ms_use_theme" type="checkbox" value="1" <?php echo get_option( 'ms_use_theme' ) ? 'checked' : ''; ?>></p>
+		<p class="description inline-description"><?php _e( 'Use a file in your theme to display maintenance page instead of the HTML field above.', 'maintenance-switch' ); ?></p>
+		<p class="infos">
+		<?php
+			$current_theme = wp_get_theme();
+			$theme_file = $current_theme->get_stylesheet_directory() . '/' . MS_THEME_FILENAME;
+			$file_exists = file_exists( $theme_file );
+		?>
+		<span class="<?php echo $file_exists ? 'present' : 'missing'; ?>"> <?php echo $file_exists ? '<span class="dashicons dashicons-yes"></span>' : '<span class="dashicons dashicons-no-alt"></span>'; ?> <strong><?php echo $current_theme->Name; ?></strong>: <?php echo MS_THEME_FILENAME; ?> <?php echo $file_exists ? 'exists' : 'is missing' ?></span><br>
+		</p>
 	</td>
 	</tr>
 
@@ -69,7 +87,7 @@
 	
 	<!-- Mise à jour des valeurs -->
 	<input type="hidden" name="action" value="update" />
-	<input type="hidden" name="page_options" value="ms_page_html,ms_allowed_roles,ms_allowed_ips" />
+	<input type="hidden" name="page_options" value="ms_allowed_roles,ms_allowed_ips,ms_page_html,ms_use_theme" />
 	
 	<!-- Bouton de sauvegarde -->
 	<p class="submit">

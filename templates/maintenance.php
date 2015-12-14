@@ -2,7 +2,7 @@
 
 /**
  * {{MS_PLUGIN_SLUG}}
- *<
+ *
  * @author    Fugu <info@fugu.fr>
  * @license   GPL-2.0+
  * @copyright 2015 Fugu
@@ -16,8 +16,16 @@ header( "$protocol 503 Service Unavailable", true, 503 );
 header( 'Content-Type: text/html; charset=utf-8' );
 header( 'Retry-After: 600' );
 
+$theme_file = '{{MS_THEME_FILE}}';
+$use_theme = '{{MS_USE_THEME_FILE}}';
+
+if ( $use_theme == 'true' && file_exists( $theme_file ) ) {
+	require_once $theme_file;
+	die();
+}
+
 // Get the HTML code from plugin options ?>
-{{ms_page_html}}
+{{MS_PAGE_HTML}}
 
 <?php 
 // end

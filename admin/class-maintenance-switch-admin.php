@@ -120,7 +120,7 @@ class Maintenance_Switch_Admin {
 		
 		if ( !empty( $_REQUEST[ 'settings-updated' ] ) ) {
 			$plugin->create_php_file();
-			$plugin->recreate_dot_file();
+			$plugin->create_dot_file();
 		}
 		
 		include_once( 'partials/maintenance-switch-admin-display.php' );

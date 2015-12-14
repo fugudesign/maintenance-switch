@@ -3,8 +3,8 @@ Contributors: fugudesign
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JYBDJCKL3FCE8
 Tags: maintenance, maintenance mode, coming soon, coming soon page, mode, wordpress maintenance mode, site maintenance, site offline, unavailable, switch, administration, construction, under construction, offline, fugu
 Requires at least: 3.5
-Tested up to: 4.3.1
-Stable tag: 1.0.7
+Tested up to: 4.4
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,8 @@ This section describes how to install the plugin and get it working.
 3. Select `maintenance-switch.zip` from your computer
 4. Click 'Install Now'
 5. Activate the plugin in the Plugin dashboard
+6. Navigate to 'Settings' > 'Maintenance Switch'
+7. Adjust and save your settings
 
 = Using FTP =
 
@@ -45,6 +47,8 @@ This section describes how to install the plugin and get it working.
 2. Extract the `maintenance-switch` directory to your computer
 3. Upload the `maintenance-switch` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
+5. Navigate to 'Settings' > 'Maintenance Switch'
+6. Adjust and save your settings
 
 
 == Frequently Asked Questions ==
@@ -61,12 +65,18 @@ Yes, the maintenance.php file is used.
 
 Yes.
 
+
 == Screenshots ==
 
 1. A button is added to the admin bar for simple toggling in maintenance mode.
-2. A setting page allows to define which roles can bypass the maintenance mode and to define the entire HTML code of the maintenance page.
+2. A setting page allows to define which roles can bypass the maintenance mode and to define the entire HTML code of the maintenance page, or use a custom file in your theme.
 
 == Changelog ==
+
+= 1.1.1 =
+* Fix a deactivation bug after updates
+* Adding the status management in database
+* Adding the ability to use a maintenance.php file in the theme
 
 = 1.0.7 =
 * Fix a saving bug in the settings page

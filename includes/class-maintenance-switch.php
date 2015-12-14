@@ -56,6 +56,15 @@ class Maintenance_Switch {
 	 * @var      string    $version    The current version of the plugin.
 	 */
 	protected $version;
+	
+	/**
+	 * The current status of the maintenance mode.
+	 *
+	 * @since    1.1.1
+	 * @access   protected
+	 * @var      string    $version    current status of the maintenance mode.
+	 */
+	protected $status;
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -69,13 +78,12 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.0.7';
+		$this->version = '1.1.1';
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
@@ -151,7 +159,7 @@ class Maintenance_Switch {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Maintenance_Switch_Admin( $this->get_plugin_name(), $this->get_version() );
-
+		
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		
@@ -164,6 +172,12 @@ class Maintenance_Switch {
 		
 		// Add an action for the switch button
 		$this->loader->add_action('admin_bar_menu', $this, 'add_switch_button', 45);
+		
+		// Add an action to init in admin
+		$this->loader->add_action( 'wp_loaded', $this, 'admin_init' );
+		
+		// Add an action to reactivate maintenance after updates
+		$this->loader->add_filter( 'upgrader_post_install', $this, 'after_upgrades', 10, 3 );
 		
 		// Add callback action for ajax request
 		$this->loader->add_action( 'wp_ajax_toggle_status', $this, 'toggle_status_callback' );
@@ -185,6 +199,71 @@ class Maintenance_Switch {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		
 		$this->loader->add_action( 'wp_head', $plugin_public,'set_ajaxurl' );
+	}
+	
+	/**
+	 * Callback after core or plugins install/updates
+	 *
+	 * @since    1.1.1
+	 */
+	public function after_upgrades( $bool, $args_hook_extra, $result ) {
+		
+		$this->sync_status();
+		
+		return $bool; 
+	}
+	
+	/**
+	 * Initialize the plugin in admin (after wp loaded)
+	 *
+	 * @since    1.1.1
+	 */
+	public function admin_init() {
+		
+		$this->init_options();
+		$this->init_files();
+		
+		$this->sync_status();
+	}
+	
+	/**
+	 * Initialize the plugin options
+	 *
+	 * @since    1.1.1
+	 */
+	public function init_options() {
+		
+		if ( ! get_option( 'ms_page_html' ) )
+			add_option( 'ms_page_html', str_replace( 'My Website', get_bloginfo(), MS_DEFAULT_PAGE_HTML ) );
+		
+		if ( ! get_option( 'ms_allowed_roles' ) )	
+			add_option( 'ms_allowed_roles', explode( ',', MS_DEFAULT_ALLOWED_ROLES ) );
+		
+		if ( ! get_option( 'ms_allowed_ips' ) )	
+			add_option( 'ms_allowed_ips', '' );
+		
+		if ( ! get_option( 'ms_status' ) )	
+			add_option( 'ms_status', MS_DEFAULT_STATUS );
+		
+		$this->status = get_option( 'ms_status' );
+	}
+	
+	/**
+	 * Initialize the plugin files
+	 *
+	 * @since    1.1.1
+	 */
+	public function init_files() {
+		
+		// create the php file from template
+		if ( ! file_exists( MS_PHP_FILE_ACTIVE ) ) {
+			$this->create_php_file();
+		}
+		
+		if ( $this->status == 1 )
+			$this->create_dot_file();
+				
+		return true;
 	}
 
 	/**
@@ -228,141 +307,13 @@ class Maintenance_Switch {
 	}
 	
 	/**
-	 * Check if the maintenance mode is active.
+	 * Retrieve the status of the maintenance mode.
 	 *
-	 * @since    1.0.0
+	 * @since     1.1.1
+	 * @return    string    The status of the maintenance mode.
 	 */
-	public function is_maintenance_active() {
-		
-		if ( file_exists( MS_DOT_FILE_USED ) ) {
-			return true;
-		} 
-		
-		return false;
-	}
-	
-	/**
-	 * Check if the dot file comes from the plugin
-	 *
-	 * @since    1.0.0
-	 */
-	public function dot_file_is_plugin() {
-		
-		if ( file_exists( MS_DOT_FILE_USED ) ) {
-			$content = file_get_contents( MS_DOT_FILE_USED );
-			if ( preg_match( '/'.$this->plugin_name.'/i', $content) )
-				return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * Check if the php file comes from the plugin
-	 *
-	 * @since    1.0.0
-	 */
-	public function php_file_is_plugin() {
-		
-		if ( file_exists( MS_PHP_FILE_USED ) ) {
-			$content = file_get_contents( MS_PHP_FILE_USED );
-			if ( preg_match( '/'.$this->plugin_name.'/i', $content) )
-				return true;
-		}
-		return false;
-	}	
-	
-	/**
-	 * Delete the dot file
-	 *
-	 * @since    1.0.0
-	 */
-	public function delete_dot_file() {
-		
-		if ( $this->dot_file_is_plugin() ) {
-			if ( unlink( MS_DOT_FILE_USED ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Delete the php file
-	 *
-	 * @since    1.0.0
-	 */
-	public function delete_php_file() {
-		
-		if ( $this->php_file_is_plugin() ) {
-			if ( unlink( MS_PHP_FILE_USED ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Generate the maintenance.php file and copy it to the wp-content dir
-	 *
-	 * @since    1.0.0
-	 */
-	public function create_php_file() {
-		
-		$content = file_get_contents( MS_PHP_FILE_TEMPLATE );
-		$page_html = get_option( 'ms_page_html' );
-		$content = str_replace( '{{ms_page_html}}' , $page_html, $content );
-		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->plugin_name, $content );
-		
-		if ( file_exists( MS_PHP_FILE_USED ) ) {
-			$this->delete_php_file();
-		}
-		
-		if ( !file_put_contents( MS_PHP_FILE_USED, $content ) ) {
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Generate the .maintenance file and copy it to the wp-content dir
-	 *
-	 * @since    1.0.0
-	 */
-	public function create_dot_file() {
-		
-		$content = file_get_contents( MS_DOT_FILE_TEMPLATE );
-		$allowed_users = "'" . implode( "', '", $this->get_allowed_users() ) . "'";
-		$allowed_ips = "'" . implode( "', '", $this->get_allowed_ips() ) . "'";
-		$login_url = str_replace( get_site_url(), '', wp_login_url() );
-		
-		$content = str_replace( '{{MS_ALLOWED_USERS}}' , $allowed_users, $content );
-		$content = str_replace( '{{MS_ALLOWED_IPS}}' , $allowed_ips, $content );
-		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->plugin_name, $content );
-		$content = str_replace( '{{MS_LOGIN_URL}}' , $login_url, $content );
-		
-		if ( file_exists( MS_DOT_FILE_USED ) ) {
-			wp_send_json_error( array( 'error' => __( 'Wordpress is under core maintenance.', 'maintenance-switch' ) ) );
-			return false;
-		}
-		
-		if ( !file_put_contents( MS_DOT_FILE_USED, $content ) ) {
-			wp_send_json_error( array( 'error' => __( '.maintenance file was not created.', 'maintenance-switch' ) ) );
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Re-generate the .maintenance file and copy it to the wp-content dir
-	 *
-	 * @since    1.0.0
-	 */
-	public function recreate_dot_file() {
-		
-		if ( $this->dot_file_is_plugin() ) {
-			$this->delete_dot_file();
-			$this->create_dot_file();
-		}
+	public function get_status() {
+		return $this->status;
 	}
 	
 	/**
@@ -397,6 +348,7 @@ class Maintenance_Switch {
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since    1.0.0
+	 * @var      array    $roles    the roles for users query
 	 */	
 	public function get_users_by_role( $roles = array() ) { 
 	
@@ -443,6 +395,198 @@ class Maintenance_Switch {
 	}
 	
 	/**
+	 * Check if the file is core file
+	 *
+	 * @since    1.1.1
+	 * @var      string    $file    the filename of the file to check
+	 */
+	public function _check_core_file( $file ) {
+		
+		if ( file_exists( $file ) ) {
+			$content = file_get_contents( $file );
+			if ( preg_match( '/'.$this->plugin_name.'/i', $content) )
+				return false;
+			else
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Delete the dot file
+	 *
+	 * @since    1.1.1
+	 * @var      string    $file    	the filename of the file to check
+	 * @var      boolean   $check_core  check or not if the core version of the file is present
+	 */
+	public function _delete_file( $file, $check_core=false ) {
+		
+		if ( file_exists( $file ) ) {
+			
+			if ( $check_core && $this->_check_core_file( $file ) )
+				return false;
+				
+			if ( unlink( $file ) )
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Create the file
+	 *
+	 * @since    1.1.1
+	 * @var      string    $file    	the filename of the file to check
+	 * @var      string    $content  	the content to put in the file
+	 */
+	public function _create_file( $file, $content ) {
+		
+		if ( file_exists( $file ) )
+			return false;
+			
+		if ( ! file_put_contents( $file, $content ) )
+			return false;
+			
+		return true;
+	}
+	
+	/**
+	 * Generate the maintenance.php file and copy it to the wp-content dir
+	 *
+	 * @since    1.0.0
+	 */
+	public function create_php_file() {
+		
+		// get the template file content
+		$content = file_get_contents( MS_PHP_FILE_TEMPLATE );
+		
+		// get flags values
+		$page_html = get_option( 'ms_page_html' );
+		$use_theme_file = get_option( 'ms_use_theme' ) ? 'true' : 'false';
+		$theme = wp_get_theme();
+		$theme_file = $theme->get_stylesheet_directory() . '/' . MS_THEME_FILENAME;
+		
+		// apply flags replacements
+		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->plugin_name, $content );
+		$content = str_replace( '{{MS_USE_THEME_FILE}}' , $use_theme_file, $content );
+		$content = str_replace( '{{MS_THEME_FILE}}' , $theme_file, $content );
+		$content = str_replace( '{{MS_PAGE_HTML}}' , $page_html, $content );
+		
+		// delete the current file
+		$this->_delete_file( MS_PHP_FILE_ACTIVE );
+		
+		// try to create the file
+		if ( ! $this->_create_file( MS_PHP_FILE_ACTIVE, $content ) ) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Generate the .maintenance file and copy it to the wp-content dir
+	 *
+	 * @since    1.0.0
+	 */
+	public function create_dot_file() {
+		
+		// get the template file content
+		$content = file_get_contents( MS_DOT_FILE_TEMPLATE );
+		
+		// get flags values
+		$allowed_users = "'" . implode( "', '", $this->get_allowed_users() ) . "'";
+		$allowed_ips = "'" . implode( "', '", $this->get_allowed_ips() ) . "'";
+		$login_url = str_replace( get_site_url(), '', wp_login_url() );
+		
+		// apply flags replacements
+		$content = str_replace( '{{MS_ALLOWED_USERS}}' , $allowed_users, $content );
+		$content = str_replace( '{{MS_ALLOWED_IPS}}' , $allowed_ips, $content );
+		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->plugin_name, $content );
+		$content = str_replace( '{{MS_LOGIN_URL}}' , $login_url, $content );
+
+		// check if the core dot file exists or delete current file
+		if ( $this->_check_core_file( MS_DOT_FILE_ACTIVE ) ) {
+			return false;
+		} else {
+			$this->_delete_file( MS_DOT_FILE_ACTIVE, true );
+		}
+		
+		// try to create the file
+		if ( ! $this->_create_file( MS_DOT_FILE_ACTIVE, $content ) ) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Synchronize the maintenance status option with the maintenance file.
+	 *
+	 * @since    1.1.1
+	 * @var      integer    $status    	the status to set, or just sync with file if null
+	 */
+	public function sync_status( $status=null ) {
+
+		$sync = false;
+		// get the status in the database if no status in param
+		if ( $status === null ) {
+			$status = get_option( 'ms_status', MS_DEFAULT_STATUS );
+			$sync = true;
+		}
+		
+		// try to create the file according to the status value
+		switch ( $status ) {
+			
+			case 1:
+			
+				if ( $this->create_dot_file() ) {
+					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned on.', $this->plugin_name ) );
+					// if status called, update in db
+					if ( ! $sync ) update_option( 'ms_status', $status );
+				} else {
+					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned on.', $this->plugin_name ) );
+				}
+				
+				break;
+			
+			case 0:
+				
+				if ( $this->_delete_file( MS_DOT_FILE_ACTIVE, true ) ) {
+					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned off.', $this->plugin_name ) );
+					// if status called, update in db
+					if ( ! $sync ) update_option( 'ms_status', $status );
+				} else {
+					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned off.', $this->plugin_name ) );
+				}
+				
+				break;
+			
+		}
+
+		$msg['status'] = $status;
+		
+		return !empty($msg) ? $msg : false;
+	}
+	
+	/**
+	 * Callback action for changing status ajax request
+	 *
+	 * @since    1.0.0
+	 */
+	public function toggle_status_callback() {
+		
+		// get status in db
+		$status = get_option( 'ms_status' );
+		// toggle status
+		$new_status = (bool) $status == 1 ? 0 : 1;
+		// sync status
+		$response = $this->sync_status( $new_status );
+		// return json response
+		wp_send_json( $response );
+		// this is required to terminate immediately and return a proper response
+		wp_die(); 
+		
+	}
+		
+	/**
 	 * Add button to the admin bar for toggling the maintenance mode
 	 *
 	 * @since    1.0.0
@@ -454,48 +598,12 @@ class Maintenance_Switch {
 			'title' => '<span class="ab-icon dashicons-admin-tools"></span><span class="ab-label">' . __( 'Maintenance', $this->plugin_name ) . '</span>',
 			'href' => '#',
 			'meta' => array(
-				'class' => 'toggle-button ' . ( $this->is_maintenance_active() ? 'active' : '' ),
-				'onclick' => 'return MaintenanceSwitchToggleStatus();'
+				'class' => 'toggle-button ' . ( $this->status ? 'active' : '' ),
+				'onclick' => 'return MS_ToggleStatus();'
 			)
 		);
 		
 		$wp_admin_bar->add_node( $args );
-	}
-	
-	/**
-	 * Callback action for changing status ajax request
-	 *
-	 * @since    1.0.0
-	 */
-	public function toggle_status_callback() {
-		
-		global $wpdb; // this is how you get access to the databas
-		$status = $_REQUEST['status'];
-				
-		switch ($status) {
-			
-			case 'on':
-				if ( file_exists( MS_DOT_FILE_USED ) ) {
-					wp_send_json_error( array( 'error' => __( 'Wordpress is under core maintenance.', $this->plugin_name ) ) );
-				}
-				if ( ! $this->create_dot_file() ) {
-					wp_send_json_error( array( 'error' => __( 'Maintenance could not be turned on.', $this->plugin_name ) ) );
-				} else {
-					wp_send_json_success( __( 'Maintenance turned on.', 'maintenance-switch' ) );
-				}
-				break;
-				
-			case 'off':
-				if ( ! $this->delete_dot_file() ) {
-					wp_send_json_error( array( 'error' => __( 'Maintenance could not be turned off.', $this->plugin_name ) ) );
-				} else {
-					wp_send_json_success( __( 'Maintenance turned off.', $this->plugin_name ) );
-				}
-				break;
-		}
-		
-		wp_die(); // this is required to terminate immediately and return a proper response
-		
 	}
 
 }
