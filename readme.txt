@@ -17,9 +17,13 @@ This plugin adds a button to the admin bar for toggling the builtin maintenance 
 A .maintenance file is generated and copied to the Wordpress installation folder when turning on the maintenance mode.
 A maintenance.php file is generated and added to the wp-content folder for custom HTML code.
 
-The option page allows to set which roles can bypass the maintenance mode on the frontend.
-The option page allows to set the entire HTML code used for the maintenance page. 
-The option page allows to enable the theme file support, so you can create in each your themes a maintenance.php file to customize the maintenance page.
+**Your custom maintenance page will also be active during the core, plugins and themes updates.**
+
+* The option page allows to set which roles can bypass the maintenance mode on the frontend.
+
+* The option page allows to set the entire HTML code used for the maintenance page. 
+
+* The option page allows to enable the theme file support, so you can create in each your themes a maintenance.php file to customize the maintenance page.
 
 == Installation ==
 
