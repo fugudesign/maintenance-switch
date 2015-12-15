@@ -8,7 +8,7 @@ Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Switch easily and simply in maintenance mode from your backend or frontend.
+Customize and switch easily and simply in (native) maintenance mode from your backend or frontend.
 
 == Description ==
 
@@ -19,6 +19,7 @@ A maintenance.php file is generated and added to the wp-content folder for custo
 
 The option page allows to set which roles can bypass the maintenance mode on the frontend.
 The option page allows to set the entire HTML code used for the maintenance page. 
+The option page allows to enable the theme file support, so you can create in each your themes a maintenance.php file to customize the maintenance page.
 
 == Installation ==
 
@@ -64,6 +65,10 @@ Yes, the maintenance.php file is used.
 = Does the plugin automatically detects the url login? =
 
 Yes.
+
+= Is it possible to customize page from my theme? =
+
+Yes, use the settings page to enable the theme file support. 
 
 
 == Screenshots ==
