@@ -33,8 +33,8 @@ class Maintenance_Switch_Deactivator {
 		
 		$plugin = new Maintenance_Switch();
 		
-		$plugin->delete_dot_file();
-		$plugin->delete_php_file();
+		$plugin->_delete_file( MS_PHP_FILE_ACTIVE );
+		$plugin->_delete_file( MS_DOT_FILE_ACTIVE );
 		
 	}
 
