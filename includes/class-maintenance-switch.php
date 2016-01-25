@@ -78,7 +78,7 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.1.2';
+		$this->version = '1.1.3';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -599,7 +599,6 @@ class Maintenance_Switch {
 			'href' => '#',
 			'meta' => array(
 				'class' => 'toggle-button ' . ( $this->status ? 'active' : '' ),
-				'onclick' => 'return MS_ToggleStatus();'
 			)
 		);
 		
