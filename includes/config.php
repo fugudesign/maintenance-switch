@@ -21,11 +21,11 @@ define( 'MS_SLUG', 'maintenance-switch' );
  * Default value for ms_page_html
  * @since    1.0.0
  */
-$default_html = <<<EOD
+$default_html = '
 <!DOCTYPE html><html lang="fr-FR">
 <head>
 	<meta charset="UTF-8">
-	<title>%$1s</title>
+	<title>' . get_bloginfo( 'sitename' ) . '</title>
 	<style>
 		body { font-family: Helvetica, Arial, sans-serif; font-size:16px; color: #000; font-weight:normal; }
 		#container { width: 600px; padding: 70px 0; text-align:center; position:absolute; left:50%; top:50%; -webkit-transform: translate(-50%, -50%);  -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
@@ -34,15 +34,15 @@ $default_html = <<<EOD
 </head>
 <body class="home">
 	<div id="container">
-		<h1>%$2s</h1>
-		<p class="maintenance-text">%$3s<br />%$4s</p>
-		<p>%$5s</p>
+		<h1>' . get_bloginfo( 'sitename' ) . '</h1>
+		<p>
+			' . __( 'In a permanent effort to improve our services, we currently are performing upgrades on our website.', MS_SLUG ) . '<br />
+			' . __( 'We apologize for the inconvenience, but we will be pleased to see you back in a very few minutes.', MS_SLUG ) . '
+		</p>
+		<p>' . __( 'The maintenance team.', MS_SLUG ) . '</p>
 	</div>
 </body>
-</html>
-EOD;
-
-$default_html = sprintf( $default_html, get_bloginfo( 'sitename' ), __( 'Maintenance', MS_SLUG ), __( 'In a permanent effort to improve our services, we currently are performing upgrades on our website.', MS_SLUG ), __( 'We apologise for the inconvenience, but we will be pleased to see you back in a very few minutes.', MS_SLUG ), __( 'The maintenance team.', MS_SLUG ) );
+</html>';
 
 define( 'MS_DEFAULT_PAGE_HTML', $default_html ); 
 

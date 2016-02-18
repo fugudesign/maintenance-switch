@@ -16,7 +16,7 @@
  * Plugin Name:       Maintenance Switch
  * Plugin URI:        https://wordpress.org/plugins/maintenance-switch
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.1.5
+ * Version:           1.1.6
  * Author:            Fugu
  * Author URI:        http://www.fugu.fr
  * License:           GPL-2.0+
