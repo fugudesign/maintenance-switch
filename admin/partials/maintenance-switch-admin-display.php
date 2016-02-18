@@ -26,7 +26,7 @@
 
 	<tr><!-- Option: Roles exception -->
 	<th scope="row">
-		<label for="ms_allowed_roles"><?php _e( 'Exception for roles:', 'maintenance-switch' ); ?></label>
+		<label for="ms_allowed_roles"><?php _e( 'Exception for roles:', MS_SLUG ); ?></label>
 	</th>
 	<td>
 		<?php
@@ -39,38 +39,38 @@
 				echo '<p class="inline-checkbox"><input name="ms_allowed_roles[]" type="checkbox" value="' . $role_value . '" ' . $checked . '>'.$role_name.'</p>';
 		  	}
 		?>
-		<p class="description"><?php _e( 'The user roles can bypass the maintenance mode and see the site like online.', 'maintenance-switch' ); ?></p>
+		<p class="description"><?php _e( 'The user roles can bypass the maintenance mode and see the site like online.', MS_SLUG ); ?></p>
 	</td>
 	</tr>
 	
 	<tr><!-- Option: HTML Code -->
 	<th scope="row">
-		<label for="ms_allowed_ips"><?php _e( 'Exception for IPs:', 'maintenance-switch' ); ?></label>
+		<label for="ms_allowed_ips"><?php _e( 'Exception for IPs:', MS_SLUG ); ?></label>
 	</th>
 	<td>
 		<input class="" id="ms_allowed_ips" name="ms_allowed_ips" size="60" value="<?php echo get_option( 'ms_allowed_ips' ) ?>">
-		<button id="addmyip" class="button-primary" data-ip="<?php echo $plugin->get_user_ip(); ?>"><?php _e( 'Add my IP', 'maintenance-switch') ?></button>
-		<p class="description"><?php _e( 'Authorized IPs, comma separated.', 'bruther-pack' ); ?></p>
+		<button id="addmyip" class="button-primary" data-ip="<?php echo $plugin->get_user_ip(); ?>"><?php _e( 'Add my IP', MS_SLUG) ?></button>
+		<p class="description"><?php _e( 'Authorized IPs, comma separated.', MS_SLUG ); ?></p>
 	</td>
 	</tr>
 	
 	<tr><!-- Option: HTML Code -->
 	<th scope="row">
-		<label for="ms_page_html"><?php _e( 'Maintenance page HTML:', 'maintenance-switch' ); ?></label>
+		<label for="ms_page_html"><?php _e( 'Maintenance page HTML:', MS_SLUG ); ?></label>
 	</th>
 	<td>
 		<textarea class="" id="ms_page_html" name="ms_page_html" cols="70" rows="20"><?php echo get_option( 'ms_page_html' ) ?></textarea>
-		<p class="description"><?php _e( 'The entire HTML code of the maintenance page.', 'bruther-pack' ); ?></p>
+		<p class="description"><?php _e( 'The entire HTML code of the maintenance page.', MS_SLUG ); ?></p>
 	</td>
 	</tr>
 	
 	<tr><!-- Option: Use theme file -->
 	<th scope="row">
-		<label for="ms_use_theme"><?php _e( 'Use theme file:', 'maintenance-switch' ); ?></label>
+		<label for="ms_use_theme"><?php _e( 'Use theme file:', MS_SLUG ); ?></label>
 	</th>
 	<td>
 		<p class="inline-checkbox"><input name="ms_use_theme" type="checkbox" value="1" <?php echo get_option( 'ms_use_theme' ) ? 'checked' : ''; ?>></p>
-		<p class="description inline-description"><?php _e( 'Use a file in your theme to display maintenance page instead of the HTML field above.', 'maintenance-switch' ); ?></p>
+		<p class="description inline-description"><?php _e( 'Use a file in your theme to display maintenance page instead of the HTML field above.', MS_SLUG ); ?></p>
 		<p class="infos">
 		<?php
 			$current_theme = wp_get_theme();

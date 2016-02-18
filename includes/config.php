@@ -11,32 +11,39 @@
  */
 
 
-$default_html = <<<EOD
-<!DOCTYPE html><html lang="fr-FR">
-<head>
-	<meta charset="UTF-8">
-	<title>My Website</title>
-	<style>
-		body { font-family: Helvetica, Arial, sans-serif; font-size:16px; color: #000; font-weight:normal; }
-		strong { font-weight:bold; }
-		#container { width: 600px; padding: 70px 0; border:1px solid #000; text-align:center; position:absolute; left:50%; top:50%; -webkit-transform: translate(-50%, -50%);  -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
-		h1 { font-size: 36px; font-weight:normal; color: #000; }
-	</style>
-</head>
-<body class="home">
-	<div id="container">
-		<h1>Maintenance</h1>
-		<p class="maintenance-text"><strong>My Website</strong> is currently under maintenance.</p>
-		<p>Please coming soon!</p>
-	</div>
-</body>
-</html>
-EOD;
+/**
+ * Path of the maintenance.php file.
+ * @since    1.0.0
+ */
+define( 'MS_SLUG', 'maintenance-switch' );
 
 /**
  * Default value for ms_page_html
  * @since    1.0.0
  */
+$default_html = <<<EOD
+<!DOCTYPE html><html lang="fr-FR">
+<head>
+	<meta charset="UTF-8">
+	<title>%$1s</title>
+	<style>
+		body { font-family: Helvetica, Arial, sans-serif; font-size:16px; color: #000; font-weight:normal; }
+		#container { width: 600px; padding: 70px 0; text-align:center; position:absolute; left:50%; top:50%; -webkit-transform: translate(-50%, -50%);  -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
+		h1 { font-size: 36px; font-weight:normal; color: #000; }
+	</style>
+</head>
+<body class="home">
+	<div id="container">
+		<h1>%$2s</h1>
+		<p class="maintenance-text">%$3s<br />%$4s</p>
+		<p>%$5s</p>
+	</div>
+</body>
+</html>
+EOD;
+
+$default_html = sprintf( $default_html, get_bloginfo( 'sitename' ), __( 'Maintenance', MS_SLUG ), __( 'In a permanent effort to improve our services, we currently are performing upgrades on our website.', MS_SLUG ), __( 'We apologise for the inconvenience, but we will be pleased to see you back in a very few minutes.', MS_SLUG ), __( 'The maintenance team.', MS_SLUG ) );
+
 define( 'MS_DEFAULT_PAGE_HTML', $default_html ); 
 
 /**
@@ -50,12 +57,6 @@ define( 'MS_DEFAULT_ALLOWED_ROLES', 'administrator' );
  * @since    1.1.1
  */
 define( 'MS_DEFAULT_STATUS', 0 );
-
-/**
- * Path of the maintenance.php file.
- * @since    1.0.0
- */
-define( 'MS_SLUG', 'maintenance-switch' );
 
 /**
  * Path of the maintenance.php template file.

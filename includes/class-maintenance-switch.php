@@ -78,7 +78,7 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.1.4';
+		$this->version = '1.1.5';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -234,7 +234,7 @@ class Maintenance_Switch {
 	public function init_options() {
 		
 		if ( ! get_option( 'ms_page_html' ) )
-			add_option( 'ms_page_html', str_replace( 'My Website', get_bloginfo(), MS_DEFAULT_PAGE_HTML ) );
+			add_option( 'ms_page_html', MS_DEFAULT_PAGE_HTML );
 		
 		if ( ! get_option( 'ms_allowed_roles' ) )	
 			add_option( 'ms_allowed_roles', explode( ',', MS_DEFAULT_ALLOWED_ROLES ) );
@@ -401,7 +401,7 @@ class Maintenance_Switch {
 		
 		if ( file_exists( $file ) ) {
 			$content = file_get_contents( $file );
-			if ( preg_match( '/'.$this->plugin_name.'/i', $content) )
+			if ( preg_match( '/'.$this->get_plugin_name().'/i', $content) )
 				return false;
 			else
 				return true;
@@ -464,7 +464,7 @@ class Maintenance_Switch {
 		$theme_file = $theme->get_stylesheet_directory() . '/' . MS_THEME_FILENAME;
 		
 		// apply flags replacements
-		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->plugin_name, $content );
+		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->get_plugin_name(), $content );
 		$content = str_replace( '{{MS_USE_THEME_FILE}}' , $use_theme_file, $content );
 		$content = str_replace( '{{MS_THEME_FILE}}' , $theme_file, $content );
 		$content = str_replace( '{{MS_PAGE_HTML}}' , $page_html, $content );
@@ -497,7 +497,7 @@ class Maintenance_Switch {
 		// apply flags replacements
 		$content = str_replace( '{{MS_ALLOWED_USERS}}' , $allowed_users, $content );
 		$content = str_replace( '{{MS_ALLOWED_IPS}}' , $allowed_ips, $content );
-		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->plugin_name, $content );
+		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->get_plugin_name(), $content );
 		$content = str_replace( '{{MS_LOGIN_URL}}' , $login_url, $content );
 
 		// check if the core dot file exists or delete current file
@@ -535,11 +535,11 @@ class Maintenance_Switch {
 			case 1:
 			
 				if ( $this->create_dot_file() ) {
-					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned on.', $this->plugin_name ) );
+					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned on.', $this->get_plugin_name() ) );
 					// if status called, update in db
 					if ( ! $sync ) update_option( 'ms_status', $status );
 				} else {
-					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned on.', $this->plugin_name ) );
+					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned on.', $this->get_plugin_name() ) );
 				}
 				
 				break;
@@ -547,11 +547,11 @@ class Maintenance_Switch {
 			case 0:
 				
 				if ( $this->_delete_file( MS_DOT_FILE_ACTIVE, true ) ) {
-					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned off.', $this->plugin_name ) );
+					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned off.', $this->get_plugin_name() ) );
 					// if status called, update in db
 					if ( ! $sync ) update_option( 'ms_status', $status );
 				} else {
-					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned off.', $this->plugin_name ) );
+					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned off.', $this->get_plugin_name() ) );
 				}
 				
 				break;
@@ -592,7 +592,7 @@ class Maintenance_Switch {
 		
 		$args = array(
 			'id' => 'ms-switch-button',
-			'title' => '<span class="ab-icon dashicons-admin-tools"></span><span class="ab-label">' . __( 'Maintenance', $this->plugin_name ) . '</span>',
+			'title' => '<span class="ab-icon dashicons-admin-tools"></span><span class="ab-label">' . __( 'Maintenance', $this->get_plugin_name() ) . '</span>',
 			'href' => '#',
 			'meta' => array(
 				'class' => 'toggle-button ' . ( $this->status ? 'active' : '' ),
