@@ -47,6 +47,12 @@ $default_html = '
 define( 'MS_DEFAULT_PAGE_HTML', $default_html ); 
 
 /**
+ * Default value for ms_switch_roles option
+ * @since    1.1.7
+ */
+define( 'MS_DEFAULT_SWITCH_ROLES', 'administrator' );
+
+/**
  * Default value for ms_allowed_roles option
  * @since    1.0.0
  */

@@ -3,8 +3,8 @@ Contributors: fugudesign
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JYBDJCKL3FCE8
 Tags: maintenance, maintenance mode, coming soon, coming soon page, mode, wordpress maintenance mode, site maintenance, site offline, unavailable, switch, administration, construction, under construction, offline, fugu
 Requires at least: 3.5
-Tested up to: 4.4.1
-Stable tag: 1.1.6
+Tested up to: 4.4.2
+Stable tag: 1.1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,10 @@ Yes, use the settings page to enable the theme file support.
 2. A setting page allows to define which roles can bypass the maintenance mode and to define the entire HTML code of the maintenance page, or use a custom file in your theme.
 
 == Changelog ==
+
+= 1.1.7 =
+* Adding roles management for maintenance control
+* Fix a icon bug on the switch button
 
 = 1.1.6 =
 * Adding omitted translations

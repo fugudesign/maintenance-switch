@@ -11,6 +11,11 @@
  * @package    Maintenance_Switch
  * @subpackage Maintenance_Switch/admin/partials
  */
+ 
+global $wp_roles;
+if ( ! isset( $wp_roles ) ) $wp_roles = new WP_Roles();
+$roles = $wp_roles->get_names();
+ 
 ?>
 
 <div id="ms-form" class="wrap">
@@ -24,15 +29,28 @@
 	<table class="form-table">
 
 
-	<tr><!-- Option: Roles exception -->
+	<tr><!-- Option: Button access roles -->
 	<th scope="row">
-		<label for="ms_allowed_roles"><?php _e( 'Exception for roles:', MS_SLUG ); ?></label>
+		<label for="ms_switch_roles"><?php _e( 'Switch ability:', MS_SLUG ); ?></label>
 	</th>
 	<td>
 		<?php
-			global $wp_roles;
-			if ( ! isset( $wp_roles ) ) $wp_roles = new WP_Roles();
-			$roles = $wp_roles->get_names();
+			$roles_option_value = (array) get_option( 'ms_switch_roles' );
+			foreach ($roles as $role_value => $role_name) {
+				$checked = in_array( $role_value, $roles_option_value ) ? 'checked' : '';
+				echo '<p class="inline-checkbox"><input name="ms_switch_roles[]" type="checkbox" value="' . $role_value . '" ' . $checked . '>'.$role_name.'</p>';
+		  	}
+		?>
+		<p class="description"><?php _e( 'The user roles can access the maintenance button in the adminbar and so switch the maintenance mode.', MS_SLUG ); ?></p>
+	</td>
+	</tr>
+	
+	<tr><!-- Option: Roles exception -->
+	<th scope="row">
+		<label for="ms_allowed_roles"><?php _e( 'Bypass ability:', MS_SLUG ); ?></label>
+	</th>
+	<td>
+		<?php
 			$roles_option_value = (array) get_option( 'ms_allowed_roles' );
 			foreach ($roles as $role_value => $role_name) {
 				$checked = in_array( $role_value, $roles_option_value ) ? 'checked' : '';
@@ -40,14 +58,8 @@
 		  	}
 		?>
 		<p class="description"><?php _e( 'The user roles can bypass the maintenance mode and see the site like online.', MS_SLUG ); ?></p>
-	</td>
-	</tr>
-	
-	<tr><!-- Option: HTML Code -->
-	<th scope="row">
-		<label for="ms_allowed_ips"><?php _e( 'Exception for IPs:', MS_SLUG ); ?></label>
-	</th>
-	<td>
+		<br>
+		<!-- Option: IP exception -->
 		<input class="" id="ms_allowed_ips" name="ms_allowed_ips" size="60" value="<?php echo get_option( 'ms_allowed_ips' ) ?>">
 		<button id="addmyip" class="button-primary" data-ip="<?php echo $plugin->get_user_ip(); ?>"><?php _e( 'Add my IP', MS_SLUG) ?></button>
 		<p class="description"><?php _e( 'Authorized IPs, comma separated.', MS_SLUG ); ?></p>
@@ -69,15 +81,15 @@
 		<label for="ms_use_theme"><?php _e( 'Use theme file:', MS_SLUG ); ?></label>
 	</th>
 	<td>
-		<p class="inline-checkbox"><input name="ms_use_theme" type="checkbox" value="1" <?php echo get_option( 'ms_use_theme' ) ? 'checked' : ''; ?>></p>
-		<p class="description inline-description"><?php _e( 'Use a file in your theme to display maintenance page instead of the HTML field above.', MS_SLUG ); ?></p>
-		<p class="infos">
 		<?php
 			$current_theme = wp_get_theme();
 			$theme_file = $current_theme->get_stylesheet_directory() . '/' . MS_THEME_FILENAME;
 			$file_exists = file_exists( $theme_file );
 		?>
-		<span class="<?php echo $file_exists ? 'present' : 'missing'; ?>"> <?php echo $file_exists ? '<span class="dashicons dashicons-yes"></span>' : '<span class="dashicons dashicons-no-alt"></span>'; ?> <strong><?php echo $current_theme->Name; ?></strong>: <?php echo MS_THEME_FILENAME; ?> <?php echo $file_exists ? 'exists' : 'is missing' ?></span><br>
+		<p class="inline-checkbox"><input name="ms_use_theme" type="checkbox" value="1" <?php echo ( $file_exists && get_option( 'ms_use_theme' ) ) ? 'checked' : ''; ?> <?php echo $file_exists ? '' : 'disabled'; ?>></p>
+		<p class="description inline-description <?php echo $file_exists ? '' : 'disabled'; ?>"><?php _e( 'Use a file in your theme to display maintenance page instead of the HTML field above.', MS_SLUG ); ?></p>
+		<p class="infos">
+		<span class="<?php echo $file_exists ? 'present' : 'missing'; ?>"> <?php echo $file_exists ? '<span class="dashicons dashicons-yes"></span>' : '<span class="dashicons dashicons-no-alt"></span>'; ?> <strong><?php echo $current_theme->Name; ?></strong>: <?php echo MS_THEME_FILENAME; ?> <?php echo $file_exists ? __( 'exists', MS_SLUG ) : __( 'is missing', MS_SLUG ); ?></span><br>
 		</p>
 	</td>
 	</tr>
@@ -87,7 +99,7 @@
 	
 	<!-- Mise à jour des valeurs -->
 	<input type="hidden" name="action" value="update" />
-	<input type="hidden" name="page_options" value="ms_allowed_roles,ms_allowed_ips,ms_page_html,ms_use_theme" />
+	<input type="hidden" name="page_options" value="ms_switch_roles,ms_allowed_roles,ms_allowed_ips,ms_page_html,ms_use_theme" />
 	
 	<!-- Bouton de sauvegarde -->
 	<p class="submit">

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Maintenance Switch 1.1\n"
-"POT-Creation-Date: 2016-02-18 11:23+0100\n"
-"PO-Revision-Date: 2016-02-18 11:23+0100\n"
+"POT-Creation-Date: 2016-03-03 01:42+0100\n"
+"PO-Revision-Date: 2016-03-03 01:43+0100\n"
 "Last-Translator: Vincent LALANNE <info@fugu.fr>\n"
 "Language-Team: Fugu Design <info@fugu.fr>\n"
 "Language: Français\n"
@@ -25,42 +25,50 @@ msgstr "Maintenance Switch"
 msgid "Settings"
 msgstr "Réglages"
 
-#: ../admin/partials/maintenance-switch-admin-display.php:29
-msgid "Exception for roles:"
-msgstr "Exclure les rôles :"
+#: ../admin/partials/maintenance-switch-admin-display.php:34
+msgid "Switch ability:"
+msgstr "Capacité à switcher :"
 
-#: ../admin/partials/maintenance-switch-admin-display.php:42
+#: ../admin/partials/maintenance-switch-admin-display.php:44
+msgid ""
+"The user roles can access the maintenance button in the adminbar and so "
+"switch the maintenance mode."
+msgstr ""
+"Les rôles utilisateur pouvant accéder au bouton dans la barre d'admin et "
+"donc basculer le mode maintenance."
+
+#: ../admin/partials/maintenance-switch-admin-display.php:50
+msgid "Bypass ability:"
+msgstr "Capacité à contourner :"
+
+#: ../admin/partials/maintenance-switch-admin-display.php:60
 msgid ""
 "The user roles can bypass the maintenance mode and see the site like online."
 msgstr ""
 "Les rôles utilisateur pouvant contourner le mode maintenance et voir le site "
 "en ligne."
 
-#: ../admin/partials/maintenance-switch-admin-display.php:48
-msgid "Exception for IPs:"
-msgstr "Exclure les IPs :"
-
-#: ../admin/partials/maintenance-switch-admin-display.php:52
+#: ../admin/partials/maintenance-switch-admin-display.php:64
 msgid "Add my IP"
 msgstr "Ajouter mon IP"
 
-#: ../admin/partials/maintenance-switch-admin-display.php:53
+#: ../admin/partials/maintenance-switch-admin-display.php:65
 msgid "Authorized IPs, comma separated."
 msgstr "IPs autorisées, séparées par des virgules."
 
-#: ../admin/partials/maintenance-switch-admin-display.php:59
+#: ../admin/partials/maintenance-switch-admin-display.php:71
 msgid "Maintenance page HTML:"
 msgstr "Page de maintenance HTML :"
 
-#: ../admin/partials/maintenance-switch-admin-display.php:63
+#: ../admin/partials/maintenance-switch-admin-display.php:75
 msgid "The entire HTML code of the maintenance page."
 msgstr "Le code HTML complet de la page de maintenance."
 
-#: ../admin/partials/maintenance-switch-admin-display.php:69
+#: ../admin/partials/maintenance-switch-admin-display.php:81
 msgid "Use theme file:"
 msgstr "Utiliser le fichier du thème :"
 
-#: ../admin/partials/maintenance-switch-admin-display.php:73
+#: ../admin/partials/maintenance-switch-admin-display.php:85
 msgid ""
 "Use a file in your theme to display maintenance page instead of the HTML "
 "field above."
@@ -68,31 +76,39 @@ msgstr ""
 "Utiliser un fichier dans votre thème pour personnaliser la page de "
 "maintenance au lieu du champs HTML ci-dessus."
 
-#: ../admin/partials/maintenance-switch-admin-display.php:94
+#: ../admin/partials/maintenance-switch-admin-display.php:92
+msgid "exists"
+msgstr "existe"
+
+#: ../admin/partials/maintenance-switch-admin-display.php:92
+msgid "is missing"
+msgstr "n'existe pas"
+
+#: ../admin/partials/maintenance-switch-admin-display.php:106
 msgid "Save Changes"
 msgstr "Enregistrer"
 
-#: ../includes/class-maintenance-switch.php:538
+#: ../includes/class-maintenance-switch.php:555
 msgid "Maintenance turned on."
 msgstr "Maintenance activée."
 
-#: ../includes/class-maintenance-switch.php:542
+#: ../includes/class-maintenance-switch.php:559
 msgid "Maintenance could not be turned on."
 msgstr "La maintenance ne peut être activée."
 
-#: ../includes/class-maintenance-switch.php:550
+#: ../includes/class-maintenance-switch.php:567
 msgid "Maintenance turned off."
 msgstr "Maintenance désactivée."
 
-#: ../includes/class-maintenance-switch.php:554
+#: ../includes/class-maintenance-switch.php:571
 msgid "Maintenance could not be turned off."
 msgstr "La maintenance ne peut être désactivée."
 
-#: ../includes/class-maintenance-switch.php:595 ../includes/config.php:45
+#: ../includes/class-maintenance-switch.php:614
 msgid "Maintenance"
 msgstr "Maintenance"
 
-#: ../includes/config.php:45
+#: ../includes/config.php:39
 msgid ""
 "In a permanent effort to improve our services, we currently are performing "
 "upgrades on our website."
@@ -100,14 +116,20 @@ msgstr ""
 "Dans un soucis d'amélioration de nos services, nous effectuons actuellement "
 "des opérations de maintenance sur notre site."
 
-#: ../includes/config.php:45
+#: ../includes/config.php:40
 msgid ""
-"We apologise for the inconvenience, but we will be pleased to see you back "
+"We apologize for the inconvenience, but we will be pleased to see you back "
 "in a very few minutes."
 msgstr ""
 "Nous vous prions de bien vouloir nous excuser pour la gêne occasionnée et "
 "vous invitons à renouveler votre visite dans quelques instants."
 
-#: ../includes/config.php:45
+#: ../includes/config.php:42
 msgid "The maintenance team."
 msgstr "L'équipe technique."
+
+#~ msgid "Exception for roles:"
+#~ msgstr "Exclure les rôles :"
+
+#~ msgid "Exception for IPs:"
+#~ msgstr "Exclure les IPs :"

@@ -78,7 +78,7 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.1.6';
+		$this->version = '1.1.7';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -236,6 +236,9 @@ class Maintenance_Switch {
 		if ( ! get_option( 'ms_page_html' ) )
 			add_option( 'ms_page_html', MS_DEFAULT_PAGE_HTML );
 		
+		if ( ! get_option( 'ms_switch_roles' ) )	
+			add_option( 'ms_switch_roles', explode( ',', MS_DEFAULT_SWITCH_ROLES ) );
+		
 		if ( ! get_option( 'ms_allowed_roles' ) )	
 			add_option( 'ms_allowed_roles', explode( ',', MS_DEFAULT_ALLOWED_ROLES ) );
 		
@@ -314,6 +317,26 @@ class Maintenance_Switch {
 	 */
 	public function get_status() {
 		return $this->status;
+	}
+	
+	/**
+	 * Check if the current user has a role that matches with ms_switch_roles
+	 *
+	 * @since     1.1.7
+	 * @return    boolean    True if the user can switch, false if not
+	 */
+	public function current_user_can_switch() {
+		
+		global $current_user;
+		$user_can = false;
+		
+		$switch_roles = (array) get_option( 'ms_switch_roles' );
+		
+		foreach( $current_user->roles as $role ) {
+			if ( in_array( $role, $switch_roles ) )
+				$user_can = true;
+		}
+		return $user_can;
 	}
 	
 	/**
@@ -590,16 +613,19 @@ class Maintenance_Switch {
 	 */
 	public function add_switch_button( $wp_admin_bar ){
 		
-		$args = array(
-			'id' => 'ms-switch-button',
-			'title' => '<span class="ab-icon dashicons-admin-tools"></span><span class="ab-label">' . __( 'Maintenance', $this->get_plugin_name() ) . '</span>',
-			'href' => '#',
-			'meta' => array(
-				'class' => 'toggle-button ' . ( $this->status ? 'active' : '' ),
-			)
-		);
+		if ( $this->current_user_can_switch() ) {
 		
-		$wp_admin_bar->add_node( $args );
+			$args = array(
+				'id' => 'ms-switch-button',
+				'title' => '<span class="ab-icon dashicons-admin-tools"></span><span class="ab-label">' . __( 'Maintenance', $this->get_plugin_name() ) . '</span>',
+				'href' => '#',
+				'meta' => array(
+					'class' => 'toggle-button ' . ( $this->status ? 'active' : '' ),
+				)
+			);
+			
+			$wp_admin_bar->add_node( $args );
+		}
 	}
 
 }

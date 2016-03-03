@@ -7,7 +7,6 @@ jQuery(document).ready(function(){
 	
 	jQuery('#wp-admin-bar-ms-switch-button a').on('click', function(e){
 		e.preventDefault();
-		console.log('toggle MS');
 	
 		// define icons
 		var iconBase = 'dashicons-admin-tools';
@@ -21,7 +20,6 @@ jQuery(document).ready(function(){
 		//ajax request
 		jQuery.get( ajaxurl, data, 
 		    function(response){
-			    console.log(response);
 			    // toggle icon for no spinner
 			    jQuery(elt).find('.ab-icon').removeClass(iconUpdate).addClass(iconBase);
 			    // if success toggle button class
