@@ -26,8 +26,8 @@ $roles = $wp_roles->get_names();
 	<!-- Ajoute 2 champs cachés pour savoir comment rediriger l'utilisateur -->
 	<?php wp_nonce_field('update-options'); ?>
 	
+	
 	<table class="form-table">
-
 
 	<tr><!-- Option: Button access roles -->
 	<th scope="row">
@@ -71,7 +71,10 @@ $roles = $wp_roles->get_names();
 		<label for="ms_page_html"><?php _e( 'Maintenance page HTML:', MS_SLUG ); ?></label>
 	</th>
 	<td>
-		<textarea class="" id="ms_page_html" name="ms_page_html" cols="70" rows="20"><?php echo get_option( 'ms_page_html' ) ?></textarea>
+		<?php
+			$use_theme = get_option( 'ms_use_theme' );
+		?>
+		<textarea class="" id="ms_page_html" name="ms_page_html" cols="70" rows="20" <?php echo $use_theme ? 'disabled' : ''; ?>><?php echo get_option( 'ms_page_html' ) ?></textarea>
 		<p class="description"><?php _e( 'The entire HTML code of the maintenance page.', MS_SLUG ); ?></p>
 	</td>
 	</tr>
@@ -84,16 +87,17 @@ $roles = $wp_roles->get_names();
 		<?php
 			$current_theme = wp_get_theme();
 			$theme_file = $current_theme->get_stylesheet_directory() . '/' . MS_THEME_FILENAME;
+			$theme_file_url = $current_theme->get_stylesheet_directory_uri() . '/' . MS_THEME_FILENAME;
 			$file_exists = file_exists( $theme_file );
 		?>
 		<p class="inline-checkbox"><input name="ms_use_theme" type="checkbox" value="1" <?php echo ( $file_exists && get_option( 'ms_use_theme' ) ) ? 'checked' : ''; ?> <?php echo $file_exists ? '' : 'disabled'; ?>></p>
 		<p class="description inline-description <?php echo $file_exists ? '' : 'disabled'; ?>"><?php _e( 'Use a file in your theme to display maintenance page instead of the HTML field above.', MS_SLUG ); ?></p>
 		<p class="infos">
-		<span class="<?php echo $file_exists ? 'present' : 'missing'; ?>"> <?php echo $file_exists ? '<span class="dashicons dashicons-yes"></span>' : '<span class="dashicons dashicons-no-alt"></span>'; ?> <strong><?php echo $current_theme->Name; ?></strong>: <?php echo MS_THEME_FILENAME; ?> <?php echo $file_exists ? __( 'exists', MS_SLUG ) : __( 'is missing', MS_SLUG ); ?></span><br>
+			<input type="hidden" name="ms_preview_theme_file" value="<?php echo $theme_file_url; ?>">
+			<span class="<?php echo $file_exists ? 'present' : 'missing'; ?>"> <?php echo $file_exists ? '<span class="dashicons dashicons-yes"></span>' : '<span class="dashicons dashicons-no-alt"></span>'; ?> <strong><?php echo $current_theme->Name; ?></strong>: <?php echo MS_THEME_FILENAME; ?> <?php echo $file_exists ? __( 'exists', MS_SLUG ) : __( 'is missing', MS_SLUG ); ?></span><br>
 		</p>
 	</td>
 	</tr>
-
 	
 	</table>
 	
@@ -104,8 +108,12 @@ $roles = $wp_roles->get_names();
 	<!-- Bouton de sauvegarde -->
 	<p class="submit">
 		<input class="button-primary" type="submit" value="<?php _e('Save Changes'); ?>" />
+		<a id="page-preview" class="button-primary"><?php _e( 'Preview page', MS_SLUG) ?></a>
 	</p>
 	</form>
+	
+	<!-- Formulaire pour la preview -->
+	<form id="preview-form" data-default-action="<?php echo plugins_url( 'preview.php', dirname(dirname(__FILE__)) ); ?>" method="post" target="ms-preview"></form>
 	
 </div>
 

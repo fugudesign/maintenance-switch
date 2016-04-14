@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Maintenance Switch 1.1\n"
-"POT-Creation-Date: 2016-03-03 01:42+0100\n"
-"PO-Revision-Date: 2016-03-03 01:43+0100\n"
+"POT-Creation-Date: 2016-04-14 14:18+0100\n"
+"PO-Revision-Date: 2016-04-14 14:18+0100\n"
 "Last-Translator: Vincent LALANNE <info@fugu.fr>\n"
 "Language-Team: Fugu Design <info@fugu.fr>\n"
 "Language: Français\n"
@@ -68,7 +68,7 @@ msgstr "Le code HTML complet de la page de maintenance."
 msgid "Use theme file:"
 msgstr "Utiliser le fichier du thème :"
 
-#: ../admin/partials/maintenance-switch-admin-display.php:85
+#: ../admin/partials/maintenance-switch-admin-display.php:90
 msgid ""
 "Use a file in your theme to display maintenance page instead of the HTML "
 "field above."
@@ -88,23 +88,27 @@ msgstr "n'existe pas"
 msgid "Save Changes"
 msgstr "Enregistrer"
 
-#: ../includes/class-maintenance-switch.php:555
+#: ../admin/partials/maintenance-switch-admin-display.php:107
+msgid "Preview page"
+msgstr "Prévisualiser la page"
+
+#: ../includes/class-maintenance-switch.php:561
 msgid "Maintenance turned on."
 msgstr "Maintenance activée."
 
-#: ../includes/class-maintenance-switch.php:559
+#: ../includes/class-maintenance-switch.php:565
 msgid "Maintenance could not be turned on."
 msgstr "La maintenance ne peut être activée."
 
-#: ../includes/class-maintenance-switch.php:567
+#: ../includes/class-maintenance-switch.php:573
 msgid "Maintenance turned off."
 msgstr "Maintenance désactivée."
 
-#: ../includes/class-maintenance-switch.php:571
+#: ../includes/class-maintenance-switch.php:577
 msgid "Maintenance could not be turned off."
 msgstr "La maintenance ne peut être désactivée."
 
-#: ../includes/class-maintenance-switch.php:614
+#: ../includes/class-maintenance-switch.php:620
 msgid "Maintenance"
 msgstr "Maintenance"
 
