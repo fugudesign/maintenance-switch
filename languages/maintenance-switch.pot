@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Maintenance Switch package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Maintenance Switch 1.2.1\n"
+"Project-Id-Version: Maintenance Switch 1.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maintenance-"
 "switch\n"
 "POT-Creation-Date: 2016-04-15 13:03:07+00:00\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#. #-#-#-#-#  plugin.pot (Maintenance Switch 1.2.1)  #-#-#-#-#
+#. #-#-#-#-#  plugin.pot (Maintenance Switch 1.2.2)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: admin/class-maintenance-switch-admin.php:88
 #: admin/class-maintenance-switch-admin.php:89
