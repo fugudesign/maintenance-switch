@@ -1,0 +1,140 @@
+# Copyright (C) 2016 Maintenance Switch
+# This file is distributed under the same license as the Maintenance Switch package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Maintenance Switch 1.2.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maintenance-"
+"switch\n"
+"POT-Creation-Date: 2016-04-15 13:03:07+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#. #-#-#-#-#  plugin.pot (Maintenance Switch 1.2.1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: admin/class-maintenance-switch-admin.php:88
+#: admin/class-maintenance-switch-admin.php:89
+msgid "Maintenance Switch"
+msgstr ""
+
+#: admin/class-maintenance-switch-admin.php:106
+msgid "Settings"
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:34
+msgid "Switch ability:"
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:44
+msgid ""
+"The user roles can access the maintenance button in the adminbar and so "
+"switch the maintenance mode."
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:50
+msgid "Bypass ability:"
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:60
+msgid ""
+"The user roles can bypass the maintenance mode and see the site like online."
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:64
+msgid "Add my IP"
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:65
+msgid "Authorized IPs, comma separated."
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:71
+msgid "Maintenance page HTML:"
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:78
+msgid "The entire HTML code of the maintenance page."
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:84
+msgid "Use theme file:"
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:94
+msgid ""
+"Use a file in your theme to display maintenance page instead of the HTML "
+"field above."
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:97
+msgid "exists"
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:97
+msgid "is missing"
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:110
+msgid "Save Changes"
+msgstr ""
+
+#: admin/partials/maintenance-switch-admin-display.php:111
+msgid "Preview page"
+msgstr ""
+
+#: includes/class-maintenance-switch.php:561
+msgid "Maintenance turned on."
+msgstr ""
+
+#: includes/class-maintenance-switch.php:565
+msgid "Maintenance could not be turned on."
+msgstr ""
+
+#: includes/class-maintenance-switch.php:573
+msgid "Maintenance turned off."
+msgstr ""
+
+#: includes/class-maintenance-switch.php:577
+msgid "Maintenance could not be turned off."
+msgstr ""
+
+#: includes/class-maintenance-switch.php:620
+msgid "Maintenance"
+msgstr ""
+
+#: includes/config.php:39
+msgid ""
+"In a permanent effort to improve our services, we currently are performing "
+"upgrades on our website."
+msgstr ""
+
+#: includes/config.php:40
+msgid ""
+"We apologize for the inconvenience, but we will be pleased to see you back "
+"in a very few minutes."
+msgstr ""
+
+#: includes/config.php:42
+msgid "The maintenance team."
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/maintenance-switch"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Customize and switch easily and simply in (native) maintenance mode from "
+"your backend or frontend."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Fugu"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.fugu.fr"
+msgstr ""
