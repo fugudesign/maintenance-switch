@@ -19,11 +19,17 @@ A maintenance.php file is generated and added to the wp-content folder for custo
 
 **Your custom maintenance page will also be active during the core, plugins and themes updates.**
 
-* The option page allows to set which roles can bypass the maintenance mode on the frontend.
+The option page allows to:
 
-* The option page allows to set and preview the entire HTML code used for the maintenance page. 
+* set which roles can switch the maintenance mode
 
-* The option page allows to enable the theme file support, so you can create in each your themes a maintenance.php file to customize the maintenance page.
+* set which roles can bypass the maintenance mode on the frontend
+
+* set the entire HTML code used for the maintenance page
+
+* preview the maintenance page before saving
+
+* enable the theme file support, so you can create in each your themes a maintenance.php file to customize the maintenance page
 
 == Installation ==
 
