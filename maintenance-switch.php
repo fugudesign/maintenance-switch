@@ -16,7 +16,7 @@
  * Plugin Name:       Maintenance Switch
  * Plugin URI:        https://wordpress.org/plugins/maintenance-switch
  * Description:       Customize and switch easily and simply in (native) maintenance mode from your backend or frontend.
- * Version:           1.2.0
+ * Version:           1.2.1
  * Author:            Fugu
  * Author URI:        http://www.fugu.fr
  * License:           GPL-2.0+

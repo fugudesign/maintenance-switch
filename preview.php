@@ -17,7 +17,7 @@ header( 'Content-Type: text/html; charset=utf-8' );
 
 
 if ( !empty($_POST['preview-code']) ) {
-	echo $_POST['preview-code'];
+	echo stripslashes( $_POST['preview-code'] );
 }
 
 ?>

@@ -78,7 +78,7 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.2.0';
+		$this->version = '1.2.1';
 
 		$this->load_dependencies();
 		$this->set_locale();
