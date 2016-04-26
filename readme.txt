@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: maintenance, maintenance mode, maintenance page, maintenance button, coming soon, coming soon page, mode, wordpress maintenance mode, site maintenance, site offline, unavailable, switch, administration, construction, under construction, offline, fugu
 Requires at least: 3.5
 Tested up to: 4.5
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,12 @@ The option page allows to:
 * preview the maintenance page before saving
 
 * enable the theme file support, so you can create in each your themes a maintenance.php file to customize the maintenance page
+
+* restore all default settings
+
+* restore default HTML code
+
+* create/delete the maintenance file in active theme
 
 == Installation ==
 
@@ -87,6 +93,11 @@ Yes, use the settings page to enable the theme file support.
 2. A setting page allows to define which roles can bypass the maintenance mode and to define the entire HTML code of the maintenance page, or use a custom file in your theme.
 
 == Changelog ==
+
+= 1.3.0 =
+* Improve performances
+* Implement WP Settings API
+* Adding reset features
 
 = 1.2.2 =
 * Adding POT language file

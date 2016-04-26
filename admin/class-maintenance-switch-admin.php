@@ -26,19 +26,19 @@ class Maintenance_Switch_Admin {
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   protected
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
-	private $plugin_name;
+	protected $plugin_name;
 
 	/**
 	 * The version of this plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   protected
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	private $version;
+	protected $version;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -51,6 +51,24 @@ class Maintenance_Switch_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+	}
+	
+	/**
+	 * Get the protected property plugin_name
+	 *
+	 * @since    1.3.0
+	 */
+	public function get_plugin_name() {
+		return $this->plugin_name;
+	}
+	
+	/**
+	 * Get the protected property version
+	 *
+	 * @since    1.3.0
+	 */
+	public function get_version() {
+		return $this->version;
 	}
 
 	/**
@@ -83,15 +101,22 @@ class Maintenance_Switch_Admin {
 	 * @since    1.0.0
 	 */
 	public function add_plugin_admin_menu() {
-
+		
+		// Get main controller
+		$plugin = new Maintenance_Switch();
+		
+		// Get the view
+		include_once( 'views/maintenance-switch-admin-display.php' );
+		$view = new Maintenance_Switch_Admin_Display( $plugin );
+		
+		// Adds option page in admin settings
 		add_options_page(
 			__( 'Maintenance Switch', $this->plugin_name ),
 			__( 'Maintenance Switch', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name,
-			array( $this, 'display_plugin_admin_page' )
+			array( $view, 'maintenance_switch_create_admin_page' )
 		);
-
 	}
 	
 	/**
@@ -100,30 +125,13 @@ class Maintenance_Switch_Admin {
 	 * @since    1.0.0
 	 */
 	public function add_action_links( $links ) {
-
+	
 		return array_merge(
 			array(
 				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_name ) . '">' . __( 'Settings', $this->plugin_name ) . '</a>'
 			),
 			$links
 		);
-	}
-
-	/**
-	 * Render the settings page for this plugin.
-	 *
-	 * @since    1.0.0
-	 */
-	public function display_plugin_admin_page() {
-		
-		$plugin = new Maintenance_Switch();
-		
-		if ( !empty( $_REQUEST[ 'settings-updated' ] ) ) {
-			$plugin->create_php_file();
-			$plugin->create_dot_file();
-		}
-		
-		include_once( 'partials/maintenance-switch-admin-display.php' );
 	}
 
 }

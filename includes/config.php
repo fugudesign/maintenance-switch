@@ -44,22 +44,21 @@ $default_html = '
 </body>
 </html>';
 
-define( 'MS_DEFAULT_PAGE_HTML', $default_html ); 
-
 /**
- * Default value for ms_switch_roles option
- * @since    1.1.7
+ * Default settings values
+ * @since    1.3.0
  */
-define( 'MS_DEFAULT_SWITCH_ROLES', 'administrator' );
+define( 'MS_DEFAULT_SETTINGS', json_encode(array(
+	
+	'ms_page_html' 		=> $default_html,
+	'ms_switch_roles' 	=> array( 'administrator' ),
+	'ms_allowed_roles' 	=> array( 'administrator' ),
+	'ms_allowed_ips' 	=> '',
+	'ms_use_theme'		=> 0
+)));
 
 /**
- * Default value for ms_allowed_roles option
- * @since    1.0.0
- */
-define( 'MS_DEFAULT_ALLOWED_ROLES', 'administrator' );
-
-/**
- * Default value for ms_status option
+ * Default value for maintenance_switch_status option
  * @since    1.1.1
  */
 define( 'MS_DEFAULT_STATUS', 0 );

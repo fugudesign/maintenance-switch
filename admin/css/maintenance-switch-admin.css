@@ -1,1 +1,9 @@
-textarea{width:95%}.inline-checkbox{display:inline-block;margin-right:2em}
+textarea {
+  width: 95%; }
+
+.inline-checkbox {
+  display: inline-block;
+  margin-right: 2em; }
+
+.inline-form {
+  display: inline-block; }

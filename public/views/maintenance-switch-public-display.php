@@ -9,7 +9,7 @@
  * @since      1.0.0
  *
  * @package    Maintenance_Switch
- * @subpackage Maintenance_Switch/public/partials
+ * @subpackage Maintenance_Switch/public/views
  */
 ?>
 

@@ -18,25 +18,24 @@
 			}
 		});
 		
-		$('[name=ms_use_theme]').on('change', function(e){
+		$('#ms_use_theme').on('change', function(e){
 			var checked = this.checked;
-			$('[name=ms_page_html]').prop('disabled', checked);
+			$('#ms_page_html').prop('disabled', checked);
 		});
 		
 		$('#page-preview').on('click', function(e){
 			e.preventDefault();
 			var form = $('#preview-form');
-			var theme = $('[name=ms_use_theme]').prop('checked');
+			var theme = $('#ms_use_theme').prop('checked');
 			if ( theme ) {
-				var url = $('[name=ms_preview_theme_file]').val();
+				var url = $('#ms_preview_theme_file').val();
 				form.attr('action', url).submit();
 			} 
 			else {
-				var html = $('[name=ms_page_html]').val();
-				form.attr('action', form.data('default-action')).append( $('<input/>' ).attr( { type:'hidden', name:'preview-code', value:html } ) ).submit();
+				var html = $('#ms_page_html').val();
+				form.attr('action', form.data('default-action')).html( $('<input/>' ).attr( { type:'hidden', id:'preview-code', name:'preview-code', value:html } ) ).submit();
 			}
 		});
-		
 	});
 
 

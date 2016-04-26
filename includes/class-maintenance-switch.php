@@ -53,7 +53,7 @@ class Maintenance_Switch {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @var      string    $plugin_name    The version of the plugin.
 	 */
 	protected $version;
 	
@@ -62,9 +62,27 @@ class Maintenance_Switch {
 	 *
 	 * @since    1.1.1
 	 * @access   protected
-	 * @var      string    $version    current status of the maintenance mode.
+	 * @var      string    $version    The current status of the maintenance mode.
 	 */
 	protected $status;
+	
+	/**
+	 * The default settings values
+	 *
+	 * @since    1.3.0
+	 * @access   protected
+	 * @var      array    $default_settings    The default settings of the plugin.
+	 */
+	protected $default_settings;
+	
+	/**
+	 * The current theme used in wp
+	 *
+	 * @since    1.3.0
+	 * @access   protected
+	 * @var      object    $current_theme    Get the theme object of the current wp theme used.
+	 */
+	protected $current_theme;
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -78,7 +96,9 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.2.2';
+		$this->version = '1.3.0';
+		$this->default_settings = json_decode( MS_DEFAULT_SETTINGS, true );
+		$this->current_theme = wp_get_theme();
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -230,31 +250,204 @@ class Maintenance_Switch {
 	 * Initialize the plugin options
 	 *
 	 * @since    1.1.1
+	 * @var 	 array		$options	the options array wanted
+	 * @var 	 int		$status		the status wanted
 	 */
-	public function init_options() {
+	public function init_options( $options = array(), $status = null ) {
 		
-		if ( ! get_option( 'ms_page_html' ) )
-			add_option( 'ms_page_html', MS_DEFAULT_PAGE_HTML );
+		// Get defaults settings
+		$defaults = $this->default_settings;
 		
-		if ( ! get_option( 'ms_switch_roles' ) )	
-			add_option( 'ms_switch_roles', explode( ',', MS_DEFAULT_SWITCH_ROLES ) );
+		// Merging options param with defaults options
+		if ( !empty( $options ) )
+			$defaults = wp_parse_args( $options, $defaults );
 		
-		if ( ! get_option( 'ms_allowed_roles' ) )	
-			add_option( 'ms_allowed_roles', explode( ',', MS_DEFAULT_ALLOWED_ROLES ) );
+		// Get settings
+		$settings = $this->get_the_settings();
 		
-		if ( ! get_option( 'ms_allowed_ips' ) )	
-			add_option( 'ms_allowed_ips', '' );
+		// Merging database options with defaults options
+		$settings = wp_parse_args( $settings, $defaults );
 		
-		if ( ! get_option( 'ms_status' ) )	
-			add_option( 'ms_status', MS_DEFAULT_STATUS );
+		// Save settings
+		$settings = update_option( 'maintenance_switch_settings', $settings );
 		
-		$this->status = get_option( 'ms_status' );
+		// Set the status param
+		if ( $status !== null )
+			$status = update_option( 'maintenance_switch_status', $status );
+		
+		// Get the status of maintenance
+		$this->status = $this->get_the_status();
+	}
+	
+	/**
+	 * Get the current wp theme used
+	 *
+	 * @since    1.3.0
+	 */
+	public function get_current_theme() {
+		return $this->current_theme;
+	}
+	
+	/**
+	 * Get the maintenance status
+	 *
+	 * @since    1.3.0
+	 */
+	public function get_the_status() {
+		$status = get_option( 'maintenance_switch_status' );
+		if ( !$status ) {
+			$status = update_option( 'maintenance_switch_status', MS_DEFAULT_STATUS );
+		}
+		return $status;
+	}
+	
+	/**
+	 * Set the maintenance status
+	 *
+	 * @since    1.3.0
+	 * @var		 $status		the maintenance status wanted
+	 * @return	 boolean		true if the status was changed, false if not
+	 */
+	public function set_the_status( $status ) {
+		if ( isset( $status ) ) {
+			return update_option( 'maintenance_switch_status', $status );
+		}
+		return false;
+	}
+	
+	/**
+	 * Get all the settings
+	 *
+	 * @since    1.3.0
+	 * @return 	 misc 		the option value or false if option not exists
+	 */
+	public function get_the_settings() {
+		return get_option( 'maintenance_switch_settings' );
+	}
+	
+	/**
+	 * Restore all default settings
+	 *
+	 * @since    1.3.0
+	 */
+	public function restore_default_settings() {
+		$defaults = wp_parse_args( $this->default_settings );
+		update_option( 'maintenance_switch_settings', $defaults );
+	}
+	
+	/**
+	 * Restore the default html code setting
+	 *
+	 * @since    1.3.0
+	 */
+	public function restore_html_setting() {
+		$settings = $this->get_the_settings();
+		$settings['ms_page_html'] = $this->default_settings['ms_page_html'];
+		update_option( 'maintenance_switch_settings', $settings );
+	}
+	
+	/**
+	 * Get the maintenance.php theme file url
+	 *
+	 * @since    1.3.0
+	 * @return   string    The theme file with absolute url
+	 */
+	public function get_theme_file_url() {
+		return $this->get_current_theme()->get_stylesheet_directory_uri() . '/' . MS_THEME_FILENAME;
+	}
+	
+	/**
+	 * Get the maintenance.php theme file path
+	 *
+	 * @since    1.3.0
+	 * @return   string    The theme file with absolute path
+	 */
+	public function get_theme_file_path() {
+		return $this->get_current_theme()->get_stylesheet_directory() . '/' . MS_THEME_FILENAME;
+	}
+	
+	/**
+	 * Check if the maintenance.php fil is present in theme directory
+	 *
+	 * @since    1.3.0
+	 * @return   boolean    true if the file exists in theme, false if not
+	 */
+	public function theme_file_exists() {
+		$theme_file = $this->get_theme_file_path();
+		return file_exists( $theme_file );
+	}
+	
+	/**
+	 * Create the maintenance.php file in theme with default html code
+	 *
+	 * @since    1.3.0
+	 * @return   boolean    True if the file was created in theme, false if not of if it already exists
+	 */
+	public function create_theme_file() {
+		$theme_file = $this->get_theme_file_path();
+		if ( ! $this->theme_file_exists() ) {
+			return $this->_create_file( $theme_file, $this->default_settings['ms_page_html'] );
+		}
+		return false;
+	}
+	
+	/**
+	 * Delete the maintenance.php file in theme
+	 *
+	 * @since    1.3.0
+	 * @return   boolean    True if the file was deleted in theme, false if not of if not exists
+	 */
+	public function delete_theme_file() {
+		$theme_file = $this->get_theme_file_path();
+		if ( $this->theme_file_exists() ) {
+			return $this->_delete_file( $theme_file );
+		}
+		return false;
+	}
+	
+	/**
+	 * Get a setting
+	 *
+	 * @since    1.3.0
+	 * @var      string    $setting_name    	the key name of the setting
+	 * @var      string    $default_value    	the default value to return if no setting value
+	 * @return   misc    The setting value
+	 */
+	public function get_setting( $setting_name, $default_value = false ) {
+		
+		$settings = $this->get_the_settings();
+		
+		if ( isset( $settings[ $setting_name ] ) )
+			return $settings[ $setting_name ];
+		
+		return $default_value;
+	}
+	
+	/**
+	 * Update a setting
+	 *
+	 * @since    1.3.0
+	 * @var      string    	$setting_name    	the key name of the setting
+	 * @var      misc    	$setting_value    	the value to save for the setting
+	 * @return   boolean    True if the setting was updated, false if not of if is not set
+	 */
+	public function update_setting( $setting_name, $setting_value ) {
+		
+		$settings = $this->get_the_settings();
+		
+		if ( isset( $settings[$setting_name] ) )
+			$settings[$setting_name] = $setting_value;
+		else
+			return false;
+		
+		return true;
 	}
 	
 	/**
 	 * Initialize the plugin files
 	 *
 	 * @since    1.1.1
+	 * @return   boolean    true
 	 */
 	public function init_files() {
 		
@@ -320,6 +513,16 @@ class Maintenance_Switch {
 	}
 	
 	/**
+	 * Retrieve the default settings of the plugin.
+	 *
+	 * @since     1.3.0
+	 * @return    string    The default settings.
+	 */
+	public function get_default_settings() {
+		return $this->default_settings;
+	}
+	
+	/**
 	 * Check if the current user has a role that matches with ms_switch_roles
 	 *
 	 * @since     1.1.7
@@ -330,7 +533,7 @@ class Maintenance_Switch {
 		global $current_user;
 		$user_can = false;
 		
-		$switch_roles = (array) get_option( 'ms_switch_roles' );
+		$switch_roles = (array) $this->get_setting( 'ms_switch_roles' );
 		
 		foreach( $current_user->roles as $role ) {
 			if ( in_array( $role, $switch_roles ) )
@@ -340,13 +543,14 @@ class Maintenance_Switch {
 	}
 	
 	/**
-	 * Add settings action link to the plugins page.
+	 * Get all users that match with the ms_allowed_roles setting 
 	 *
 	 * @since    1.0.0
+	 * @return   array    List of all users logins
 	 */
 	public function get_allowed_users() {
 		
-		$allowed_roles = (array) get_option( 'ms_allowed_roles' );
+		$allowed_roles = (array) $this->get_setting( 'ms_allowed_roles' );
 		$users = $this->get_users_by_role( $allowed_roles );
 		$allowed_users = array();
 		foreach ( $users as $user ) {
@@ -356,14 +560,15 @@ class Maintenance_Switch {
 	}
 	
 	/**
-	 * Add settings action link to the plugins page.
+	 * Get the ips from ms_allowed_ips setting 
 	 *
 	 * @since    1.0.4
+	 * @return   string    List of all ips comma separated
 	 */
 	public function get_allowed_ips() {
 		
-		$allowed_ips = get_option( 'ms_allowed_ips' );
-		$allowed_ips = explode( ',', str_replace( ' ', '', $allowed_ips ) );
+		$allowed_ips = $this->get_setting( 'ms_allowed_ips' );
+		$allowed_ips = explode( ',', $allowed_ips );
 		return $allowed_ips;
 	}
 	
@@ -372,6 +577,7 @@ class Maintenance_Switch {
 	 *
 	 * @since    1.0.0
 	 * @var      array    $roles    the roles for users query
+	 * @return	 array	  the user list
 	 */	
 	public function get_users_by_role( $roles = array() ) { 
 	
@@ -394,9 +600,9 @@ class Maintenance_Switch {
 	 * Get current user IP
 	 *
 	 * @since    1.0.4
+	 * @return   string    The current ip of the user
 	 */
 	public function get_user_ip() {
-
 		//Just get the headers if we can or else use the SERVER global
 		if ( function_exists( 'apache_request_headers' ) ) {
 			$headers = apache_request_headers();
@@ -419,6 +625,7 @@ class Maintenance_Switch {
 	 *
 	 * @since    1.1.1
 	 * @var      string    $file    the filename of the file to check
+	 * @return   boolean    True if the .maintenance file is core, false if was created by the plugin
 	 */
 	public function _check_core_file( $file ) {
 		
@@ -438,6 +645,7 @@ class Maintenance_Switch {
 	 * @since    1.1.1
 	 * @var      string    $file    	the filename of the file to check
 	 * @var      boolean   $check_core  check or not if the core version of the file is present
+	 * @return   boolean    True if the file was deleted, false if not
 	 */
 	public function _delete_file( $file, $check_core=false ) {
 		
@@ -481,8 +689,8 @@ class Maintenance_Switch {
 		$content = file_get_contents( MS_PHP_FILE_TEMPLATE );
 		
 		// get flags values
-		$page_html = get_option( 'ms_page_html' );
-		$use_theme_file = get_option( 'ms_use_theme' ) ? 'true' : 'false';
+		$page_html = html_entities_decode( $this->get_setting( 'ms_page_html' ) );
+		$use_theme_file = $this->get_setting( 'ms_use_theme' ) ? 'true' : 'false';
 		$theme = wp_get_theme();
 		$theme_file = $theme->get_stylesheet_directory() . '/' . MS_THEME_FILENAME;
 		
@@ -514,7 +722,7 @@ class Maintenance_Switch {
 		
 		// get flags values
 		$allowed_users = "'" . implode( "', '", $this->get_allowed_users() ) . "'";
-		$allowed_ips = "'" . implode( "', '", $this->get_allowed_ips() ) . "'";
+		$allowed_ips = "'" . implode( "','", $this->get_allowed_ips() ) . "'";
 		$login_url = str_replace( get_site_url(), '', wp_login_url() );
 		
 		// apply flags replacements
@@ -548,7 +756,7 @@ class Maintenance_Switch {
 		$sync = false;
 		// get the status in the database if no status in param
 		if ( $status === null ) {
-			$status = get_option( 'ms_status', MS_DEFAULT_STATUS );
+			$status = $this->get_the_status();
 			$sync = true;
 		}
 		
@@ -560,7 +768,7 @@ class Maintenance_Switch {
 				if ( $this->create_dot_file() ) {
 					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned on.', $this->get_plugin_name() ) );
 					// if status called, update in db
-					if ( ! $sync ) update_option( 'ms_status', $status );
+					if ( ! $sync ) $this->set_the_status( $status );
 				} else {
 					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned on.', $this->get_plugin_name() ) );
 				}
@@ -572,7 +780,7 @@ class Maintenance_Switch {
 				if ( $this->_delete_file( MS_DOT_FILE_ACTIVE, true ) ) {
 					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned off.', $this->get_plugin_name() ) );
 					// if status called, update in db
-					if ( ! $sync ) update_option( 'ms_status', $status );
+					if ( ! $sync ) $this->set_the_status( $status );
 				} else {
 					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned off.', $this->get_plugin_name() ) );
 				}
@@ -594,7 +802,7 @@ class Maintenance_Switch {
 	public function toggle_status_callback() {
 		
 		// get status in db
-		$status = get_option( 'ms_status' );
+		$status = $this->get_the_status();
 		// toggle status
 		$new_status = (bool) $status == 1 ? 0 : 1;
 		// sync status
