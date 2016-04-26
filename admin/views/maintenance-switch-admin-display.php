@@ -99,20 +99,20 @@ class Maintenance_Switch_Admin_Display {
 				?>				
 				<p class="submit">
 					<?php submit_button( __('Save Settings', MS_SLUG), 'primary', 'submit', false ); ?>
-					<a id="page-preview" class="button-primary"><?php _e( 'Preview page', MS_SLUG) ?></a>
+					<a id="page-preview" class="button-secondary"><?php _e( 'Preview page', MS_SLUG) ?></a>
 				</p>
 			</form>
 			
 			<h2><?php _e( 'Default settings', MS_SLUG ); ?></h2>
 			
-			<form id="restore-html-form" action="<?php echo $plugin_settings_url; ?>" method="POST" class="inline-form">
-				<input type="hidden" name="action" value="restore-html" />
-				<?php submit_button( __('Restore page HTML', MS_SLUG), 'secondary', 'submit', false ); ?>
-			</form>
-			
 			<form id="restore-settings-form" action="<?php echo $plugin_settings_url; ?>" method="POST" class="inline-form">
 				<input type="hidden" name="action" value="restore-settings" />
 				<?php submit_button( __('Restore all settings', MS_SLUG), 'secondary', 'submit', false ); ?>
+			</form>
+			
+			<form id="restore-html-form" action="<?php echo $plugin_settings_url; ?>" method="POST" class="inline-form">
+				<input type="hidden" name="action" value="restore-html" />
+				<?php submit_button( __('Restore page HTML', MS_SLUG), 'secondary', 'submit', false ); ?>
 			</form>
 			
 			<?php if ( ! $this->plugin->theme_file_exists() ) : ?>
@@ -224,7 +224,7 @@ class Maintenance_Switch_Admin_Display {
 		}
 		
 		if ( isset( $input['ms_page_html'] ) ) {
-			$sanitary_values['ms_page_html'] = $input['ms_page_html'];
+			$sanitary_values['ms_page_html'] = esc_textarea( $input['ms_page_html'] );
 		}
 		
 		if ( isset( $input['ms_use_theme'] ) ) {
@@ -334,11 +334,10 @@ class Maintenance_Switch_Admin_Display {
 			$theme_file_exists ? '' : 'disabled'
 		);
 	  	printf( '<p class="description inline-description">%s</p>', __( 'Use a file in your theme to display maintenance page instead of the HTML field above.', MS_SLUG ) );
-	  	print( '<p class="infos">' );
+	  	print( '<p class="infos messages">' );
 		printf( '<input id="ms_preview_theme_file" type="hidden" name="ms_preview_theme_file" value="%s">', $theme_file_url );
-		printf( '<span class="%s"> %s <strong>%s</strong>: %s</span></p>',
-			$theme_file_exists ? 'present' : 'missing',
-			$theme_file_exists ? '<span class="dashicons dashicons-yes"></span>' : '<span class="dashicons dashicons-no-alt"></span>',
+		printf( '<div class="message message-%s"><p><strong>%s</strong>: %s</p></div></p>',
+			$theme_file_exists ? 'success' : 'error',
 			$this->plugin->get_current_theme()->Name,
 			MS_THEME_FILENAME . ' ' . ( $theme_file_exists ? __( 'exists', MS_SLUG ) : __( 'is missing', MS_SLUG ) )
 	  	);

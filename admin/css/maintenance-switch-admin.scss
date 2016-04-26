@@ -12,3 +12,37 @@ textarea {
 .inline-form {
 	display: inline-block;
 }
+
+.infos.messages {
+	margin-top: 10px;
+}
+
+.message {
+	background: #fff;
+    border-left: 4px solid #fff;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+    margin: 5px 0 15px !important;
+	padding: 1px 12px !important;
+	
+	p {
+		margin: 0.5em 0 !important;
+		padding: 2px !important;
+	}
+	
+	&.message-error {
+		border-left-color: #dc3232;
+	}
+	
+	&.message-success {
+		border-left-color: #46b450;
+	}
+	
+	&.message-warning {
+		border-color-left: #ffb900;
+	}
+	
+	&.message-info {
+		border-color-left: #00a0d2;
+	}
+}

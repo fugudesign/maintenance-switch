@@ -96,7 +96,7 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.3.0';
+		$this->version = '1.3.1';
 		$this->default_settings = json_decode( MS_DEFAULT_SETTINGS, true );
 		$this->current_theme = wp_get_theme();
 
@@ -228,6 +228,7 @@ class Maintenance_Switch {
 	 */
 	public function after_upgrades( $bool, $args_hook_extra, $result ) {
 		
+		$this->migrate_settings();
 		$this->sync_status();
 		
 		return $bool; 
@@ -244,6 +245,51 @@ class Maintenance_Switch {
 		$this->init_files();
 		
 		$this->sync_status();
+	}
+	
+	
+	/**
+	 * Migrate the plugin settings from older versions
+	 *
+	 * @since    1.3.1
+	 */
+	public function migrate_settings() {
+		
+		// Define if settings mode needs to be migrated from old to new system
+		$migrate = false;
+
+		// Get and delete previous settings values
+		if ( $this->version_before( '1.3.1' ) ) {
+			
+			// Get previous settins in an array
+			$previous_version_settings = array(
+				'ms_page_html' 		=> get_option( 'ms_page_html' ),
+				'ms_switch_roles' 	=> get_option( 'ms_switch_roles' ),
+				'ms_allowed_roles' 	=> get_option( 'ms_allowed_roles' ),
+				'ms_allowed_ips' 	=> get_option( 'ms_allowed_ips' ),
+				'ms_use_theme'		=> get_option( 'ms_use_theme' )
+			);
+			$ms_status = get_option( 'ms_status' );
+			
+			// Remove old invalid settings
+			delete_option( 'ms_maintenance_page_html' );
+			delete_option( 'ms_allowed_ip' );
+			
+			// Remove previous settings
+			if ( $previous_version_settings['ms_page_html'] !== false ) { $migrate = true; delete_option( 'ms_page_html' ); }
+			if ( $previous_version_settings['ms_switch_roles'] !== false ) { $migrate = true; delete_option( 'ms_switch_roles' ); }
+			if ( $previous_version_settings['ms_allowed_roles'] !== false ) { $migrate = true; delete_option( 'ms_allowed_roles' ); }
+			if ( $previous_version_settings['ms_allowed_ips'] !== false ) { $migrate = true; delete_option( 'ms_allowed_ips' ); }
+			if ( $previous_version_settings['ms_use_theme'] !== false ) { $migrate = true; delete_option( 'ms_use_theme' ); }
+			if ( $ms_status !== false ) { $migrate = true; delete_option( 'ms_status' ); }
+			
+		}
+		
+		// Initialize options
+		$this->init_options( $migrate ? $previous_version_settings : array(), $migrate ? $ms_status : null );
+		
+		// Create the plugin core maintenance files
+		$this->init_files();
 	}
 	
 	/**
@@ -277,6 +323,103 @@ class Maintenance_Switch {
 		
 		// Get the status of maintenance
 		$this->status = $this->get_the_status();
+		
+		// Save the plugin version in the database
+		update_option( 'maintenance_switch_version', $this->version );
+	}
+	
+	/**
+	 * Synchronize the maintenance status option with the maintenance file.
+	 *
+	 * @since    1.1.1
+	 * @var      integer    $status    	the status to set, or just sync with file if null
+	 */
+	public function sync_status( $status=null ) {
+
+		$sync = false;
+		// get the status in the database if no status in param
+		if ( $status === null ) {
+			$status = $this->get_the_status();
+			$sync = true;
+		}
+		
+		// try to create the file according to the status value
+		switch ( $status ) {
+			
+			case 1:
+			
+				if ( $this->create_dot_file() ) {
+					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned on.', $this->get_plugin_name() ) );
+					// if status called, update in db
+					if ( ! $sync ) $this->set_the_status( $status );
+				} else {
+					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned on.', $this->get_plugin_name() ) );
+				}
+				
+				break;
+			
+			case 0:
+				
+				if ( $this->_delete_file( MS_DOT_FILE_ACTIVE, true ) ) {
+					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned off.', $this->get_plugin_name() ) );
+					// if status called, update in db
+					if ( ! $sync ) $this->set_the_status( $status );
+				} else {
+					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned off.', $this->get_plugin_name() ) );
+				}
+				
+				break;
+			
+		}
+
+		$msg['status'] = $status;
+		
+		return !empty($msg) ? $msg : false;
+	}
+	
+	/**
+	 * Initialize the plugin files
+	 *
+	 * @since    1.1.1
+	 * @return   boolean    true
+	 */
+	public function init_files() {
+		
+		// create the php file from template
+		if ( ! file_exists( MS_PHP_FILE_ACTIVE ) ) {
+			$this->create_php_file();
+		}
+		
+		if ( $this->status == 1 )
+			$this->create_dot_file();
+				
+		return true;
+	}
+
+	/**
+	 * Check the version of the previously installed plugin
+	 *
+	 * @since    1.3.1
+	 */
+	public function version_before( $version ) {
+		// get the version in db
+		$previous_version = $this->get_the_version();
+		
+		// test if the db version is anterior to called version
+		if ( $this->numeric_version( $previous_version ) < $this->numeric_version( $version ) ) 
+			return true;
+		
+		return false;
+	}
+	
+	/**
+	 * Get Integer version
+	 *
+	 * @since    1.3.1
+	 */
+	public function numeric_version( $version ) {
+		$version = str_replace( '.', '', $version );
+		return (int) $version;
 	}
 	
 	/**
@@ -313,6 +456,16 @@ class Maintenance_Switch {
 			return update_option( 'maintenance_switch_status', $status );
 		}
 		return false;
+	}
+	
+	/**
+	 * Get the version saved
+	 *
+	 * @since    1.3.1
+	 * @return 	 string 		the version of the plugin saved in db 
+	 */
+	public function get_the_version() {
+		return get_option( 'maintenance_switch_version', '1.0.0' );
 	}
 	
 	/**
@@ -443,25 +596,6 @@ class Maintenance_Switch {
 		return true;
 	}
 	
-	/**
-	 * Initialize the plugin files
-	 *
-	 * @since    1.1.1
-	 * @return   boolean    true
-	 */
-	public function init_files() {
-		
-		// create the php file from template
-		if ( ! file_exists( MS_PHP_FILE_ACTIVE ) ) {
-			$this->create_php_file();
-		}
-		
-		if ( $this->status == 1 )
-			$this->create_dot_file();
-				
-		return true;
-	}
-
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
@@ -689,7 +823,7 @@ class Maintenance_Switch {
 		$content = file_get_contents( MS_PHP_FILE_TEMPLATE );
 		
 		// get flags values
-		$page_html = html_entities_decode( $this->get_setting( 'ms_page_html' ) );
+		$page_html = $this->get_setting( 'ms_page_html' );
 		$use_theme_file = $this->get_setting( 'ms_use_theme' ) ? 'true' : 'false';
 		$theme = wp_get_theme();
 		$theme_file = $theme->get_stylesheet_directory() . '/' . MS_THEME_FILENAME;
@@ -743,55 +877,6 @@ class Maintenance_Switch {
 			return false;
 		}
 		return true;
-	}
-	
-	/**
-	 * Synchronize the maintenance status option with the maintenance file.
-	 *
-	 * @since    1.1.1
-	 * @var      integer    $status    	the status to set, or just sync with file if null
-	 */
-	public function sync_status( $status=null ) {
-
-		$sync = false;
-		// get the status in the database if no status in param
-		if ( $status === null ) {
-			$status = $this->get_the_status();
-			$sync = true;
-		}
-		
-		// try to create the file according to the status value
-		switch ( $status ) {
-			
-			case 1:
-			
-				if ( $this->create_dot_file() ) {
-					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned on.', $this->get_plugin_name() ) );
-					// if status called, update in db
-					if ( ! $sync ) $this->set_the_status( $status );
-				} else {
-					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned on.', $this->get_plugin_name() ) );
-				}
-				
-				break;
-			
-			case 0:
-				
-				if ( $this->_delete_file( MS_DOT_FILE_ACTIVE, true ) ) {
-					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned off.', $this->get_plugin_name() ) );
-					// if status called, update in db
-					if ( ! $sync ) $this->set_the_status( $status );
-				} else {
-					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned off.', $this->get_plugin_name() ) );
-				}
-				
-				break;
-			
-		}
-
-		$msg['status'] = $status;
-		
-		return !empty($msg) ? $msg : false;
 	}
 	
 	/**
