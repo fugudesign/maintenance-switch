@@ -96,7 +96,7 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.3.1';
+		$this->version = '1.3.2';
 		$this->default_settings = json_decode( MS_DEFAULT_SETTINGS, true );
 		$this->current_theme = wp_get_theme();
 
@@ -163,7 +163,7 @@ class Maintenance_Switch {
 	private function set_locale() {
 
 		$plugin_i18n = new Maintenance_Switch_i18n();
-		$plugin_i18n->set_domain( $this->get_plugin_name() );
+		$plugin_i18n->set_domain( $this->plugin_name );
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -178,7 +178,7 @@ class Maintenance_Switch {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Maintenance_Switch_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Maintenance_Switch_Admin( $this->plugin_name, $this->version );
 		
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -187,7 +187,7 @@ class Maintenance_Switch {
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_admin_menu' );
 
 		// Add an action link pointing to the options page.
-		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->get_plugin_name() . '.php' );
+		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_name . '.php' );
 		$this->loader->add_filter( 'plugin_action_links_' . $plugin_basename, $plugin_admin, 'add_action_links' );
 		
 		// Add an action for the switch button
@@ -196,8 +196,8 @@ class Maintenance_Switch {
 		// Add an action to init in admin
 		$this->loader->add_action( 'wp_loaded', $this, 'admin_init' );
 		
-		// Add an action to reactivate maintenance after updates
-		$this->loader->add_filter( 'upgrader_post_install', $this, 'after_upgrades', 10, 3 );
+		// Add an action to process operations after updates
+		$this->loader->add_filter( 'upgrader_process_complete', $this, 'after_upgrades', 10, 2 );
 		
 		// Add callback action for ajax request
 		$this->loader->add_action( 'wp_ajax_toggle_status', $this, 'toggle_status_callback' );
@@ -213,7 +213,7 @@ class Maintenance_Switch {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Maintenance_Switch_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Maintenance_Switch_Public( $this->plugin_name, $this->version );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -226,12 +226,17 @@ class Maintenance_Switch {
 	 *
 	 * @since    1.1.1
 	 */
-	public function after_upgrades( $bool, $args_hook_extra, $result ) {
+	public function after_upgrades( $upgrader_object, $options ) {
 		
-		$this->migrate_settings();
-		$this->sync_status();
-		
-		return $bool; 
+		if ($options['action'] == 'update' && $options['type'] == 'plugin' ){
+			foreach( $options['packages'] as $plugin_package ){
+				if ( $plugin_package == $this->plugin_name ){
+					
+					$this->migrate_settings();
+					$this->sync_status();
+				}
+			}
+		}
 	}
 	
 	/**
@@ -259,7 +264,7 @@ class Maintenance_Switch {
 		$migrate = false;
 
 		// Get and delete previous settings values
-		if ( $this->version_before( '1.3.1' ) ) {
+		if ( $this->version_before( '1.3.2' ) ) {
 			
 			// Get previous settins in an array
 			$previous_version_settings = array(
@@ -275,7 +280,7 @@ class Maintenance_Switch {
 			delete_option( 'ms_maintenance_page_html' );
 			delete_option( 'ms_allowed_ip' );
 			
-			// Remove previous settings
+			// Get and remove previous settings version
 			if ( $previous_version_settings['ms_page_html'] !== false ) { $migrate = true; delete_option( 'ms_page_html' ); }
 			if ( $previous_version_settings['ms_switch_roles'] !== false ) { $migrate = true; delete_option( 'ms_switch_roles' ); }
 			if ( $previous_version_settings['ms_allowed_roles'] !== false ) { $migrate = true; delete_option( 'ms_allowed_roles' ); }
@@ -349,11 +354,11 @@ class Maintenance_Switch {
 			case 1:
 			
 				if ( $this->create_dot_file() ) {
-					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned on.', $this->get_plugin_name() ) );
+					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned on.', $this->plugin_name ) );
 					// if status called, update in db
 					if ( ! $sync ) $this->set_the_status( $status );
 				} else {
-					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned on.', $this->get_plugin_name() ) );
+					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned on.', $this->plugin_name ) );
 				}
 				
 				break;
@@ -361,11 +366,11 @@ class Maintenance_Switch {
 			case 0:
 				
 				if ( $this->_delete_file( MS_DOT_FILE_ACTIVE, true ) ) {
-					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned off.', $this->get_plugin_name() ) );
+					$msg = array( 'success' => true, 'data' => __( 'Maintenance turned off.', $this->plugin_name ) );
 					// if status called, update in db
 					if ( ! $sync ) $this->set_the_status( $status );
 				} else {
-					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned off.', $this->get_plugin_name() ) );
+					$msg = array( 'success' => false, 'data' => __( 'Maintenance could not be turned off.', $this->plugin_name ) );
 				}
 				
 				break;
@@ -506,7 +511,7 @@ class Maintenance_Switch {
 	 * @return   string    The theme file with absolute url
 	 */
 	public function get_theme_file_url() {
-		return $this->get_current_theme()->get_stylesheet_directory_uri() . '/' . MS_THEME_FILENAME;
+		return $this->current_theme->get_stylesheet_directory_uri() . '/' . MS_THEME_FILENAME;
 	}
 	
 	/**
@@ -516,7 +521,7 @@ class Maintenance_Switch {
 	 * @return   string    The theme file with absolute path
 	 */
 	public function get_theme_file_path() {
-		return $this->get_current_theme()->get_stylesheet_directory() . '/' . MS_THEME_FILENAME;
+		return $this->current_theme->get_stylesheet_directory() . '/' . MS_THEME_FILENAME;
 	}
 	
 	/**
@@ -765,7 +770,7 @@ class Maintenance_Switch {
 		
 		if ( file_exists( $file ) ) {
 			$content = file_get_contents( $file );
-			if ( preg_match( '/'.$this->get_plugin_name().'/i', $content) )
+			if ( preg_match( '/'.$this->plugin_name.'/i', $content) )
 				return false;
 			else
 				return true;
@@ -829,7 +834,7 @@ class Maintenance_Switch {
 		$theme_file = $theme->get_stylesheet_directory() . '/' . MS_THEME_FILENAME;
 		
 		// apply flags replacements
-		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->get_plugin_name(), $content );
+		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->plugin_name, $content );
 		$content = str_replace( '{{MS_USE_THEME_FILE}}' , $use_theme_file, $content );
 		$content = str_replace( '{{MS_THEME_FILE}}' , $theme_file, $content );
 		$content = str_replace( '{{MS_PAGE_HTML}}' , $page_html, $content );
@@ -862,7 +867,7 @@ class Maintenance_Switch {
 		// apply flags replacements
 		$content = str_replace( '{{MS_ALLOWED_USERS}}' , $allowed_users, $content );
 		$content = str_replace( '{{MS_ALLOWED_IPS}}' , $allowed_ips, $content );
-		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->get_plugin_name(), $content );
+		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->plugin_name, $content );
 		$content = str_replace( '{{MS_LOGIN_URL}}' , $login_url, $content );
 
 		// check if the core dot file exists or delete current file
@@ -910,7 +915,7 @@ class Maintenance_Switch {
 		
 			$args = array(
 				'id' => 'ms-switch-button',
-				'title' => '<span class="ab-icon dashicons-admin-tools"></span><span class="ab-label">' . __( 'Maintenance', $this->get_plugin_name() ) . '</span>',
+				'title' => '<span class="ab-icon dashicons-admin-tools"></span><span class="ab-label">' . __( 'Maintenance', $this->plugin_name ) . '</span>',
 				'href' => '#',
 				'meta' => array(
 					'class' => 'toggle-button ' . ( $this->status ? 'active' : '' ),

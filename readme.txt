@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: maintenance, maintenance mode, maintenance page, maintenance button, coming soon, coming soon page, mode, wordpress maintenance mode, site maintenance, offline, site offline, unavailable, switch, administration, construction, under construction, offline, fugu
 Requires at least: 3.5
 Tested up to: 4.5
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,18 +12,18 @@ Customize easily and switch in one-click to (native) maintenance mode from your 
 
 == Description ==
 
-### One-click maintenance mode
+**One-click maintenance mode**
 
 This plugin adds a button to the admin bar for toggling the builtin maintenance mode.
 
-### Core maintenance mode
+**Core maintenance mode**
 
 A .maintenance file is generated and copied to the Wordpress installation folder when turning on the maintenance mode.
 A maintenance.php file is generated and added to the wp-content folder for custom HTML code.
 
 **Your custom maintenance page will also be active during the core, plugins and themes updates.**
 
-The option page allows to:
+= Special Features =
 
 * set which roles can switch the maintenance mode
 
@@ -40,6 +40,11 @@ The option page allows to:
 * restore default HTML code
 
 * create/delete the maintenance file in the active WP theme
+
+== Translations ==
+
+* English - default, always included
+* French
 
 == Installation ==
 
@@ -97,6 +102,9 @@ Yes, use the settings page to enable the theme file support.
 2. A setting page allows to define which roles can bypass the maintenance mode and to define the entire HTML code of the maintenance page, or use a custom file in your theme.
 
 == Changelog ==
+
+= 1.3.2 =
+* Fix a persistent bug with settings migration
 
 = 1.3.1 =
 * Fix a PHP4 compatibility issue
