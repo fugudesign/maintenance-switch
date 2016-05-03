@@ -105,7 +105,7 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.3.3';
+		$this->version = '1.3.4';
 		$this->default_settings = json_decode( MS_DEFAULT_SETTINGS, true );
 		$this->current_theme = wp_get_theme();
 
@@ -395,11 +395,11 @@ class Maintenance_Switch {
 		
 		// Merging database options with defaults options
 		if ( empty($settings) )
-			$settings = wp_parse_args( $settings, $defaults );
+			$settings = wp_parse_args( $defaults, $settings );
 		
 		// Merging options param with defaults options
 		if ( !empty( $options ) )
-			$settings = wp_parse_args( $settings, $options );
+			$settings = wp_parse_args( $options, $settings );
 		
 		// Save settings
 		update_option( 'maintenance_switch_settings', $settings );
