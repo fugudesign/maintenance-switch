@@ -19,7 +19,7 @@ header( 'Retry-After: 600' );
 $theme_file = '{{MS_THEME_FILE}}';
 $use_theme = '{{MS_USE_THEME_FILE}}';
 
-if ( $use_theme == 'true' && file_exists( $theme_file ) ) {
+if ( $use_theme == '1' && file_exists( $theme_file ) ) {
 	require_once $theme_file;
 	die();
 }

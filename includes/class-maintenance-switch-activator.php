@@ -34,7 +34,7 @@ class Maintenance_Switch_Activator {
 		// Get the main controller
 		$plugin = new Maintenance_Switch();
 		
-		$plugin->migrate_settings();
+		$plugin->init_settings();
 		$plugin->sync_status();
 		
 	}

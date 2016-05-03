@@ -23,6 +23,15 @@
 class Maintenance_Switch_Admin {
 
 	/**
+	 * The Instance of the main plugin class.
+	 *
+	 * @since    1.3.3
+	 * @access   protected
+	 * @var      object    $plugin    The instance of the main class
+	 */
+	protected $plugin;
+	
+	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
@@ -47,10 +56,10 @@ class Maintenance_Switch_Admin {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+	public function __construct( &$plugin ) {
+		$this->plugin = $plugin;
+		$this->plugin_name = $plugin->get_plugin_name();
+		$this->version = $plugin->get_version();
 	}
 	
 	/**
@@ -102,12 +111,9 @@ class Maintenance_Switch_Admin {
 	 */
 	public function add_plugin_admin_menu() {
 		
-		// Get main controller
-		$plugin = new Maintenance_Switch();
-		
 		// Get the view
 		include_once( 'views/maintenance-switch-admin-display.php' );
-		$view = new Maintenance_Switch_Admin_Display( $plugin );
+		$view = new Maintenance_Switch_Admin_Display( $this->plugin );
 		
 		// Adds option page in admin settings
 		add_options_page(

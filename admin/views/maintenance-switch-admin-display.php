@@ -42,40 +42,15 @@ class Maintenance_Switch_Admin_Display {
 	 *
 	 * @since    1.3.0
 	 */
-	public function __construct( $plugin ) {
+	public function __construct( &$plugin ) {
 		
 		$this->plugin = $plugin;
+		
+		$this->plugin->admin_action_request();
+		
 		$this->maintenance_switch_settings = $plugin->get_the_settings();
 		
-		$this->request();
-		
 		add_action( 'admin_init', array( $this, 'maintenance_switch_page_init' ) );
-	}
-	
-	/**
-	 * Function to execute according to the submit action
-	 *
-	 * @since    1.3.0
-	 */
-	public function request() {
-		
-		if ( !empty( $_POST[ 'action' ] ) ) :
-			switch( $_POST[ 'action' ] ) :
-				
-				case 'restore-settings': 	$this->plugin->restore_default_settings();
-					wp_redirect( admin_url( 'options-general.php?page=' . $this->plugin->get_plugin_name() ) ); break;
-					
-				case 'restore-html': 		$this->plugin->restore_html_setting();
-					wp_redirect( admin_url( 'options-general.php?page=' . $this->plugin->get_plugin_name() ) );break;
-					
-				case 'create-theme-file':	$this->plugin->create_theme_file();
-					wp_redirect( admin_url( 'options-general.php?page=' . $this->plugin->get_plugin_name() ) );break;
-				
-				case 'delete-theme-file':	$this->plugin->delete_theme_file();
-					wp_redirect( admin_url( 'options-general.php?page=' . $this->plugin->get_plugin_name() ) );break;
-				
-			endswitch;
-		endif;
 	}
 	
 	/**
@@ -85,14 +60,14 @@ class Maintenance_Switch_Admin_Display {
 	 * @since    1.3.0
 	 */
 	public function maintenance_switch_create_admin_page() { 
-		$plugin_settings_url = admin_url( 'options-general.php?page=' . $this->plugin->get_plugin_name() );
+		$plugin_settings_url = admin_url( 'options-general.php?page=' . MS_SLUG );
 		?>
 
 		<div id="ms-form" class="wrap">
 			
 			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
-			<form method="POST" action="options.php">
+			<form id="settings-form" method="POST" action="options.php">
 				<?php
 					settings_fields( 'maintenance_switch' );
 					do_settings_sections( 'maintenance-switch' );
@@ -106,24 +81,24 @@ class Maintenance_Switch_Admin_Display {
 			<h2><?php _e( 'Default settings', MS_SLUG ); ?></h2>
 			
 			<form id="restore-settings-form" action="<?php echo $plugin_settings_url; ?>" method="POST" class="inline-form">
-				<input type="hidden" name="action" value="restore-settings" />
-				<?php submit_button( __('Restore all settings', MS_SLUG), 'secondary', 'submit', false ); ?>
+				<input type="hidden" name="action" value="restore_settings" />
+				<?php submit_button( __('Restore all settings', MS_SLUG), 'secondary', 'submit', false, array( 'data-msg' => __( 'Are you sure you want to retore all the default settings?', MS_SLUG ) ) ); ?>
 			</form>
 			
 			<form id="restore-html-form" action="<?php echo $plugin_settings_url; ?>" method="POST" class="inline-form">
-				<input type="hidden" name="action" value="restore-html" />
-				<?php submit_button( __('Restore page HTML', MS_SLUG), 'secondary', 'submit', false ); ?>
+				<input type="hidden" name="action" value="restore_html" />
+				<?php submit_button( __('Restore page HTML', MS_SLUG), 'secondary', 'submit', false, array( 'data-msg' => __( 'Are you sure you want to retore the default HTML code?', MS_SLUG ) ) ); ?>
 			</form>
 			
 			<?php if ( ! $this->plugin->theme_file_exists() ) : ?>
 			<form id="create-theme-file" action="<?php echo $plugin_settings_url; ?>" method="POST" class="inline-form">
-				<input type="hidden" name="action" value="create-theme-file" />
-				<?php submit_button( __('Create file in the theme', MS_SLUG), 'secondary', 'submit', false ); ?>
+				<input type="hidden" name="action" value="create_theme_file" />
+				<?php submit_button( __('Create file in the theme', MS_SLUG), 'secondary', 'submit', false, array( 'data-msg' => __( 'Are you sure you want to create the file in your theme?', MS_SLUG ) ) ); ?>
 			</form>
 			<?php else : ?>
 			<form id="delete-theme-file" action="<?php echo $plugin_settings_url; ?>" method="POST" class="inline-form">
-				<input type="hidden" name="action" value="delete-theme-file" />
-				<?php submit_button( __('Delete file in the theme', MS_SLUG), 'secondary', 'submit', false ); ?>
+				<input type="hidden" name="action" value="delete_theme_file" />
+				<?php submit_button( __('Delete file in the theme', MS_SLUG), 'secondary', 'submit', false, array( 'data-msg' => __( 'Are you sure you want to delete the file in your theme?', MS_SLUG ) ) ); ?>
 			</form>
 			<?php endif; ?>
 			
@@ -228,7 +203,7 @@ class Maintenance_Switch_Admin_Display {
 		}
 		
 		if ( isset( $input['ms_use_theme'] ) ) {
-			$sanitary_values['ms_use_theme'] = $input['ms_use_theme'];
+			$sanitary_values['ms_use_theme'] = (int) $input['ms_use_theme'];
 		}
 
 		return $sanitary_values;
@@ -311,8 +286,10 @@ class Maintenance_Switch_Admin_Display {
 	 * @since    1.3.0
 	 */
 	public function ms_page_html_display() {
+		$theme_file_exists = $this->plugin->theme_file_exists();
 		printf(
-			'<textarea id="ms_page_html" class="large-text" cols="70" rows="20" name="maintenance_switch_settings[ms_page_html]">%s</textarea>',
+			'<textarea id="ms_page_html" class="large-text" cols="70" rows="20" name="maintenance_switch_settings[ms_page_html]" %s>%s</textarea>',
+			( isset( $this->maintenance_switch_settings['ms_use_theme'] ) && $this->maintenance_switch_settings['ms_use_theme'] == 1 && $theme_file_exists ) ? 'readonly' : '',
 			isset( $this->maintenance_switch_settings['ms_page_html'] ) ? $this->maintenance_switch_settings['ms_page_html'] : ''
 		);
 		printf( '<p class="description">%s</p>', __( 'The entire HTML code of the maintenance page.', MS_SLUG ) );
@@ -330,7 +307,7 @@ class Maintenance_Switch_Admin_Display {
 		
 		printf(
 			'<p class="inline-checkbox"><input id="ms_use_theme" name="maintenance_switch_settings[ms_use_theme]" type="checkbox" value="1" %s %s></p>',
-			( isset( $this->maintenance_switch_settings['ms_use_theme'] ) && $this->maintenance_switch_settings['ms_use_theme'] === 1 ) ? 'checked' : '',
+			( isset( $this->maintenance_switch_settings['ms_use_theme'] ) && $this->maintenance_switch_settings['ms_use_theme'] == 1 && $theme_file_exists ) ? 'checked' : '',
 			$theme_file_exists ? '' : 'disabled'
 		);
 	  	printf( '<p class="description inline-description">%s</p>', __( 'Use a file in your theme to display maintenance page instead of the HTML field above.', MS_SLUG ) );

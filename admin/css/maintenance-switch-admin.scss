@@ -1,5 +1,10 @@
 // Settings form
 
+input.readonly, input[readonly], 
+textarea.readonly, textarea[readonly] {
+	color:#999;
+}
+
 textarea {
 	width: 95%;
 }

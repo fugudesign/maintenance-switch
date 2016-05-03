@@ -20,7 +20,7 @@
 		
 		$('#ms_use_theme').on('change', function(e){
 			var checked = this.checked;
-			$('#ms_page_html').prop('disabled', checked);
+			$('#ms_page_html').prop('readonly', checked);
 		});
 		
 		$('#page-preview').on('click', function(e){
@@ -35,6 +35,12 @@
 				var html = $('#ms_page_html').val();
 				form.attr('action', form.data('default-action')).html( $('<input/>' ).attr( { type:'hidden', id:'preview-code', name:'preview-code', value:html } ) ).submit();
 			}
+		});
+		
+		$('input[data-msg]').on('click', function(e) {
+			var message = $(this).data('msg');
+			if ( !confirm( message ) )
+				e.preventDefault();
 		});
 	});
 
