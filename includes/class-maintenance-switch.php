@@ -105,7 +105,7 @@ class Maintenance_Switch {
 	public function __construct() {
 
 		$this->plugin_name = MS_SLUG;
-		$this->version = '1.3.4';
+		$this->version = '1.3.5';
 		$this->default_settings = json_decode( MS_DEFAULT_SETTINGS, true );
 		$this->current_theme = wp_get_theme();
 
@@ -200,7 +200,7 @@ class Maintenance_Switch {
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_name . '.php' );
-		$this->loader->add_filter( 'plugin_action_links_' . $plugin_basename, $plugin_admin, 'add_action_links' );
+		$this->loader->add_filter( 'plugin_action_links_' . $plugin_basename, $this->plugin_admin, 'add_action_links' );
 		
 		// Add an action for the switch button
 		$this->loader->add_action('admin_bar_menu', $this, 'add_switch_button', 45);
@@ -225,7 +225,7 @@ class Maintenance_Switch {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Maintenance_Switch_Public( $this_name, $this->version );
+		$plugin_public = new Maintenance_Switch_Public( $this->plugin_name, $this->version );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
