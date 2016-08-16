@@ -240,7 +240,7 @@ class Maintenance_Switch_Admin_Display {
 		foreach ($wp_roles->get_names() as $role_value => $role_name) {
 			printf(
 				'<p class="inline-checkbox"><input id="ms_switch_roles" name="maintenance_switch_settings[ms_switch_roles][]" type="checkbox" value="' . $role_value . '" %s>'.$role_name.'</p>',
-				( isset( $this->maintenance_switch_settings['ms_switch_roles'] ) && in_array( $role_value, $this->maintenance_switch_settings['ms_switch_roles'] ) ) ? 'checked' : ''
+				( isset( $this->maintenance_switch_settings['ms_switch_roles'] ) && in_array( $role_value, (array) $this->maintenance_switch_settings['ms_switch_roles'] ) ) ? 'checked' : ''
 			);
 	  	}
 	  	printf( '<p class="description">%s</p>', __( 'The user roles can access the maintenance button in the adminbar and so switch the maintenance mode.', MS_SLUG ) );
@@ -257,7 +257,7 @@ class Maintenance_Switch_Admin_Display {
 		foreach ($wp_roles->get_names() as $role_value => $role_name) {
 			printf(
 				'<p class="inline-checkbox"><input id="ms_allowed_roles" name="maintenance_switch_settings[ms_allowed_roles][]" type="checkbox" value="' . $role_value . '" %s>'.$role_name.'</p>',
-				( isset( $this->maintenance_switch_settings['ms_allowed_roles'] ) && in_array( $role_value, $this->maintenance_switch_settings['ms_allowed_roles'] ) ) ? 'checked' : ''
+				( isset( $this->maintenance_switch_settings['ms_allowed_roles'] ) && in_array( $role_value, (array) $this->maintenance_switch_settings['ms_allowed_roles'] ) ) ? 'checked' : ''
 			);
 	  	}
 	  	printf( '<p class="description">%s</p>', __( 'The user roles can bypass the maintenance mode and see the site like online.', MS_SLUG ) );

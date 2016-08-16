@@ -10,13 +10,6 @@
  * @subpackage Maintenance_Switch/includes
  */
 
-
-/**
- * Path of the maintenance.php file.
- * @since    1.0.0
- */
-define( 'MS_SLUG', 'maintenance-switch' );
-
 /**
  * Default value for ms_page_html
  * @since    1.0.0
