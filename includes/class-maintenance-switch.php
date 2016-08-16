@@ -491,6 +491,9 @@ class Maintenance_Switch {
 		// get the version in db
 		$previous_version = $this->get_the_version();
 		
+		if ( empty( $previous_version ) )
+			return false;
+		
 		// test if the db version is anterior to called version
 		if ( $this->numeric_version( $previous_version ) < $this->numeric_version( $version ) ) 
 			return true;
@@ -557,7 +560,7 @@ class Maintenance_Switch {
 	 */
 	public function get_the_version() {
 		
-		return get_option( 'maintenance_switch_version', '1.0.0' );
+		return get_option( 'maintenance_switch_version' );
 	}
 	
 	/**
