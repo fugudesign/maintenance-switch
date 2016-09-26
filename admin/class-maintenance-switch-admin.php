@@ -99,6 +99,8 @@ class Maintenance_Switch_Admin {
 	 */
 	public function enqueue_scripts() {
 
+		wp_enqueue_script( 'jquery-ui-tabs' );
+
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/maintenance-switch-admin.js', array( 'jquery' ), $this->version, false );
 		
 		wp_enqueue_script( $this->plugin_name . '-button', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/maintenance-switch-button.js', array( 'jquery' ), $this->version, false );

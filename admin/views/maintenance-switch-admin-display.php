@@ -70,7 +70,7 @@ class Maintenance_Switch_Admin_Display {
 			<form id="settings-form" method="POST" action="options.php">
 				<?php
 					settings_fields( 'maintenance_switch' );
-					do_settings_sections( 'maintenance-switch' );
+					$this->do_settings_sections_tabs( 'maintenance-switch' );
 				?>				
 				<p class="submit">
 					<?php submit_button( __('Save Settings', MS_SLUG), 'primary', 'submit', false ); ?>
@@ -122,6 +122,29 @@ class Maintenance_Switch_Admin_Display {
 		);
 
 		add_settings_section(
+			'maintenance_switch_display_section', // id
+			__( 'Display', MS_SLUG ), // title
+			array( $this, 'maintenance_switch_display_section_info' ), // callback
+			'maintenance-switch' // page
+		);
+		
+		add_settings_field(
+			'ms_page_html', // id
+			__( 'Maintenance page HTML:', MS_SLUG ), // title
+			array( $this, 'ms_page_html_display' ), // callback
+			'maintenance-switch', // page
+			'maintenance_switch_display_section' // section
+		);
+		
+		add_settings_field(
+			'ms_use_theme', // id
+			__( 'Use theme file:', MS_SLUG ), // title
+			array( $this, 'ms_use_theme_display' ), // callback
+			'maintenance-switch', // page
+			'maintenance_switch_display_section' // section
+		);
+
+		add_settings_section(
 			'maintenance_switch_permissions_section', // id
 			__( 'Permissions', MS_SLUG ), // title
 			array( $this, 'maintenance_switch_permissions_section_info' ), // callback
@@ -151,28 +174,20 @@ class Maintenance_Switch_Admin_Display {
 			'maintenance-switch', // page
 			'maintenance_switch_permissions_section' // section
 		);
-		
+
 		add_settings_section(
-			'maintenance_switch_display_section', // id
-			__( 'Display', MS_SLUG ), // title
-			array( $this, 'maintenance_switch_display_section_info' ), // callback
+			'maintenance_switch_core_section', // id
+			__( 'Behavior', MS_SLUG ), // title
+			array( $this, 'maintenance_switch_core_section_info' ), // callback
 			'maintenance-switch' // page
 		);
-		
+
 		add_settings_field(
-			'ms_page_html', // id
-			__( 'Maintenance page HTML:', MS_SLUG ), // title
-			array( $this, 'ms_page_html_display' ), // callback
+			'ms_error_503', // id
+			__( 'Code 503:', MS_SLUG ), // title
+			array( $this, 'ms_error_503_display' ), // callback
 			'maintenance-switch', // page
-			'maintenance_switch_display_section' // section
-		);
-		
-		add_settings_field(
-			'ms_use_theme', // id
-			__( 'Use theme file:', MS_SLUG ), // title
-			array( $this, 'ms_use_theme_display' ), // callback
-			'maintenance-switch', // page
-			'maintenance_switch_display_section' // section
+			'maintenance_switch_core_section' // section
 		);
 
 	}
@@ -197,6 +212,10 @@ class Maintenance_Switch_Admin_Display {
 		if ( isset( $input['ms_allowed_ips'] ) ) {
 			$sanitary_values['ms_allowed_ips'] = sanitize_text_field( str_replace( ' ', '', $input['ms_allowed_ips'] ) );
 		}
+
+		if ( isset( $input['ms_error_503'] ) ) {
+			$sanitary_values['ms_error_503'] = (int) $input['ms_error_503'];
+		}
 		
 		if ( isset( $input['ms_page_html'] ) ) {
 			$sanitary_values['ms_page_html'] = esc_textarea( $input['ms_page_html'] );
@@ -208,15 +227,25 @@ class Maintenance_Switch_Admin_Display {
 
 		return $sanitary_values;
 	}
-	
+
 	/**
-	 * Display section field infos
+	 * Behavior section field infos
+	 * WP Settings API
+	 *
+	 * @since    1.3.8
+	 */
+	public function maintenance_switch_core_section_info() {
+		// printf( '<p class="description">%s</p>', __( 'Ajust the behavior of the plugin.', MS_SLUG ) );
+	}
+
+	/**
+	 * Permissions section field infos
 	 * WP Settings API
 	 *
 	 * @since    1.3.0
 	 */
 	public function maintenance_switch_permissions_section_info() {
-		printf( '<p class="description">%s</p>', __( 'Ajust the behavior related to the access and capacities.', MS_SLUG ) );
+		// printf( '<p class="description">%s</p>', __( 'Ajust the access and switch permissions.', MS_SLUG ) );
 	}
 	
 	/**
@@ -226,7 +255,21 @@ class Maintenance_Switch_Admin_Display {
 	 * @since    1.3.0
 	 */
 	public function maintenance_switch_display_section_info() {
-		printf( '<p class="description">%s</p>', __( 'Ajust the appearance of the maintenance page', MS_SLUG ) );
+		// printf( '<p class="description">%s</p>', __( 'Ajust the appearance of the maintenance page', MS_SLUG ) );
+	}
+	
+	/**
+	 * Display ms_error_503 field
+	 * WP Settings API
+	 *
+	 * @since    1.3.8
+	 */
+	public function ms_error_503_display() {		
+		printf(
+			'<p class="inline-checkbox"><input id="ms_error_503" name="maintenance_switch_settings[ms_error_503]" type="checkbox" value="1" %s></p>',
+			( isset( $this->maintenance_switch_settings['ms_error_503'] ) && $this->maintenance_switch_settings['ms_error_503'] == 1 ) ? 'checked' : ''
+		);
+	  	printf( '<p class="description inline-description">%s</p>', __( 'The maintenance page returns the error code 503 "Service unavailable" (recommanded).', MS_SLUG ) );
 	}
 	
 	/**
@@ -278,7 +321,7 @@ class Maintenance_Switch_Admin_Display {
 		);
 		printf( '<p class="description">%s</p>', __( 'The IP list can bypass the maintenance mode and see the site like online, comma separated.', MS_SLUG ) );
 	}
-	
+
 	/**
 	 * Display ms_page_html field
 	 * WP Settings API
@@ -320,6 +363,63 @@ class Maintenance_Switch_Admin_Display {
 	  	);
 	}
 
+
+	/**
+	 * Replace the call to 'do_settings_sections()' with a call to this function
+	 *
+	 * @since    1.3.8
+	 */
+	public function do_settings_sections_tabs($page){
+
+	    global $wp_settings_sections, $wp_settings_fields;
+
+	    if(!isset($wp_settings_sections[$page])) :
+	        return;
+	    endif;
+
+	    echo '<div id="settings-tabs">';
+	    echo '<ul class="nav-tab-wrapper">';
+
+	    foreach((array)$wp_settings_sections[$page] as $section) :
+
+	        if(!isset($section['title']))
+	            continue;
+
+	        printf('<li class="nav-tab"><a href="#%1$s">%2$s</a></li>',
+	            $section['id'],     /** %1$s - The ID of the tab */
+	            $section['title']   /** %2$s - The Title of the section */
+	        );
+
+	    endforeach;
+
+	    echo '</ul>';
+
+	    foreach((array)$wp_settings_sections[$page] as $section) :
+
+	        printf('<div id="%1$s">',
+	            $section['id']      /** %1$s - The ID of the tab */
+	        );
+
+	        if(!isset($section['title']))
+	            continue;
+
+	        if($section['callback'])
+	            call_user_func($section['callback'], $section);
+
+	        if(!isset($wp_settings_fields) || !isset($wp_settings_fields[$page]) || !isset($wp_settings_fields[$page][$section['id']]))
+	            continue;
+
+	        echo '<table class="form-table">';
+	        do_settings_fields($page, $section['id']);
+	        echo '</table>';
+
+	        echo '</div>';
+
+	    endforeach;
+
+	    echo '</div>';
+
+	}
 }
 
 /* 

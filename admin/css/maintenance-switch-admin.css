@@ -33,3 +33,32 @@ textarea {
     border-color-left: #ffb900; }
   .message.message-info {
     border-color-left: #00a0d2; }
+
+ul.nav-tab-wrapper {
+  border-bottom: 1px solid #ccc;
+  margin: 0;
+  padding-top: 9px;
+  padding-bottom: 0;
+  line-height: inherit; }
+  ul.nav-tab-wrapper li.nav-tab {
+    margin-bottom: 0; }
+    ul.nav-tab-wrapper li.nav-tab.ui-tabs-active {
+      border-bottom: 1px solid #f1f1f1;
+      background: #f1f1f1;
+      color: #000;
+      margin-bottom: -1px; }
+      ul.nav-tab-wrapper li.nav-tab.ui-tabs-active a {
+        color: #000; }
+    ul.nav-tab-wrapper li.nav-tab a {
+      display: block;
+      text-decoration: none;
+      color: #555; }
+      ul.nav-tab-wrapper li.nav-tab a:focus {
+        outline: 0;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none; }
+
+.ui-tabs-panel {
+  padding: 20px 0 30px;
+  border-bottom: 1px solid #ccc; }

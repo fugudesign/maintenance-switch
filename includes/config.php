@@ -44,10 +44,11 @@ $default_html = '
 define( 'MS_DEFAULT_SETTINGS', json_encode(array(
 	
 	'ms_page_html' 		=> $default_html,
+	'ms_error_503'		=> 1,
 	'ms_switch_roles' 	=> array( 'administrator' ),
 	'ms_allowed_roles' 	=> array( 'administrator' ),
 	'ms_allowed_ips' 	=> '',
-	'ms_use_theme'		=> 0
+	'ms_use_theme'		=> 0,
 )));
 
 /**

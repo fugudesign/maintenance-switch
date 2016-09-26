@@ -2,6 +2,8 @@
 	'use strict';
 	
 	$(document).ready(function(){
+
+		$('#settings-tabs').tabs();
 		
 		$('#addmyip').on('click', function(e){
 			e.preventDefault();

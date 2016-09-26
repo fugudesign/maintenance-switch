@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Maintenance Switch 1.3.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maintenance-"
 "switch\n"
-"POT-Creation-Date: 2016-05-03 02:33+0100\n"
-"PO-Revision-Date: 2016-05-03 02:38+0100\n"
+"POT-Creation-Date: 2016-09-26 12:26+0100\n"
+"PO-Revision-Date: 2016-09-26 12:26+0100\n"
 "Last-Translator: Vincent LALANNE <info@fugu.fr>\n"
 "Language-Team: Fugu <support@fugu.fr>\n"
 "Language: French\n"
@@ -20,12 +20,12 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_x;_e;esc_attr_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin/class-maintenance-switch-admin.php:120
-#: admin/class-maintenance-switch-admin.php:121
+#: admin/class-maintenance-switch-admin.php:122
+#: admin/class-maintenance-switch-admin.php:123
 msgid "Maintenance Switch"
 msgstr "Maintenance Switch"
 
-#: admin/class-maintenance-switch-admin.php:137
+#: admin/class-maintenance-switch-admin.php:139
 msgid "Settings"
 msgstr "Réglages"
 
@@ -75,39 +75,46 @@ msgid "Are you sure you want to delete the file in your theme?"
 msgstr "Êtes-vous certain(e) de vouloir supprimer le fichier de votre thème ?"
 
 #: admin/views/maintenance-switch-admin-display.php:126
-msgid "Permissions"
-msgstr "Permissions"
-
-#: admin/views/maintenance-switch-admin-display.php:133
-msgid "Switch ability:"
-msgstr "Capacité à switcher :"
-
-#: admin/views/maintenance-switch-admin-display.php:141
-msgid "Bypass ability:"
-msgstr "Capacité à outrepasser :"
-
-#: admin/views/maintenance-switch-admin-display.php:157
 msgid "Display"
 msgstr "Affichage"
 
-#: admin/views/maintenance-switch-admin-display.php:164
+#: admin/views/maintenance-switch-admin-display.php:133
 msgid "Maintenance page HTML:"
 msgstr "Page de maintenance HTML :"
 
-#: admin/views/maintenance-switch-admin-display.php:172
+#: admin/views/maintenance-switch-admin-display.php:141
 msgid "Use theme file:"
 msgstr "Utiliser le fichier du thème :"
 
-#: admin/views/maintenance-switch-admin-display.php:219
-msgid "Ajust the behavior related to the access and capacities."
+#: admin/views/maintenance-switch-admin-display.php:149
+msgid "Permissions"
+msgstr "Permissions"
+
+#: admin/views/maintenance-switch-admin-display.php:156
+msgid "Switch ability:"
+msgstr "Capacité à switcher :"
+
+#: admin/views/maintenance-switch-admin-display.php:164
+msgid "Bypass ability:"
+msgstr "Capacité à outrepasser :"
+
+#: admin/views/maintenance-switch-admin-display.php:180
+msgid "Behavior"
+msgstr "Comportement"
+
+#: admin/views/maintenance-switch-admin-display.php:187
+msgid "Code 503:"
+msgstr "Code 503 :"
+
+#: admin/views/maintenance-switch-admin-display.php:272
+msgid ""
+"The maintenance page returns the error code 503 \"Service unavailable"
+"\" (recommanded)."
 msgstr ""
-"Ajustez le comportement lié aux accès et aux capacités des utilisateurs."
+"La page de maintenance renvoie le code d'erreur 503 \"Service indisponible"
+"\" (recommandé)."
 
-#: admin/views/maintenance-switch-admin-display.php:229
-msgid "Ajust the appearance of the maintenance page"
-msgstr "Ajustez l'apparence de la page de maintenance"
-
-#: admin/views/maintenance-switch-admin-display.php:246
+#: admin/views/maintenance-switch-admin-display.php:289
 msgid ""
 "The user roles can access the maintenance button in the adminbar and so "
 "switch the maintenance mode."
@@ -115,18 +122,18 @@ msgstr ""
 "Les rôles utilisateur pouvant accéder au bouton dans la barre d'admin et "
 "donc basculer le mode maintenance."
 
-#: admin/views/maintenance-switch-admin-display.php:263
+#: admin/views/maintenance-switch-admin-display.php:306
 msgid ""
 "The user roles can bypass the maintenance mode and see the site like online."
 msgstr ""
 "Les rôles utilisateur pouvant outrepasser le mode maintenance et voir le "
 "site comme si il était en ligne."
 
-#: admin/views/maintenance-switch-admin-display.php:277
+#: admin/views/maintenance-switch-admin-display.php:320
 msgid "Add my IP"
 msgstr "Ajouter mon IP"
 
-#: admin/views/maintenance-switch-admin-display.php:279
+#: admin/views/maintenance-switch-admin-display.php:322
 msgid ""
 "The IP list can bypass the maintenance mode and see the site like online, "
 "comma separated."
@@ -134,11 +141,11 @@ msgstr ""
 "Les adresses IP pouvant outrepasser le mode maintenance et voir le site "
 "comme si il était en ligne, séparées par des virgules."
 
-#: admin/views/maintenance-switch-admin-display.php:295
+#: admin/views/maintenance-switch-admin-display.php:338
 msgid "The entire HTML code of the maintenance page."
 msgstr "Le code HTML complet de la page de maintenance."
 
-#: admin/views/maintenance-switch-admin-display.php:313
+#: admin/views/maintenance-switch-admin-display.php:356
 msgid ""
 "Use a file in your theme to display maintenance page instead of the HTML "
 "field above."
@@ -146,51 +153,51 @@ msgstr ""
 "Utiliser un fichier dans votre thème pour personnaliser la page de "
 "maintenance au lieu du champs HTML ci-dessus."
 
-#: admin/views/maintenance-switch-admin-display.php:319
+#: admin/views/maintenance-switch-admin-display.php:362
 msgid "exists"
 msgstr "existe"
 
-#: admin/views/maintenance-switch-admin-display.php:319
+#: admin/views/maintenance-switch-admin-display.php:362
 msgid "is missing"
 msgstr "n'existe pas"
 
-#: includes/class-maintenance-switch.php:263
+#: includes/class-maintenance-switch.php:260
 msgid "Default settings successfuly restored."
 msgstr "Réglages par défaut restaurés."
 
-#: includes/class-maintenance-switch.php:265
+#: includes/class-maintenance-switch.php:262
 msgid "Default settings was not restored."
 msgstr "Les réglages par défaut n'ont pas été restaurés."
 
-#: includes/class-maintenance-switch.php:271
+#: includes/class-maintenance-switch.php:268
 msgid "HTML code successfuly restored."
 msgstr "Code HTML restauré."
 
-#: includes/class-maintenance-switch.php:273
+#: includes/class-maintenance-switch.php:270
 msgid "HTML code could was not restored."
 msgstr "Le code HTML n'a pas été restauré."
 
-#: includes/class-maintenance-switch.php:280
+#: includes/class-maintenance-switch.php:277
 msgid "The theme file was created successfuly."
 msgstr "Fichier créé dans le thème."
 
-#: includes/class-maintenance-switch.php:282
+#: includes/class-maintenance-switch.php:279
 msgid "The theme file was not created."
 msgstr "Le fichier n'a pas pu être créé dans le thème."
 
-#: includes/class-maintenance-switch.php:289
+#: includes/class-maintenance-switch.php:286
 msgid "The theme file was deleted successfuly"
 msgstr "Fichier supprimé du thème."
 
-#: includes/class-maintenance-switch.php:291
+#: includes/class-maintenance-switch.php:288
 msgid "The theme file was not deleted."
 msgstr "Le fichier n'a pas pu être supprimé du thème."
 
-#: includes/class-maintenance-switch.php:1042
+#: includes/class-maintenance-switch.php:1025
 msgid "Maintenance"
 msgstr "Maintenance"
 
-#: includes/config.php:39
+#: includes/config.php:32
 msgid ""
 "In a permanent effort to improve our services, we currently are performing "
 "upgrades on our website."
@@ -198,7 +205,7 @@ msgstr ""
 "Dans un soucis d'amélioration de nos services, nous effectuons actuellement "
 "des opérations de maintenance sur notre site."
 
-#: includes/config.php:40
+#: includes/config.php:33
 msgid ""
 "We apologize for the inconvenience, but we will be pleased to see you back "
 "in a very few minutes."
@@ -206,9 +213,21 @@ msgstr ""
 "Nous vous prions de bien vouloir nous excuser pour la gêne occasionnée et "
 "vous invitons à renouveler votre visite dans quelques instants."
 
-#: includes/config.php:42
+#: includes/config.php:35
 msgid "The maintenance team."
 msgstr "L'équipe technique."
+
+#~ msgid "Ajust the behavior of the plugin."
+#~ msgstr "Ajustez le comportement du plugin."
+
+#~ msgid "Ajust the appearance of the maintenance page"
+#~ msgstr "Ajustez l'apparence de la page de maintenance"
+
+#~ msgid "General"
+#~ msgstr "Général"
+
+#~ msgid "General settings for the plugin."
+#~ msgstr "Paramètres généraux du plugin."
 
 #~ msgid "Maintenance turned on."
 #~ msgstr "Maintenance activée."
