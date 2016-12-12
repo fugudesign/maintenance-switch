@@ -102,7 +102,9 @@ Yes, use the settings page to enable the theme file support.
 == Screenshots ==
 
 1. A button is added to the admin bar for simple toggling in maintenance mode.
-2. A setting page allows to define which roles can bypass the maintenance mode and to define the entire HTML code of the maintenance page, or use a custom file in your theme.
+2. The "Display" tab of the settings page allow you to define the entire HTML code of your maintenance page, or use a custom file in your theme.
+3. The "Permissions" tab of the settings page allow you to define which user roles can bypass the maintenance mode (to visit the website when maintenance mode is on).
+4. The "Behavior" tab of the settings page allow you to change the http error code returned by the maintenance page.
 
 == Changelog ==
 
