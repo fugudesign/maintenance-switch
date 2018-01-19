@@ -1,6 +1,6 @@
 // Settings form
 
-input.readonly, input[readonly], 
+input.readonly, input[readonly],
 textarea.readonly, textarea[readonly] {
 	color:#999;
 }
@@ -91,4 +91,24 @@ ul.nav-tab-wrapper {
 .ui-tabs-panel {
 	padding: 20px 0 30px;
 	border-bottom: 1px solid #ccc;
+}
+
+.CodeMirror {
+	&.readonly {
+		pointer-events: none;
+		
+		&:after {
+			pointer-events: initial;
+			cursor: no-drop;
+			content: '';
+			z-index: 2;
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			right: 0px;
+			bottom: 0px;
+			background: #EFEFEF;
+			opacity: 0.6;
+		}
+	}
 }

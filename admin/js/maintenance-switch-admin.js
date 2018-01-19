@@ -2,8 +2,10 @@
 	'use strict';
 	
 	$(document).ready(function(){
-
-		$('#settings-tabs').tabs();
+        
+        var editor = wp.codeEditor.initialize('ms_page_html');
+        
+        $('#settings-tabs').tabs();
 		
 		$('#addmyip').on('click', function(e){
 			e.preventDefault();
@@ -20,9 +22,16 @@
 			}
 		});
 		
+		function toggleTextareaReadonly(status) {
+		    var checked = status || $('#ms_use_theme').checked;
+            $('#ms_page_html').prop('readonly', checked);
+            $('#ms_page_html').next('.CodeMirror').toggleClass('readonly', checked);
+        }
+        toggleTextareaReadonly();
+        
 		$('#ms_use_theme').on('change', function(e){
 			var checked = this.checked;
-			$('#ms_page_html').prop('readonly', checked);
+            toggleTextareaReadonly(checked);
 		});
 		
 		$('#page-preview').on('click', function(e){
@@ -32,7 +41,7 @@
 			if ( theme ) {
 				var url = $('#ms_preview_theme_file').val();
 				form.attr('action', url).submit();
-			} 
+			}
 			else {
 				var html = $('#ms_page_html').val();
 				form.attr('action', form.data('default-action')).html( $('<input/>' ).attr( { type:'hidden', id:'preview-code', name:'preview-code', value:html } ) ).submit();
