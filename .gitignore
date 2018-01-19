@@ -1,5 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 
+deploy.sh
 node_modules/
 
 ### macOS template
