@@ -86,11 +86,10 @@ class Maintenance_Switch_Admin {
      * @since    1.0.0
      */
     public function enqueue_styles() {
-
-        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/maintenance-switch-admin.css', array(), $this->version, 'all' );
-
+        if ($this->isSettingsPage()) {
+            wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/maintenance-switch-admin.css', array(), $this->version, 'all' );
+        }
         wp_enqueue_style( $this->plugin_name . '-button', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/maintenance-switch-button.css', array(), $this->version, 'all' );
-
     }
 
     /**
@@ -99,14 +98,12 @@ class Maintenance_Switch_Admin {
      * @since    1.0.0
      */
     public function enqueue_scripts() {
-
-        wp_enqueue_script( 'jquery-ui-tabs' );
-
-        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/maintenance-switch-admin.js', array( 'jquery' ), $this->version, false );
-
+        if ($this->isSettingsPage()) {
+            wp_enqueue_script( 'jquery-ui-tabs' );
+            wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/maintenance-switch-admin.js', array( 'jquery' ), $this->version, false );
+            wp_enqueue_code_editor( ['file' => $this->plugin_name.'.php'] );
+        }
         wp_enqueue_script( $this->plugin_name . '-button', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/maintenance-switch-button.js', array( 'jquery' ), $this->version, false );
-
-        wp_enqueue_code_editor( ['file' => $this->plugin_name.'.php'] );
     }
 
     /**
@@ -143,5 +140,14 @@ class Maintenance_Switch_Admin {
             ),
             $links
         );
+    }
+
+    /**
+     * Check if the current screen is the settings page
+     *
+     * @return bool
+     */
+    public function isSettingsPage() {
+        return get_current_screen()->base == 'settings_page_maintenance-switch';
     }
 }
