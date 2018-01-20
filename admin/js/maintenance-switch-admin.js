@@ -2,8 +2,12 @@
 	'use strict';
 	
 	$(document).ready(function(){
-        
+ 
         var editor = wp.codeEditor.initialize('ms_page_html');
+        // Update the hidden textarea on codemirror change
+        editor.codemirror.on('change', function(CodeMirror){
+            CodeMirror.save();
+        });
         
         $('#settings-tabs').tabs();
 		
@@ -44,7 +48,7 @@
 			}
 			else {
 				var html = $('#ms_page_html').val();
-				form.attr('action', form.data('default-action')).html( $('<input/>' ).attr( { type:'hidden', id:'preview-code', name:'preview-code', value:html } ) ).submit();
+                form.attr('action', form.data('default-action')).html( $('<input/>' ).attr( { type:'hidden', id:'preview-code', name:'preview-code', value:html } ) ).submit();
 			}
 		});
 		
