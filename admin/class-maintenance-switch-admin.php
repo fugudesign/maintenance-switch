@@ -145,6 +145,8 @@ class Maintenance_Switch_Admin {
     /**
      * Check if the current screen is the settings page
      *
+     * @since 1.5.1
+     *
      * @return bool
      */
     public function isSettingsPage() {
