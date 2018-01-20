@@ -23,7 +23,7 @@
 		});
 		
 		function toggleTextareaReadonly(status) {
-		    var checked = status || $('#ms_use_theme').checked;
+		    var checked = status || $('#ms_use_theme').prop('checked');
             $('#ms_page_html').prop('readonly', checked);
             $('#ms_page_html').next('.CodeMirror').toggleClass('readonly', checked);
         }
