@@ -112,6 +112,8 @@ class Maintenance_Switch_Admin_Display {
 	 * WP Settings API
 	 *
 	 * @since    1.3.0
+     * @since    1.5.3    Add setting field for allowed URLs
+     * 
 	 */
 	public function maintenance_switch_page_init() {
 
@@ -173,6 +175,14 @@ class Maintenance_Switch_Admin_Display {
 			array( $this, 'ms_allowed_ips_display' ), // callback
 			'maintenance-switch', // page
 			'maintenance_switch_permissions_section' // section
+        );
+        
+        add_settings_field(
+			'ms_allowed_urls', // id
+			'', // title
+			array( $this, 'ms_allowed_urls_display' ), // callback
+			'maintenance-switch', // page
+			'maintenance_switch_permissions_section' // section
 		);
 
 		add_settings_section(
@@ -197,6 +207,7 @@ class Maintenance_Switch_Admin_Display {
 	 * WP Settings API
 	 *
 	 * @since    1.3.0
+     * @since    1.5.3    Add sanitization for allowed URLs setting 
 	 */
 	public function maintenance_switch_sanitize($input) {
 		$sanitary_values = array();
@@ -211,6 +222,10 @@ class Maintenance_Switch_Admin_Display {
 
 		if ( isset( $input['ms_allowed_ips'] ) ) {
 			$sanitary_values['ms_allowed_ips'] = sanitize_text_field( str_replace( ' ', '', $input['ms_allowed_ips'] ) );
+        }
+        
+        if ( isset( $input['ms_allowed_urls'] ) ) {
+			$sanitary_values['ms_allowed_urls'] = sanitize_text_field( str_replace( ' ', '', $input['ms_allowed_urls'] ) );
 		}
 
 		if ( isset( $input['ms_error_503'] ) ) {
@@ -320,6 +335,21 @@ class Maintenance_Switch_Admin_Display {
 			__( 'Add my IP', MS_SLUG )
 		);
 		printf( '<p class="description">%s</p>', __( 'The IP list can bypass the maintenance mode and see the site like online, comma separated.', MS_SLUG ) );
+    }
+    
+    /**
+	 * Display ms_allowed_urls field
+	 * WP Settings API
+	 *
+	 * @since    1.5.3    Add interface for allowed URLs setting
+	 */
+	public function ms_allowed_urls_display() {
+		printf(
+			'<input id="ms_allowed_urls" name="maintenance_switch_settings[ms_allowed_urls]" size="60" value="%s">',
+			isset( $this->maintenance_switch_settings['ms_allowed_urls'] ) ? $this->maintenance_switch_settings['ms_allowed_urls'] : ''
+		);
+        printf( '<p class="description">%s</p>', __( 'List of URLs allowed to be visited when in maintenance mode, comma separated.<br>
+                Wordpress default login URLs (<strong>/wp-admin</strong>, <strong>/wp-login.php</strong>) are permanently allowed.', MS_SLUG ) );
 	}
 
 	/**
