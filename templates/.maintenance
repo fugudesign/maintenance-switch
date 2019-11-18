@@ -21,6 +21,7 @@ function MS_user_logged_in() {
 
 $allowed_users = array( {{MS_ALLOWED_USERS}} );
 $allowed_ips = array( {{MS_ALLOWED_IPS}} );
+$allowed_urls = array( {{MS_ALLOWED_URLS}} );
 $user_logged_in = MS_user_logged_in();
 $user_ip = $_SERVER["REMOTE_ADDR"];
 $exception = false;
@@ -28,6 +29,7 @@ $exception = false;
 if ( is_admin() ) $exception = true;
 if ( stristr($_SERVER['REQUEST_URI'], '/wp-admin') ) $exception = true;
 if ( stristr($_SERVER['REQUEST_URI'], '/wp-login.php') ) $exception = true;
+if ( in_array( $_SERVER['REQUEST_URI'], $allowed_urls ) ) $exception = true;
 if ( ! empty( $user_logged_in ) && in_array( $user_logged_in, $allowed_users ) ) $exception = true;
 if ( ! empty( $user_ip ) && in_array( $user_ip, $allowed_ips ) ) $exception = true;
 
