@@ -12,7 +12,7 @@
 $protocol = $_SERVER["SERVER_PROTOCOL"];
 
 if ( 'HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol )
-    $protocol = 'HTTP/1.0';    
+	$protocol = 'HTTP/1.0';    
 
 // Return 503 status code?
 $return503 = '{{MS_RETURN_503}}';

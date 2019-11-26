@@ -86,4 +86,3 @@ define( 'MS_DOT_FILE_ACTIVE', ABSPATH . '/.maintenance' );
  * @since    1.1.1
  */
 define( 'MS_THEME_FILENAME', 'maintenance.php' );
-

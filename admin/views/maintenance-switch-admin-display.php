@@ -284,7 +284,7 @@ class Maintenance_Switch_Admin_Display {
 			'<p class="inline-checkbox"><input id="ms_error_503" name="maintenance_switch_settings[ms_error_503]" type="checkbox" value="1" %s></p>',
 			( isset( $this->maintenance_switch_settings['ms_error_503'] ) && $this->maintenance_switch_settings['ms_error_503'] == 1 ) ? 'checked' : ''
 		);
-	  	printf( '<p class="description inline-description">%s</p>', __( 'The maintenance page returns the error code 503 "Service unavailable" (recommanded).', MS_SLUG ) );
+		printf( '<p class="description inline-description">%s</p>', __( 'The maintenance page returns the error code 503 "Service unavailable" (recommanded).', MS_SLUG ) );
 	}
 
 	/**
@@ -300,8 +300,8 @@ class Maintenance_Switch_Admin_Display {
 				'<p class="inline-checkbox"><input id="ms_switch_roles" name="maintenance_switch_settings[ms_switch_roles][]" type="checkbox" value="' . $role_value . '" %s>'.$role_name.'</p>',
 				( isset( $this->maintenance_switch_settings['ms_switch_roles'] ) && in_array( $role_value, (array) $this->maintenance_switch_settings['ms_switch_roles'] ) ) ? 'checked' : ''
 			);
-	  	}
-	  	printf( '<p class="description">%s</p>', __( 'The user roles can access the maintenance button in the adminbar and so switch the maintenance mode.', MS_SLUG ) );
+		}
+		printf( '<p class="description">%s</p>', __( 'The user roles can access the maintenance button in the adminbar and so switch the maintenance mode.', MS_SLUG ) );
 	}
 
 	/**
@@ -317,8 +317,8 @@ class Maintenance_Switch_Admin_Display {
 				'<p class="inline-checkbox"><input id="ms_allowed_roles" name="maintenance_switch_settings[ms_allowed_roles][]" type="checkbox" value="' . $role_value . '" %s>'.$role_name.'</p>',
 				( isset( $this->maintenance_switch_settings['ms_allowed_roles'] ) && in_array( $role_value, (array) $this->maintenance_switch_settings['ms_allowed_roles'] ) ) ? 'checked' : ''
 			);
-	  	}
-	  	printf( '<p class="description">%s</p>', __( 'The user roles can bypass the maintenance mode and see the site like online.', MS_SLUG ) );
+		}
+		printf( '<p class="description">%s</p>', __( 'The user roles can bypass the maintenance mode and see the site like online.', MS_SLUG ) );
 	}
 
 	/**
@@ -383,14 +383,14 @@ class Maintenance_Switch_Admin_Display {
 			( isset( $this->maintenance_switch_settings['ms_use_theme'] ) && $this->maintenance_switch_settings['ms_use_theme'] == 1 && $theme_file_exists ) ? 'checked' : '',
 			$theme_file_exists ? '' : 'disabled'
 		);
-	  	printf( '<p class="description inline-description">%s</p>', __( 'Use a file in your theme to display maintenance page instead of the HTML field above.', MS_SLUG ) );
-	  	print( '<p class="infos messages">' );
+		printf( '<p class="description inline-description">%s</p>', __( 'Use a file in your theme to display maintenance page instead of the HTML field above.', MS_SLUG ) );
+		print( '<p class="infos messages">' );
 		printf( '<input id="ms_preview_theme_file" type="hidden" name="ms_preview_theme_file" value="%s">', $theme_file_url );
 		printf( '<div class="message message-%s"><p><strong>%s</strong>: %s</p></div></p>',
 			$theme_file_exists ? 'success' : 'error',
 			$this->plugin->get_current_theme()->Name,
 			MS_THEME_FILENAME . ' ' . ( $theme_file_exists ? __( 'exists', MS_SLUG ) : __( 'is missing', MS_SLUG ) )
-	  	);
+		);
 	}
 
 
@@ -401,53 +401,53 @@ class Maintenance_Switch_Admin_Display {
 	 */
 	public function do_settings_sections_tabs($page){
 
-	    global $wp_settings_sections, $wp_settings_fields;
+		global $wp_settings_sections, $wp_settings_fields;
 
-	    if(!isset($wp_settings_sections[$page])) :
-	        return;
-	    endif;
+		if(!isset($wp_settings_sections[$page])) :
+			return;
+		endif;
 
-	    echo '<div id="settings-tabs">';
-	    echo '<ul class="nav-tab-wrapper">';
+		echo '<div id="settings-tabs">';
+		echo '<ul class="nav-tab-wrapper">';
 
-	    foreach((array)$wp_settings_sections[$page] as $section) :
+		foreach((array)$wp_settings_sections[$page] as $section) :
 
-	        if(!isset($section['title']))
-	            continue;
+			if(!isset($section['title']))
+				continue;
 
-	        printf('<li class="nav-tab"><a href="#%1$s">%2$s</a></li>',
-	            $section['id'],     /** %1$s - The ID of the tab */
-	            $section['title']   /** %2$s - The Title of the section */
-	        );
+			printf('<li class="nav-tab"><a href="#%1$s">%2$s</a></li>',
+				$section['id'],     /** %1$s - The ID of the tab */
+				$section['title']   /** %2$s - The Title of the section */
+			);
 
-	    endforeach;
+		endforeach;
 
-	    echo '</ul>';
+		echo '</ul>';
 
-	    foreach((array)$wp_settings_sections[$page] as $section) :
+		foreach((array)$wp_settings_sections[$page] as $section) :
 
-	        printf('<div id="%1$s">',
-	            $section['id']      /** %1$s - The ID of the tab */
-	        );
+			printf('<div id="%1$s">',
+				$section['id']      /** %1$s - The ID of the tab */
+			);
 
-	        if(!isset($section['title']))
-	            continue;
+			if(!isset($section['title']))
+				continue;
 
-	        if($section['callback'])
-	            call_user_func($section['callback'], $section);
+			if($section['callback'])
+				call_user_func($section['callback'], $section);
 
-	        if(!isset($wp_settings_fields) || !isset($wp_settings_fields[$page]) || !isset($wp_settings_fields[$page][$section['id']]))
-	            continue;
+			if(!isset($wp_settings_fields) || !isset($wp_settings_fields[$page]) || !isset($wp_settings_fields[$page][$section['id']]))
+				continue;
 
-	        echo '<table class="form-table">';
-	        do_settings_fields($page, $section['id']);
-	        echo '</table>';
+			echo '<table class="form-table">';
+			do_settings_fields($page, $section['id']);
+			echo '</table>';
 
-	        echo '</div>';
+			echo '</div>';
 
-	    endforeach;
+		endforeach;
 
-	    echo '</div>';
+		echo '</div>';
 
 	}
 }

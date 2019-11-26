@@ -12,7 +12,7 @@
 // Displaying this page during the maintenance mode
 $protocol = $_SERVER["SERVER_PROTOCOL"];
 if ( 'HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol )
-    $protocol = 'HTTP/1.0';    
+	$protocol = 'HTTP/1.0';    
 header( 'Content-Type: text/html; charset=utf-8' );
 
 

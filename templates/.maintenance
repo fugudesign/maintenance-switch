@@ -11,12 +11,12 @@
 function MS_user_logged_in() {
 	$loggedin = false;
 	foreach ( (array) $_COOKIE as $cookie => $value ) {
-        if ( stristr($cookie, 'wordpress_logged_in_') ) {
+		if ( stristr($cookie, 'wordpress_logged_in_') ) {
 			$value_parts = explode( '|', $value );
 			$loggedin = $value_parts[0];
-        }
-    }
-    return $loggedin;
+		}
+	}
+	return $loggedin;
 }
 
 $allowed_users = array( {{MS_ALLOWED_USERS}} );

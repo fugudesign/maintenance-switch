@@ -86,5 +86,4 @@ class Maintenance_Switch_Public {
 			echo "<script type='text/javascript'>var ajaxurl = '" . admin_url('admin-ajax.php') . "';</script>";
 		endif;
 	}
-
 }

@@ -837,19 +837,19 @@ class Maintenance_Switch {
 	 */
 	public function get_users_by_role( $roles = array() ) {
 
-	    $users = array();
-	    foreach ($roles as $role) {
-	    	if ( !empty( $role ) ) {
-		        $users_query = new WP_User_Query( array(
-		            'fields' => 'all_with_meta',
-		            'role' => $role,
-		            'orderby' => 'display_name'
-		            ) );
-		        $results = $users_query->get_results();
-		        if ($results) $users = array_merge($users, $results);
-	        }
-	    }
-	    return $users;
+		$users = array();
+		foreach ($roles as $role) {
+			if ( !empty( $role ) ) {
+				$users_query = new WP_User_Query( array(
+					'fields' => 'all_with_meta',
+					'role' => $role,
+					'orderby' => 'display_name'
+					) );
+				$results = $users_query->get_results();
+				if ($results) $users = array_merge($users, $results);
+			}
+		}
+		return $users;
 	}
 
 	/**
