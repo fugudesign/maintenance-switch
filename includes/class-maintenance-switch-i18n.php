@@ -47,7 +47,6 @@ class Maintenance_Switch_i18n {
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
-
 	}
 
 	/**
@@ -59,5 +58,4 @@ class Maintenance_Switch_i18n {
 	public function set_domain( $domain ) {
 		$this->domain = $domain;
 	}
-
 }

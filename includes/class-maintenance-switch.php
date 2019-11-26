@@ -816,6 +816,19 @@ class Maintenance_Switch {
 	}
 
 	/**
+	 * Get the urls from ms_allowed_urls setting
+	 *
+	 * @since    1.5.3    Add support for allowed URLs
+	 * @return   string    List of all urls comma separated
+	 */
+	public function get_allowed_urls() {
+
+		$allowed_urls = $this->get_setting( 'ms_allowed_urls' );
+		$allowed_urls = explode( ',', $allowed_urls );
+		return $allowed_urls;
+	}
+
+	/**
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since    1.0.0
@@ -824,19 +837,19 @@ class Maintenance_Switch {
 	 */
 	public function get_users_by_role( $roles = array() ) {
 
-	    $users = array();
-	    foreach ($roles as $role) {
-	    	if ( !empty( $role ) ) {
-		        $users_query = new WP_User_Query( array(
-		            'fields' => 'all_with_meta',
-		            'role' => $role,
-		            'orderby' => 'display_name'
-		            ) );
-		        $results = $users_query->get_results();
-		        if ($results) $users = array_merge($users, $results);
-	        }
-	    }
-	    return $users;
+		$users = array();
+		foreach ($roles as $role) {
+			if ( !empty( $role ) ) {
+				$users_query = new WP_User_Query( array(
+					'fields' => 'all_with_meta',
+					'role' => $role,
+					'orderby' => 'display_name'
+					) );
+				$results = $users_query->get_results();
+				if ($results) $users = array_merge($users, $results);
+			}
+		}
+		return $users;
 	}
 
 	/**
@@ -959,6 +972,7 @@ class Maintenance_Switch {
 	 * Generate the .maintenance file and copy it to the wp-content dir
 	 *
 	 * @since    1.0.0
+	 * @since    1.5.3    Added support for allowed URLs
 	 */
 	public function create_dot_file() {
 
@@ -968,11 +982,13 @@ class Maintenance_Switch {
 		// get flags values
 		$allowed_users = "'" . implode( "', '", $this->get_allowed_users() ) . "'";
 		$allowed_ips = "'" . implode( "','", $this->get_allowed_ips() ) . "'";
+		$allowed_urls = "'" . implode( "','", $this->get_allowed_urls() ) . "'";
 		$login_url = str_replace( get_site_url(), '', wp_login_url() );
 
 		// apply flags replacements
 		$content = str_replace( '{{MS_ALLOWED_USERS}}' , $allowed_users, $content );
 		$content = str_replace( '{{MS_ALLOWED_IPS}}' , $allowed_ips, $content );
+		$content = str_replace( '{{MS_ALLOWED_URLS}}' , $allowed_urls, $content );
 		$content = str_replace( '{{MS_PLUGIN_SLUG}}' , $this->plugin_name, $content );
 		$content = str_replace( '{{MS_LOGIN_URL}}' , $login_url, $content );
 

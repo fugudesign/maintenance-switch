@@ -112,6 +112,8 @@ class Maintenance_Switch_Admin_Display {
 	 * WP Settings API
 	 *
 	 * @since    1.3.0
+	 * @since    1.5.3    Add setting field for allowed URLs
+	 * 
 	 */
 	public function maintenance_switch_page_init() {
 
@@ -175,6 +177,14 @@ class Maintenance_Switch_Admin_Display {
 			'maintenance_switch_permissions_section' // section
 		);
 
+		add_settings_field(
+			'ms_allowed_urls', // id
+			'', // title
+			array( $this, 'ms_allowed_urls_display' ), // callback
+			'maintenance-switch', // page
+			'maintenance_switch_permissions_section' // section
+		);
+
 		add_settings_section(
 			'maintenance_switch_core_section', // id
 			__( 'Behavior', MS_SLUG ), // title
@@ -197,6 +207,7 @@ class Maintenance_Switch_Admin_Display {
 	 * WP Settings API
 	 *
 	 * @since    1.3.0
+	 * @since    1.5.3    Add sanitization for allowed URLs setting 
 	 */
 	public function maintenance_switch_sanitize($input) {
 		$sanitary_values = array();
@@ -211,6 +222,10 @@ class Maintenance_Switch_Admin_Display {
 
 		if ( isset( $input['ms_allowed_ips'] ) ) {
 			$sanitary_values['ms_allowed_ips'] = sanitize_text_field( str_replace( ' ', '', $input['ms_allowed_ips'] ) );
+		}
+
+		if ( isset( $input['ms_allowed_urls'] ) ) {
+			$sanitary_values['ms_allowed_urls'] = sanitize_text_field( str_replace( ' ', '', $input['ms_allowed_urls'] ) );
 		}
 
 		if ( isset( $input['ms_error_503'] ) ) {
@@ -269,7 +284,7 @@ class Maintenance_Switch_Admin_Display {
 			'<p class="inline-checkbox"><input id="ms_error_503" name="maintenance_switch_settings[ms_error_503]" type="checkbox" value="1" %s></p>',
 			( isset( $this->maintenance_switch_settings['ms_error_503'] ) && $this->maintenance_switch_settings['ms_error_503'] == 1 ) ? 'checked' : ''
 		);
-	  	printf( '<p class="description inline-description">%s</p>', __( 'The maintenance page returns the error code 503 "Service unavailable" (recommanded).', MS_SLUG ) );
+		printf( '<p class="description inline-description">%s</p>', __( 'The maintenance page returns the error code 503 "Service unavailable" (recommanded).', MS_SLUG ) );
 	}
 
 	/**
@@ -285,8 +300,8 @@ class Maintenance_Switch_Admin_Display {
 				'<p class="inline-checkbox"><input id="ms_switch_roles" name="maintenance_switch_settings[ms_switch_roles][]" type="checkbox" value="' . $role_value . '" %s>'.$role_name.'</p>',
 				( isset( $this->maintenance_switch_settings['ms_switch_roles'] ) && in_array( $role_value, (array) $this->maintenance_switch_settings['ms_switch_roles'] ) ) ? 'checked' : ''
 			);
-	  	}
-	  	printf( '<p class="description">%s</p>', __( 'The user roles can access the maintenance button in the adminbar and so switch the maintenance mode.', MS_SLUG ) );
+		}
+		printf( '<p class="description">%s</p>', __( 'The user roles can access the maintenance button in the adminbar and so switch the maintenance mode.', MS_SLUG ) );
 	}
 
 	/**
@@ -302,8 +317,8 @@ class Maintenance_Switch_Admin_Display {
 				'<p class="inline-checkbox"><input id="ms_allowed_roles" name="maintenance_switch_settings[ms_allowed_roles][]" type="checkbox" value="' . $role_value . '" %s>'.$role_name.'</p>',
 				( isset( $this->maintenance_switch_settings['ms_allowed_roles'] ) && in_array( $role_value, (array) $this->maintenance_switch_settings['ms_allowed_roles'] ) ) ? 'checked' : ''
 			);
-	  	}
-	  	printf( '<p class="description">%s</p>', __( 'The user roles can bypass the maintenance mode and see the site like online.', MS_SLUG ) );
+		}
+		printf( '<p class="description">%s</p>', __( 'The user roles can bypass the maintenance mode and see the site like online.', MS_SLUG ) );
 	}
 
 	/**
@@ -320,6 +335,21 @@ class Maintenance_Switch_Admin_Display {
 			__( 'Add my IP', MS_SLUG )
 		);
 		printf( '<p class="description">%s</p>', __( 'The IP list can bypass the maintenance mode and see the site like online, comma separated.', MS_SLUG ) );
+	}
+
+	/**
+	 * Display ms_allowed_urls field
+	 * WP Settings API
+	 *
+	 * @since    1.5.3    Add interface for allowed URLs setting
+	 */
+	public function ms_allowed_urls_display() {
+		printf(
+			'<input id="ms_allowed_urls" name="maintenance_switch_settings[ms_allowed_urls]" size="60" value="%s">',
+			isset( $this->maintenance_switch_settings['ms_allowed_urls'] ) ? $this->maintenance_switch_settings['ms_allowed_urls'] : ''
+		);
+		printf( '<p class="description">%s</p>', __( 'List of URLs allowed to be visited when in maintenance mode, comma separated.<br>
+				Wordpress default login URLs (<strong>/wp-admin</strong>, <strong>/wp-login.php</strong>) are permanently allowed.', MS_SLUG ) );
 	}
 
 	/**
@@ -353,14 +383,14 @@ class Maintenance_Switch_Admin_Display {
 			( isset( $this->maintenance_switch_settings['ms_use_theme'] ) && $this->maintenance_switch_settings['ms_use_theme'] == 1 && $theme_file_exists ) ? 'checked' : '',
 			$theme_file_exists ? '' : 'disabled'
 		);
-	  	printf( '<p class="description inline-description">%s</p>', __( 'Use a file in your theme to display maintenance page instead of the HTML field above.', MS_SLUG ) );
-	  	print( '<p class="infos messages">' );
+		printf( '<p class="description inline-description">%s</p>', __( 'Use a file in your theme to display maintenance page instead of the HTML field above.', MS_SLUG ) );
+		print( '<p class="infos messages">' );
 		printf( '<input id="ms_preview_theme_file" type="hidden" name="ms_preview_theme_file" value="%s">', $theme_file_url );
 		printf( '<div class="message message-%s"><p><strong>%s</strong>: %s</p></div></p>',
 			$theme_file_exists ? 'success' : 'error',
 			$this->plugin->get_current_theme()->Name,
 			MS_THEME_FILENAME . ' ' . ( $theme_file_exists ? __( 'exists', MS_SLUG ) : __( 'is missing', MS_SLUG ) )
-	  	);
+		);
 	}
 
 
@@ -371,53 +401,53 @@ class Maintenance_Switch_Admin_Display {
 	 */
 	public function do_settings_sections_tabs($page){
 
-	    global $wp_settings_sections, $wp_settings_fields;
+		global $wp_settings_sections, $wp_settings_fields;
 
-	    if(!isset($wp_settings_sections[$page])) :
-	        return;
-	    endif;
+		if(!isset($wp_settings_sections[$page])) :
+			return;
+		endif;
 
-	    echo '<div id="settings-tabs">';
-	    echo '<ul class="nav-tab-wrapper">';
+		echo '<div id="settings-tabs">';
+		echo '<ul class="nav-tab-wrapper">';
 
-	    foreach((array)$wp_settings_sections[$page] as $section) :
+		foreach((array)$wp_settings_sections[$page] as $section) :
 
-	        if(!isset($section['title']))
-	            continue;
+			if(!isset($section['title']))
+				continue;
 
-	        printf('<li class="nav-tab"><a href="#%1$s">%2$s</a></li>',
-	            $section['id'],     /** %1$s - The ID of the tab */
-	            $section['title']   /** %2$s - The Title of the section */
-	        );
+			printf('<li class="nav-tab"><a href="#%1$s">%2$s</a></li>',
+				$section['id'],     /** %1$s - The ID of the tab */
+				$section['title']   /** %2$s - The Title of the section */
+			);
 
-	    endforeach;
+		endforeach;
 
-	    echo '</ul>';
+		echo '</ul>';
 
-	    foreach((array)$wp_settings_sections[$page] as $section) :
+		foreach((array)$wp_settings_sections[$page] as $section) :
 
-	        printf('<div id="%1$s">',
-	            $section['id']      /** %1$s - The ID of the tab */
-	        );
+			printf('<div id="%1$s">',
+				$section['id']      /** %1$s - The ID of the tab */
+			);
 
-	        if(!isset($section['title']))
-	            continue;
+			if(!isset($section['title']))
+				continue;
 
-	        if($section['callback'])
-	            call_user_func($section['callback'], $section);
+			if($section['callback'])
+				call_user_func($section['callback'], $section);
 
-	        if(!isset($wp_settings_fields) || !isset($wp_settings_fields[$page]) || !isset($wp_settings_fields[$page][$section['id']]))
-	            continue;
+			if(!isset($wp_settings_fields) || !isset($wp_settings_fields[$page]) || !isset($wp_settings_fields[$page][$section['id']]))
+				continue;
 
-	        echo '<table class="form-table">';
-	        do_settings_fields($page, $section['id']);
-	        echo '</table>';
+			echo '<table class="form-table">';
+			do_settings_fields($page, $section['id']);
+			echo '</table>';
 
-	        echo '</div>';
+			echo '</div>';
 
-	    endforeach;
+		endforeach;
 
-	    echo '</div>';
+		echo '</div>';
 
 	}
 }

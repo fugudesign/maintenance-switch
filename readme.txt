@@ -108,6 +108,9 @@ Yes, use the settings page to enable the theme file support.
 
 == Changelog ==
 
+= 1.5.3 =
+* Add option for urls allowed to be visited when in maintenace mode 
+
 = 1.5.2 =
 * Fix the preview page bug with code editor
 
