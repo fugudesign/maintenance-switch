@@ -3,8 +3,9 @@ Contributors: fugudesign
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JYBDJCKL3FCE8
 Tags: maintenance, maintenance mode, maintenance page, maintenance button, coming soon, coming soon page, mode, wordpress maintenance mode, site maintenance, offline, site offline, unavailable, switch, administration, construction, under construction, offline, fugu
 Requires at least: 3.5
-Tested up to: 4.9
-Stable tag: 1.5.2
+Tested up to: 6.3
+Stable tag: 1.6.0
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +108,13 @@ Yes, use the settings page to enable the theme file support.
 4. The "Behavior" tab of the settings page allow you to change the http error code returned by the maintenance page.
 
 == Changelog ==
+
+= 1.6.0 =
+* WordPress 6.3 compatibility tested
+* PHP 8.1 compatibility improvements
+* Replace deprecated wp_specialchars_decode() with htmlspecialchars_decode()
+* Fix fatal error with function redeclaration in .maintenance template
+* Modernize plugin for current WordPress standards
 
 = 1.5.2 =
 * Fix the preview page bug with code editor

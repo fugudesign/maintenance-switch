@@ -932,7 +932,7 @@ class Maintenance_Switch {
 		$content = file_get_contents( MS_PHP_FILE_TEMPLATE );
 
 		// get flags values
-		$page_html = wp_specialchars_decode( $this->get_setting( 'ms_page_html' ), ENT_QUOTES );
+		$page_html = htmlspecialchars_decode( $this->get_setting( 'ms_page_html' ), ENT_QUOTES );
 		$use_theme_file = $this->get_setting( 'ms_use_theme' );
 		$return503 = $this->get_setting( 'ms_error_503' );
 		$theme = wp_get_theme();
