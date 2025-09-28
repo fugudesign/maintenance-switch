@@ -8,6 +8,11 @@
  * @copyright 2015 Fugu
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 // Displaying this page during the maintenance mode
 $protocol = $_SERVER["SERVER_PROTOCOL"];
 

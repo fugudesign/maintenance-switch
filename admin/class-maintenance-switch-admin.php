@@ -10,6 +10,11 @@
  * @subpackage Maintenance_Switch/admin
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -20,8 +25,7 @@
  * @subpackage Maintenance_Switch/admin
  * @author     Fugu <info@fugu.fr>
  */
-class Maintenance_Switch_Admin
-{
+class Maintenance_Switch_Admin {
 
     /**
      * The Instance of the main plugin class.
@@ -57,8 +61,7 @@ class Maintenance_Switch_Admin
      * @param      string    $plugin_name       The name of this plugin.
      * @param      string    $version    The version of this plugin.
      */
-    public function __construct(&$plugin)
-    {
+    public function __construct( &$plugin ) {
         $this->plugin = $plugin;
         $this->plugin_name = $plugin->get_plugin_name();
         $this->version = $plugin->get_version();
@@ -69,8 +72,7 @@ class Maintenance_Switch_Admin
      *
      * @since    1.3.0
      */
-    public function get_plugin_name()
-    {
+    public function get_plugin_name() {
         return $this->plugin_name;
     }
 
@@ -79,8 +81,7 @@ class Maintenance_Switch_Admin
      *
      * @since    1.3.0
      */
-    public function get_version()
-    {
+    public function get_version() {
         return $this->version;
     }
 
@@ -89,12 +90,11 @@ class Maintenance_Switch_Admin
      *
      * @since    1.0.0
      */
-    public function enqueue_styles()
-    {
+    public function enqueue_styles() {
         if ($this->isSettingsPage()) {
-            wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/maintenance-switch-admin.css', array(), $this->version, 'all');
+            wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/maintenance-switch-admin.css', array(), $this->version, 'all' );
         }
-        wp_enqueue_style($this->plugin_name . '-button', plugin_dir_url(dirname(__FILE__)) . 'assets/css/maintenance-switch-button.css', array(), $this->version, 'all');
+        wp_enqueue_style( $this->plugin_name . '-button', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/maintenance-switch-button.css', array(), $this->version, 'all' );
     }
 
     /**
@@ -102,33 +102,35 @@ class Maintenance_Switch_Admin
      *
      * @since    1.0.0
      */
-    public function enqueue_scripts()
-    {
+    public function enqueue_scripts() {
         if ($this->isSettingsPage()) {
-            wp_enqueue_script('jquery-ui-tabs');
-            wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/maintenance-switch-admin.js', array('jquery'), $this->version, false);
-            wp_enqueue_code_editor(['file' => $this->plugin_name . '.php']);
+            wp_enqueue_script( 'jquery-ui-tabs' );
+            wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/maintenance-switch-admin.js', array( 'jquery' ), $this->version, false );
+            wp_enqueue_code_editor( ['file' => $this->plugin_name.'.php'] );
         }
-        wp_enqueue_script($this->plugin_name . '-button', plugin_dir_url(dirname(__FILE__)) . 'assets/js/maintenance-switch-button.js', array('jquery'), $this->version, false);
+        wp_enqueue_script( $this->plugin_name . '-button', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/maintenance-switch-button.js', array( 'jquery' ), time(), false );
     }
-
+    
     /**
-     * Add inline script with AJAX variables for security
+     * Add inline script with AJAX variables
      * 
      * @since 1.6.0
      */
-    public function add_ajax_script_variables()
-    {
+    public function add_ajax_script_variables() {
         // Only add if our script is enqueued
         if (wp_script_is($this->plugin_name . '-button', 'enqueued')) {
             $nonce = wp_create_nonce('maintenance_switch_toggle');
             $ajax_url = admin_url('admin-ajax.php');
             echo '<script type="text/javascript">
+                console.log("DEBUG: Injecting maintenance_switch_ajax variables");
                 var maintenance_switch_ajax = {
                     "ajax_url": "' . esc_js($ajax_url) . '",
                     "nonce": "' . esc_js($nonce) . '"
                 };
+                console.log("DEBUG: maintenance_switch_ajax =", maintenance_switch_ajax);
             </script>';
+        } else {
+            echo '<script type="text/javascript">console.log("DEBUG: Script not enqueued: ' . $this->plugin_name . '-button");</script>';
         }
     }
 
@@ -137,20 +139,19 @@ class Maintenance_Switch_Admin
      *
      * @since    1.0.0
      */
-    public function add_plugin_admin_menu()
-    {
+    public function add_plugin_admin_menu() {
 
         // Get the view
-        include_once('views/maintenance-switch-admin-display.php');
-        $view = new Maintenance_Switch_Admin_Display($this->plugin);
+        include_once( 'views/maintenance-switch-admin-display.php' );
+        $view = new Maintenance_Switch_Admin_Display( $this->plugin );
 
         // Adds option page in admin settings
         add_options_page(
-            __('Maintenance Switch', $this->plugin_name),
-            __('Maintenance Switch', $this->plugin_name),
+            __( 'Maintenance Switch', $this->plugin_name ),
+            __( 'Maintenance Switch', $this->plugin_name ),
             'manage_options',
             $this->plugin_name,
-            array($view, 'maintenance_switch_create_admin_page')
+            array( $view, 'maintenance_switch_create_admin_page' )
         );
     }
 
@@ -159,12 +160,11 @@ class Maintenance_Switch_Admin
      *
      * @since    1.0.0
      */
-    public function add_action_links($links)
-    {
+    public function add_action_links( $links ) {
 
         return array_merge(
             array(
-                'settings' => '<a href="' . admin_url('options-general.php?page=' . $this->plugin_name) . '">' . __('Settings', $this->plugin_name) . '</a>'
+                'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_name ) . '">' . __( 'Settings', $this->plugin_name ) . '</a>'
             ),
             $links
         );
@@ -177,8 +177,7 @@ class Maintenance_Switch_Admin
      *
      * @return bool
      */
-    public function isSettingsPage()
-    {
+    public function isSettingsPage() {
         return get_current_screen()->base == 'settings_page_maintenance-switch';
     }
 }

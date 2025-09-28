@@ -13,6 +13,11 @@
  * @subpackage Maintenance_Switch/includes
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 /**
  * Define the internationalization functionality.
  *
