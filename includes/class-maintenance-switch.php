@@ -196,7 +196,7 @@ class Maintenance_Switch
 
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
-		
+
 		// Add AJAX variables to admin footer
 		$this->loader->add_action('admin_footer', $plugin_admin, 'add_ajax_script_variables');
 

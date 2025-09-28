@@ -77,7 +77,7 @@ class Maintenance_Switch_Public
 	{
 		if (is_admin_bar_showing()):
 			wp_enqueue_script($this->plugin_name . '-button', plugin_dir_url(dirname(__FILE__)) . 'assets/js/maintenance-switch-button.js', array('jquery'), $this->version, false);
-			
+
 			// Localize script with nonce
 			wp_localize_script($this->plugin_name . '-button', 'maintenance_switch_ajax', array(
 				'nonce' => wp_create_nonce('maintenance_switch_toggle')
