@@ -6,13 +6,7 @@ jQuery(document).ready(function () {
   jQuery("#wp-admin-bar-ms-switch-button a").on("click", function (e) {
     e.preventDefault();
 
-    // Debug: Check if maintenance_switch_ajax is available
-    console.log(
-      "maintenance_switch_ajax:",
-      typeof maintenance_switch_ajax !== "undefined"
-        ? maintenance_switch_ajax
-        : "UNDEFINED"
-    );
+    // Check if maintenance_switch_ajax is available
 
     // Check if the variable exists
     if (typeof maintenance_switch_ajax === "undefined") {
@@ -31,18 +25,15 @@ jQuery(document).ready(function () {
       nonce: maintenance_switch_ajax.nonce,
     };
 
-    console.log("Sending AJAX data:", data);
     // toggle icon for spinner
     jQuery(elt).find(".ab-icon").removeClass(iconBase).addClass(iconUpdate);
     //ajax request - using POST for security
     jQuery
       .post(maintenance_switch_ajax.ajax_url, data, function (response) {
-        console.log("AJAX Response:", response);
         // toggle icon for no spinner
         jQuery(elt).find(".ab-icon").removeClass(iconUpdate).addClass(iconBase);
         // if success toggle button class
         if (response.success) {
-          console.log("Success! New status:", response.status);
           switch (response.status) {
             case 1:
               elt.addClass("active");
