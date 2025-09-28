@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Displaying this page during the maintenance mode
-$protocol = $_SERVER["SERVER_PROTOCOL"];
+$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? sanitize_text_field($_SERVER['SERVER_PROTOCOL']) : 'HTTP/1.0';
 
 if ('HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol)
 	$protocol = 'HTTP/1.0';
@@ -33,7 +33,7 @@ header('Content-Type: text/html; charset=utf-8');
 $theme_file = '{{MS_THEME_FILE}}';
 $use_theme = '{{MS_USE_THEME_FILE}}';
 
-if ($use_theme == '1' && file_exists($theme_file)) {
+if ($use_theme == '1' && !empty($theme_file) && file_exists($theme_file) && strpos(realpath($theme_file), ABSPATH) === 0) {
 	require_once $theme_file;
 	die();
 }

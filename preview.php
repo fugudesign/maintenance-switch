@@ -12,7 +12,7 @@ if ( ! current_user_can( 'manage_options' ) ) {
 
 // Security check: verify nonce
 if ( ! empty( $_POST['preview-code'] ) ) {
-	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'maintenance_switch_preview' ) ) {
+	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field($_POST['_wpnonce']), 'maintenance_switch_preview' ) ) {
 		wp_die( __( 'Security check failed.' ) );
 	}
 }
@@ -32,7 +32,6 @@ if ('HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol)
     $protocol = 'HTTP/1.0';
 header('Content-Type: text/html; charset=utf-8');
 
-
 if (!empty($_POST['preview-code'])) {
-    echo wp_kses_post(wp_unslash($_POST['preview-code']));
+    echo wp_kses_post(wp_unslash(sanitize_textarea_field($_POST['preview-code'])));
 }

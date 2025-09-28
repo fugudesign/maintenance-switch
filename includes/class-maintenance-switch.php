@@ -857,7 +857,7 @@ class Maintenance_Switch {
 		if ( function_exists( 'apache_request_headers' ) ) {
 			$headers = apache_request_headers();
 		} else {
-			$headers = $_SERVER;
+			$headers = array_map('sanitize_text_field', $_SERVER);
 		}
 		// Get the forwarded IP if it exists
 		if ( array_key_exists( 'X-Forwarded-For', $headers ) && filter_var( $headers['X-Forwarded-For'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) ) {
@@ -865,7 +865,7 @@ class Maintenance_Switch {
 		} elseif ( array_key_exists( 'HTTP_X_FORWARDED_FOR', $headers ) && filter_var( $headers['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) ) {
 			$the_ip = $headers['HTTP_X_FORWARDED_FOR'];
 		} else {
-			$the_ip = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 );
+			$the_ip = filter_var( sanitize_text_field($_SERVER['REMOTE_ADDR']), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 );
 		}
 		return $the_ip;
 	}
