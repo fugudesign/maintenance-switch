@@ -26,7 +26,7 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
 	die;
 }
 
@@ -34,25 +34,26 @@ if ( ! defined( 'WPINC' ) ) {
  * Path of the maintenance.php file.
  * @since    1.0.0
  */
-define( 'MS_SLUG', 'maintenance-switch' );
+define('MS_SLUG', 'maintenance-switch');
 
 /**
  * Path of the maintenance.php file.
  * @since    1.3.6
  */
-define( 'PLUGIN_VERSION', '1.6.0' );
+define('PLUGIN_VERSION', '1.6.0');
 
 /**
  * The config file
  */
-require_once plugin_dir_path( __FILE__ ) . 'includes/config.php';
+require_once plugin_dir_path(__FILE__) . 'includes/config.php';
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-maintenance-switch-activator.php
  */
-function activate_maintenance_switch() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-maintenance-switch-activator.php';
+function activate_maintenance_switch()
+{
+	require_once plugin_dir_path(__FILE__) . 'includes/class-maintenance-switch-activator.php';
 	Maintenance_Switch_Activator::activate();
 }
 
@@ -60,19 +61,20 @@ function activate_maintenance_switch() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-maintenance-switch-deactivator.php
  */
-function deactivate_maintenance_switch() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-maintenance-switch-deactivator.php';
+function deactivate_maintenance_switch()
+{
+	require_once plugin_dir_path(__FILE__) . 'includes/class-maintenance-switch-deactivator.php';
 	Maintenance_Switch_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_maintenance_switch' );
-register_deactivation_hook( __FILE__, 'deactivate_maintenance_switch' );
+register_activation_hook(__FILE__, 'activate_maintenance_switch');
+register_deactivation_hook(__FILE__, 'deactivate_maintenance_switch');
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-maintenance-switch.php';
+require plugin_dir_path(__FILE__) . 'includes/class-maintenance-switch.php';
 
 /**
  * Begins execution of the plugin.
@@ -83,7 +85,8 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-maintenance-switch.php';
  *
  * @since    1.0.0
  */
-function run_maintenance_switch() {
+function run_maintenance_switch()
+{
 
 	$plugin = new Maintenance_Switch();
 	$plugin->run();

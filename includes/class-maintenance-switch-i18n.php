@@ -24,7 +24,8 @@
  * @subpackage Maintenance_Switch/includes
  * @author     Fugu <info@fugu.fr>
  */
-class Maintenance_Switch_i18n {
+class Maintenance_Switch_i18n
+{
 
 	/**
 	 * The domain specified for this plugin.
@@ -40,12 +41,13 @@ class Maintenance_Switch_i18n {
 	 *
 	 * @since    1.0.0
 	 */
-	public function load_plugin_textdomain() {
+	public function load_plugin_textdomain()
+	{
 
 		load_plugin_textdomain(
 			$this->domain,
 			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+			dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
 		);
 
 	}
@@ -56,7 +58,8 @@ class Maintenance_Switch_i18n {
 	 * @since    1.0.0
 	 * @param    string    $domain    The domain that represents the locale of this plugin.
 	 */
-	public function set_domain( $domain ) {
+	public function set_domain($domain)
+	{
 		$this->domain = $domain;
 	}
 

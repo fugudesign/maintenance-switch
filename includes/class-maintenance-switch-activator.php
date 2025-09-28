@@ -20,7 +20,8 @@
  * @subpackage Maintenance_Switch/includes
  * @author     Fugu <info@fugu.fr>
  */
-class Maintenance_Switch_Activator {
+class Maintenance_Switch_Activator
+{
 
 	/**
 	 * Short Description. (use period)
@@ -29,14 +30,15 @@ class Maintenance_Switch_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
-		
+	public static function activate()
+	{
+
 		// Get the main controller
 		$plugin = new Maintenance_Switch();
-		
+
 		$plugin->init_settings();
 		$plugin->sync_status();
-		
+
 	}
 
 }

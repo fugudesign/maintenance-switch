@@ -20,7 +20,8 @@
  * @subpackage Maintenance_Switch/public
  * @author     Fugu <info@fugu.fr>
  */
-class Maintenance_Switch_Public {
+class Maintenance_Switch_Public
+{
 
 	/**
 	 * The ID of this plugin.
@@ -47,7 +48,8 @@ class Maintenance_Switch_Public {
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct($plugin_name, $version)
+	{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
@@ -59,9 +61,10 @@ class Maintenance_Switch_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
-		if ( is_admin_bar_showing() ) :
-			wp_enqueue_style( $this->plugin_name . '-button', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/maintenance-switch-button.css', array(), $this->version, 'all' );
+	public function enqueue_styles()
+	{
+		if (is_admin_bar_showing()):
+			wp_enqueue_style($this->plugin_name . '-button', plugin_dir_url(dirname(__FILE__)) . 'assets/css/maintenance-switch-button.css', array(), $this->version, 'all');
 		endif;
 	}
 
@@ -70,19 +73,21 @@ class Maintenance_Switch_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
-		if ( is_admin_bar_showing() ) :
-			wp_enqueue_script( $this->plugin_name . '-button', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/maintenance-switch-button.js', array( 'jquery' ), $this->version, false );
+	public function enqueue_scripts()
+	{
+		if (is_admin_bar_showing()):
+			wp_enqueue_script($this->plugin_name . '-button', plugin_dir_url(dirname(__FILE__)) . 'assets/js/maintenance-switch-button.js', array('jquery'), $this->version, false);
 		endif;
 	}
-	
+
 	/**
 	 * Init the ajaxurl javascript var from the frontend if adminbar is active
 	 *
 	 * @since    1.0.0
 	 */
-	public function set_ajaxurl() {
-		if ( is_admin_bar_showing() ) :
+	public function set_ajaxurl()
+	{
+		if (is_admin_bar_showing()):
 			echo "<script type='text/javascript'>var ajaxurl = '" . admin_url('admin-ajax.php') . "';</script>";
 		endif;
 	}

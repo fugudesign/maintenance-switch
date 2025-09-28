@@ -34,5 +34,3 @@ if ( ! empty( $user_logged_in ) && in_array( $user_logged_in, $allowed_users ) )
 if ( ! empty( $user_ip ) && in_array( $user_ip, $allowed_ips ) ) $exception = true;
 
 if ( ! $exception ) $upgrading = time();
-
-?>

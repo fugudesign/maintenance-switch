@@ -20,7 +20,8 @@
  * @subpackage Maintenance_Switch/includes
  * @author     Fugu <info@fugu.fr>
  */
-class Maintenance_Switch_Deactivator {
+class Maintenance_Switch_Deactivator
+{
 
 	/**
 	 * Short Description. (use period)
@@ -29,13 +30,14 @@ class Maintenance_Switch_Deactivator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function deactivate() {
-		
+	public static function deactivate()
+	{
+
 		$plugin = new Maintenance_Switch();
-		
-		$plugin->_delete_file( MS_PHP_FILE_ACTIVE );
-		$plugin->_delete_file( MS_DOT_FILE_ACTIVE );
-		
+
+		$plugin->_delete_file(MS_PHP_FILE_ACTIVE);
+		$plugin->_delete_file(MS_DOT_FILE_ACTIVE);
+
 	}
 
 }
