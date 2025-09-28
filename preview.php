@@ -5,6 +5,18 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Security check: only allow admin users
+if ( ! current_user_can( 'manage_options' ) ) {
+	wp_die( __( 'Insufficient permissions to access this page.' ) );
+}
+
+// Security check: verify nonce
+if ( ! empty( $_POST['preview-code'] ) ) {
+	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'maintenance_switch_preview' ) ) {
+		wp_die( __( 'Security check failed.' ) );
+	}
+}
+
 /**
  * Maintenance Switch
  *

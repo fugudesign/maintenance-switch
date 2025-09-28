@@ -88,31 +88,33 @@ class Maintenance_Switch_Admin_Display
 
 			<h2><?php _e('Default settings', MS_SLUG); ?></h2>
 
-			<form id="restore-settings-form" action="<?php echo $plugin_settings_url; ?>" method="POST" class="inline-form">
+			<form id="restore-settings-form" action="<?php echo esc_url($plugin_settings_url); ?>" method="POST" class="inline-form">
 				<input type="hidden" name="action" value="restore_settings" />
 				<?php submit_button(__('Restore all settings', MS_SLUG), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to retore all the default settings?', MS_SLUG))); ?>
 			</form>
 
-			<form id="restore-html-form" action="<?php echo $plugin_settings_url; ?>" method="POST" class="inline-form">
+			<form id="restore-html-form" action="<?php echo esc_url($plugin_settings_url); ?>" method="POST" class="inline-form">
 				<input type="hidden" name="action" value="restore_html" />
 				<?php submit_button(__('Restore page HTML', MS_SLUG), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to retore the default HTML code?', MS_SLUG))); ?>
 			</form>
 
 			<?php if (!$this->plugin->theme_file_exists()): ?>
-				<form id="create-theme-file" action="<?php echo $plugin_settings_url; ?>" method="POST" class="inline-form">
+				<form id="create-theme-file" action="<?php echo esc_url($plugin_settings_url); ?>" method="POST" class="inline-form">
 					<input type="hidden" name="action" value="create_theme_file" />
 					<?php submit_button(__('Create file in the theme', MS_SLUG), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to create the file in your theme?', MS_SLUG))); ?>
 				</form>
 			<?php else: ?>
-				<form id="delete-theme-file" action="<?php echo $plugin_settings_url; ?>" method="POST" class="inline-form">
+				<form id="delete-theme-file" action="<?php echo esc_url($plugin_settings_url); ?>" method="POST" class="inline-form">
 					<input type="hidden" name="action" value="delete_theme_file" />
 					<?php submit_button(__('Delete file in the theme', MS_SLUG), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to delete the file in your theme?', MS_SLUG))); ?>
 				</form>
 			<?php endif; ?>
 
 			<form id="preview-form"
-				data-default-action="<?php echo plugins_url('preview.php', dirname(dirname(__FILE__))); ?>" method="POST"
-				target="ms-preview"></form>
+				data-default-action="<?php echo esc_url(plugins_url('preview.php', dirname(dirname(__FILE__)))); ?>" method="POST"
+				target="ms-preview">
+				<?php wp_nonce_field('maintenance_switch_preview'); ?>
+			</form>
 
 		</div>
 	<?php }
