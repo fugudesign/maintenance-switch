@@ -46,17 +46,17 @@
         form.attr("action", url).submit();
       } else {
         var html = $("#ms_page_html").val();
-        form
-          .attr("action", form.data("default-action"))
-          .html(
-            $("<input/>").attr({
-              type: "hidden",
-              id: "preview-code",
-              name: "preview-code",
-              value: html,
-            })
-          )
-          .submit();
+        // Clear only the preview-code input if it exists, preserve nonce
+        form.find("input[name='preview-code']").remove();
+        form.append(
+          $("<input/>").attr({
+            type: "hidden",
+            id: "preview-code",
+            name: "preview-code",
+            value: html,
+          })
+        );
+        form.attr("action", form.data("default-action")).submit();
       }
     });
 
