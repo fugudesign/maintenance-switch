@@ -1,7 +1,7 @@
 === Maintenance Switch ===
 Contributors: fugudesign
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JYBDJCKL3FCE8
-Tags: maintenance, maintenance mode, maintenance page, maintenance button, coming soon, coming soon page, mode, wordpress maintenance mode, site maintenance, offline, site offline, unavailable, switch, administration, construction, under construction, offline, fugu
+Tags: maintenance, coming soon, offline, switch, construction
 Requires at least: 3.5
 Tested up to: 6.3
 Stable tag: 1.6.0
