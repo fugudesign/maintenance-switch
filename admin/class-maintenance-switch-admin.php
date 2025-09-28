@@ -111,6 +111,25 @@ class Maintenance_Switch_Admin
         }
         wp_enqueue_script($this->plugin_name . '-button', plugin_dir_url(dirname(__FILE__)) . 'assets/js/maintenance-switch-button.js', array('jquery'), $this->version, false);
     }
+    
+    /**
+     * Add inline script with AJAX variables for security
+     * 
+     * @since 1.6.0
+     */
+    public function add_ajax_script_variables() {
+        // Only add if our script is enqueued
+        if (wp_script_is($this->plugin_name . '-button', 'enqueued')) {
+            $nonce = wp_create_nonce('maintenance_switch_toggle');
+            $ajax_url = admin_url('admin-ajax.php');
+            echo '<script type="text/javascript">
+                var maintenance_switch_ajax = {
+                    "ajax_url": "' . esc_js($ajax_url) . '",
+                    "nonce": "' . esc_js($nonce) . '"
+                };
+            </script>';
+        }
+    }
 
     /**
      * Register the administration menu for this plugin into the WordPress Dashboard menu.

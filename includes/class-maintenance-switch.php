@@ -196,6 +196,9 @@ class Maintenance_Switch
 
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+		
+		// Add AJAX variables to admin footer
+		$this->loader->add_action('admin_footer', $plugin_admin, 'add_ajax_script_variables');
 
 		// Add the options page and menu item.
 		$this->loader->add_action('admin_menu', $plugin_admin, 'add_plugin_admin_menu');
@@ -1066,6 +1069,17 @@ class Maintenance_Switch
 	 */
 	public function toggle_status_callback()
 	{
+		// Check nonce for security
+		if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maintenance_switch_toggle')) {
+			wp_send_json_error('Invalid nonce');
+			wp_die();
+		}
+
+		// Check if current user can switch maintenance mode
+		if (!$this->current_user_can_switch()) {
+			wp_send_json_error('Insufficient permissions');
+			wp_die();
+		}
 
 		// get status in db
 		$status = $this->get_the_status();
