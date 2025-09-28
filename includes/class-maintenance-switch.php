@@ -213,6 +213,9 @@ class Maintenance_Switch
 		$plugin_basename = plugin_basename(plugin_dir_path(__DIR__) . $this->plugin_name . '.php');
 		$this->loader->add_filter('plugin_action_links_' . $plugin_basename, $plugin_admin, 'add_action_links');
 
+		// Add hook to preserve active tab in WordPress redirect
+		$this->loader->add_filter('wp_redirect', $plugin_admin, 'preserve_active_tab_in_redirect', 10, 2);
+
 		// Add an action for the switch button
 		$this->loader->add_action('admin_bar_menu', $this, 'add_switch_button', 45);
 

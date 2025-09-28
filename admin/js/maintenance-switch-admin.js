@@ -8,7 +8,59 @@
       CodeMirror.save();
     });
 
-    $("#settings-tabs").tabs();
+    // Initialize tabs with active tab persistence
+    var tabs = $("#settings-tabs").tabs();
+    
+    // Get active tab from various sources (priority order)
+    var activeTabIndex = 0;
+    var urlHash = window.location.hash;
+    var phpActiveTab = typeof maintenance_switch_admin !== 'undefined' ? maintenance_switch_admin.active_tab : null;
+    var wasSubmitted = typeof maintenance_switch_admin !== 'undefined' ? maintenance_switch_admin.submitted : 0;
+    var savedTab = localStorage.getItem('ms_active_tab');
+    
+    // Priority: PHP post data > URL hash > localStorage > default
+    if (wasSubmitted && phpActiveTab !== null) {
+      activeTabIndex = parseInt(phpActiveTab) || 0;
+    } else if (urlHash) {
+      // Find tab index by hash
+      $("#settings-tabs ul li a").each(function(index) {
+        if ($(this).attr('href') === urlHash) {
+          activeTabIndex = index;
+          return false;
+        }
+      });
+    } else if (savedTab !== null) {
+      activeTabIndex = parseInt(savedTab) || 0;
+    }
+    
+    // Activate the correct tab
+    tabs.tabs("option", "active", activeTabIndex);
+    
+    // Save active tab on change
+    tabs.on("tabsactivate", function(event, ui) {
+      var activeIndex = ui.newTab.index();
+      localStorage.setItem('ms_active_tab', activeIndex);
+      // Update URL hash without triggering page refresh
+      var tabId = ui.newPanel.attr('id');
+      history.replaceState(null, null, '#' + tabId);
+    });
+    
+    // Intercept form submissions to maintain active tab
+    $('form#settings-form').on('submit', function() {
+      var activeTab = tabs.tabs("option", "active");
+      localStorage.setItem('ms_active_tab', activeTab);
+      
+      // Remove existing active_tab input to avoid duplicates
+      $(this).find('input[name="active_tab"]').remove();
+      
+      // Add tab parameter as hidden input (will be caught by redirect hook)
+      var tabInput = $('<input>').attr({
+        type: 'hidden',
+        name: 'active_tab',
+        value: activeTab
+      });
+      $(this).append(tabInput);
+    });
 
     $("#addmyip").on("click", function (e) {
       e.preventDefault();

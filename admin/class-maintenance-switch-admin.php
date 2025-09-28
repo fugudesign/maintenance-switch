@@ -113,6 +113,28 @@ class Maintenance_Switch_Admin
             wp_enqueue_script('jquery-ui-tabs');
             wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/maintenance-switch-admin.js', array('jquery'), $this->version, false);
             wp_enqueue_code_editor(['file' => $this->plugin_name . '.php']);
+            
+            // Add variables for tab persistence  
+            // Check both GET and POST for active_tab (GET survives WordPress redirect)
+            $active_tab = 0;
+            if (isset($_GET['active_tab'])) {
+                $active_tab = intval(sanitize_text_field($_GET['active_tab']));
+            } elseif (isset($_POST['active_tab'])) {
+                $active_tab = intval(sanitize_text_field($_POST['active_tab']));
+            }
+            
+            // Better detection for WordPress options form submission
+            $was_submitted = (
+                isset($_GET['settings-updated']) || // After redirect from options.php
+                isset($_POST['submit']) || 
+                isset($_POST['option_page']) ||
+                (isset($_POST['action']) && $_POST['action'] === 'update')
+            );
+            
+            wp_localize_script($this->plugin_name, 'maintenance_switch_admin', array(
+                'active_tab' => $active_tab,
+                'submitted' => $was_submitted ? 1 : 0
+            ));
         }
         wp_enqueue_script($this->plugin_name . '-button', plugin_dir_url(dirname(__FILE__)) . 'assets/js/maintenance-switch-button.js', array('jquery'), time(), false);
     }
@@ -173,6 +195,28 @@ class Maintenance_Switch_Admin
             ),
             $links
         );
+    }
+
+    /**
+     * Preserve active tab parameter in WordPress redirect
+     *
+     * @since    1.6.3
+     */
+    public function preserve_active_tab_in_redirect($location, $status)
+    {
+        // Only apply to our settings page redirects
+        if (strpos($location, 'options-general.php') !== false && 
+            strpos($location, 'page=maintenance-switch') !== false &&
+            isset($_POST['active_tab'])) {
+            
+            $active_tab = intval(sanitize_text_field($_POST['active_tab']));
+            
+            // Add active_tab parameter to the redirect URL
+            $separator = strpos($location, '?') !== false ? '&' : '?';
+            $location = $location . $separator . 'active_tab=' . $active_tab;
+        }
+        
+        return $location;
     }
 
     /**
