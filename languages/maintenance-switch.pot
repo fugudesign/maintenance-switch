@@ -1,11 +1,12 @@
 # Copyright (C) 2016 Maintenance Switch
 # This file is distributed under the same license as the Maintenance Switch package.
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Maintenance Switch\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maintenance-"
 "switch\n"
-"POT-Creation-Date: 2016-09-26 12:26+0100\n"
+"POT-Creation-Date: 2025-09-28 11:34+0200\n"
 "PO-Revision-Date: 2018-01-19 18:06+0100\n"
 "Last-Translator: Vincent LALANNE <info@fugu.fr>\n"
 "Language-Team: Fugu <support@fugu.fr>\n"
@@ -13,176 +14,176 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.4\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.7\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_x;_e;esc_attr_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin/class-maintenance-switch-admin.php:122
-#: admin/class-maintenance-switch-admin.php:123
+#: admin/class-maintenance-switch-admin.php:149
+#: admin/class-maintenance-switch-admin.php:150
 msgid "Maintenance Switch"
 msgstr ""
 
-#: admin/class-maintenance-switch-admin.php:139
+#: admin/class-maintenance-switch-admin.php:167
 msgid "Settings"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:76
+#: admin/views/maintenance-switch-admin-display.php:79
 msgid "Save Settings"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:77
+#: admin/views/maintenance-switch-admin-display.php:80
 msgid "Preview page"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:81
+#: admin/views/maintenance-switch-admin-display.php:84
 msgid "Default settings"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:85
+#: admin/views/maintenance-switch-admin-display.php:88
 msgid "Restore all settings"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:85
+#: admin/views/maintenance-switch-admin-display.php:88
 msgid "Are you sure you want to retore all the default settings?"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:90
+#: admin/views/maintenance-switch-admin-display.php:93
 msgid "Restore page HTML"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:90
+#: admin/views/maintenance-switch-admin-display.php:93
 msgid "Are you sure you want to retore the default HTML code?"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:96
+#: admin/views/maintenance-switch-admin-display.php:99
 msgid "Create file in the theme"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:96
+#: admin/views/maintenance-switch-admin-display.php:99
 msgid "Are you sure you want to create the file in your theme?"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:101
+#: admin/views/maintenance-switch-admin-display.php:104
 msgid "Delete file in the theme"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:101
+#: admin/views/maintenance-switch-admin-display.php:104
 msgid "Are you sure you want to delete the file in your theme?"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:126
+#: admin/views/maintenance-switch-admin-display.php:132
 msgid "Display"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:133
+#: admin/views/maintenance-switch-admin-display.php:139
 msgid "Maintenance page HTML:"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:141
+#: admin/views/maintenance-switch-admin-display.php:147
 msgid "Use theme file:"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:149
+#: admin/views/maintenance-switch-admin-display.php:155
 msgid "Permissions"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:156
+#: admin/views/maintenance-switch-admin-display.php:162
 msgid "Switch ability:"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:164
+#: admin/views/maintenance-switch-admin-display.php:170
 msgid "Bypass ability:"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:180
+#: admin/views/maintenance-switch-admin-display.php:186
 msgid "Behavior"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:187
+#: admin/views/maintenance-switch-admin-display.php:193
 msgid "Code 503:"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:272
+#: admin/views/maintenance-switch-admin-display.php:283
 msgid ""
-"The maintenance page returns the error code 503 \"Service unavailable"
-"\" (recommanded)."
+"The maintenance page returns the error code 503 \"Service unavailable\" "
+"(recommanded)."
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:289
+#: admin/views/maintenance-switch-admin-display.php:301
 msgid ""
 "The user roles can access the maintenance button in the adminbar and so "
 "switch the maintenance mode."
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:306
+#: admin/views/maintenance-switch-admin-display.php:319
 msgid ""
 "The user roles can bypass the maintenance mode and see the site like online."
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:320
+#: admin/views/maintenance-switch-admin-display.php:334
 msgid "Add my IP"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:322
+#: admin/views/maintenance-switch-admin-display.php:336
 msgid ""
 "The IP list can bypass the maintenance mode and see the site like online, "
 "comma separated."
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:338
+#: admin/views/maintenance-switch-admin-display.php:353
 msgid "The entire HTML code of the maintenance page."
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:356
+#: admin/views/maintenance-switch-admin-display.php:372
 msgid ""
 "Use a file in your theme to display maintenance page instead of the HTML "
 "field above."
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:362
+#: admin/views/maintenance-switch-admin-display.php:379
 msgid "exists"
 msgstr ""
 
-#: admin/views/maintenance-switch-admin-display.php:362
+#: admin/views/maintenance-switch-admin-display.php:379
 msgid "is missing"
 msgstr ""
 
-#: includes/class-maintenance-switch.php:260
+#: includes/class-maintenance-switch.php:270
 msgid "Default settings successfuly restored."
 msgstr ""
 
-#: includes/class-maintenance-switch.php:262
+#: includes/class-maintenance-switch.php:272
 msgid "Default settings was not restored."
 msgstr ""
 
-#: includes/class-maintenance-switch.php:268
+#: includes/class-maintenance-switch.php:278
 msgid "HTML code successfuly restored."
 msgstr ""
 
-#: includes/class-maintenance-switch.php:270
+#: includes/class-maintenance-switch.php:280
 msgid "HTML code could was not restored."
 msgstr ""
 
-#: includes/class-maintenance-switch.php:277
+#: includes/class-maintenance-switch.php:287
 msgid "The theme file was created successfuly."
 msgstr ""
 
-#: includes/class-maintenance-switch.php:279
+#: includes/class-maintenance-switch.php:289
 msgid "The theme file was not created."
 msgstr ""
 
-#: includes/class-maintenance-switch.php:286
+#: includes/class-maintenance-switch.php:296
 msgid "The theme file was deleted successfuly"
 msgstr ""
 
-#: includes/class-maintenance-switch.php:288
+#: includes/class-maintenance-switch.php:298
 msgid "The theme file was not deleted."
 msgstr ""
 
-#: includes/class-maintenance-switch.php:1025
+#: includes/class-maintenance-switch.php:1109
 msgid "Maintenance"
 msgstr ""
 
