@@ -1,0 +1,44 @@
+{
+    "php.suggest.basic": false,
+    "php.validate.enable": false,
+    "intelephense.environment.phpVersion": "8.1.0",
+    "intelephense.files.maxSize": 5000000,
+    "intelephense.stubs": [
+        "apache", "bcmath", "bz2", "calendar", "com_dotnet", "Core", "ctype", "curl", 
+        "date", "dba", "dom", "enchant", "exif", "fileinfo", "filter", "ftp", "gd", 
+        "hash", "iconv", "imap", "interbase", "intl", "json", "ldap", "libxml", "mbstring", 
+        "mcrypt", "mysql", "mysqli", "oci8", "odbc", "openssl", "pcntl", "pcre", 
+        "PDO", "pdo_mysql", "pdo_pgsql", "pdo_sqlite", "pgsql", "Phar", "posix", 
+        "readline", "Reflection", "session", "SimpleXML", "soap", "sockets", "sqlite3", 
+        "standard", "superglobals", "tokenizer", "xml", "xmlreader", "xmlwriter", "zip", "zlib"
+    ],
+    "intelephense.environment.includePaths": [
+        ".vscode"
+    ],
+    "intelephense.diagnostics.enable": true,
+    "intelephense.diagnostics.undefinedFunctions": false,
+    "intelephense.diagnostics.undefinedConstants": false,
+    "intelephense.diagnostics.undefinedClassConstants": false,
+    "intelephense.diagnostics.undefinedMethods": false,
+    "intelephense.diagnostics.undefinedProperties": false,
+    "intelephense.diagnostics.undefinedTypes": false,
+    "intelephense.diagnostics.duplicateSymbols": false,
+    "intelephense.completion.insertUseDeclaration": true,
+    "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
+    "intelephense.completion.triggerParameterHints": true,
+    "intelephense.completion.maxItems": 100,
+    "intelephense.format.enable": true,
+    "files.associations": {
+        "*.php": "php"
+    },
+    "[php]": {
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+        "editor.formatOnSave": false,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "emmet.includeLanguages": {
+        "php": "html"
+    }
+}

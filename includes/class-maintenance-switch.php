@@ -882,7 +882,7 @@ class Maintenance_Switch
 	{
 
 		$allowed_ips = $this->get_setting('ms_allowed_ips');
-		$allowed_ips = explode(',', $allowed_ips);
+		$allowed_ips = explode(',', (string)$allowed_ips);
 		return $allowed_ips;
 	}
 
@@ -1018,8 +1018,8 @@ class Maintenance_Switch
 
 		// apply flags replacements
 		$content = str_replace('{{MS_PLUGIN_SLUG}}', $this->plugin_name, $content);
-		$content = str_replace('{{MS_USE_THEME_FILE}}', $use_theme_file, $content);
-		$content = str_replace('{{MS_RETURN_503}}', $return503, $content);
+		$content = str_replace('{{MS_USE_THEME_FILE}}', (string)$use_theme_file, $content);
+		$content = str_replace('{{MS_RETURN_503}}', (string)$return503, $content);
 		$content = str_replace('{{MS_THEME_FILE}}', $theme_file, $content);
 		$content = str_replace('{{MS_PAGE_HTML}}', $page_html, $content);
 
@@ -1046,7 +1046,8 @@ class Maintenance_Switch
 
 		// get flags values
 		$allowed_users = "'" . implode("', '", $this->get_allowed_users()) . "'";
-		$allowed_ips = "'" . implode("','", $this->get_allowed_ips()) . "'";
+		$allowed_ips_array = $this->get_allowed_ips();
+		$allowed_ips = "'" . implode("','", is_array($allowed_ips_array) ? $allowed_ips_array : array()) . "'";
 		$login_url = str_replace(get_site_url(), '', wp_login_url());
 
 		// apply flags replacements
