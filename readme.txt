@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: maintenance, coming soon, offline, switch, construction
 Requires at least: 3.5
 Tested up to: 6.8
-Stable tag: 1.6.4
+Stable tag: 1.7.0
 Requires PHP: 8.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
