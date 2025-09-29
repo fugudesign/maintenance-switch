@@ -53,12 +53,19 @@ if (defined('WPINC')) {
 
 // Displaying this page during the maintenance mode
 if (function_exists('sanitize_text_field') && function_exists('wp_unslash')) {
-    // WordPress 3-layer security: unslash first, then sanitize
-    $server_protocol = isset($_SERVER['SERVER_PROTOCOL']) ? wp_unslash($_SERVER['SERVER_PROTOCOL']) : 'HTTP/1.0';
-    $protocol = sanitize_text_field($server_protocol);
+    // WordPress 3-layer security: Validation → Sanitization → Escaping
+    if (isset($_SERVER['SERVER_PROTOCOL'])) {
+        $protocol = sanitize_text_field(wp_unslash($_SERVER['SERVER_PROTOCOL']));
+    } else {
+        $protocol = 'HTTP/1.0';
+    }
 } else {
     // Fallback when WordPress functions not available - sanitize directly
-    $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? htmlspecialchars($_SERVER['SERVER_PROTOCOL'], ENT_QUOTES, 'UTF-8') : 'HTTP/1.0';
+    if (isset($_SERVER['SERVER_PROTOCOL'])) {
+        $protocol = htmlspecialchars($_SERVER['SERVER_PROTOCOL'], ENT_QUOTES, 'UTF-8'); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- Secure fallback with htmlspecialchars when WordPress unavailable
+    } else {
+        $protocol = 'HTTP/1.0';
+    }
 }
 
 if ('HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol)
@@ -80,13 +87,19 @@ if (!empty($_POST['preview-code'])) {
     // 2. SANITIZATION: Clean the input using WordPress standards
     if (function_exists('wp_unslash') && function_exists('wp_kses_post')) {
         // WordPress is loaded - use official sanitization
-        // WordPress 3-layer security: unslash first, then sanitize
-        $preview_code = isset($_POST['preview-code']) ? wp_unslash($_POST['preview-code']) : '';
-        $preview_html = wp_kses_post($preview_code);
+        // WordPress 3-layer security: Validation → Sanitization → Escaping
+        if (isset($_POST['preview-code'])) {
+            $preview_html = wp_kses_post(wp_unslash($_POST['preview-code']));
+        } else {
+            $preview_html = '';
+        }
     } else {
         // Fallback when WordPress isn't loaded - strict text-only approach
-        $preview_code = isset($_POST['preview-code']) ? $_POST['preview-code'] : '';
-        $preview_html = htmlspecialchars(stripslashes($preview_code), ENT_QUOTES, 'UTF-8');
+        if (isset($_POST['preview-code'])) {
+            $preview_html = htmlspecialchars(stripslashes($_POST['preview-code']), ENT_QUOTES, 'UTF-8'); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- Secure fallback with htmlspecialchars when WordPress unavailable
+        } else {
+            $preview_html = '';
+        }
     }
     
     // 3. ESCAPING: Output is already escaped by wp_kses_post or htmlspecialchars above

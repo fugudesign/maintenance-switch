@@ -265,8 +265,14 @@ class Maintenance_Switch
 	 */
 	public function admin_action_request()
 	{
-
-		$action = isset($_REQUEST['action']) ? sanitize_key($_REQUEST['action']) : '';
+		// WordPress 3-layer security: Validation → Sanitization → Escaping
+		// Check for valid action and nonce for security
+		if (isset($_REQUEST['action'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Action routing, specific nonces checked per action
+			$action = sanitize_key($_REQUEST['action']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Safe key sanitization for action routing
+		} else {
+			return; // No action, nothing to process
+		}
+		
 		if (!empty($action)) {
 
 			switch ($action) {
@@ -934,8 +940,11 @@ class Maintenance_Switch
 			$the_ip = $headers['HTTP_X_FORWARDED_FOR'];
 		} else {
 			// WordPress 3-layer security: Validation → Sanitization → Escaping
-			$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? wp_unslash($_SERVER['REMOTE_ADDR']) : '';
-			$the_ip = filter_var(sanitize_text_field($remote_addr), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+			if (isset($_SERVER['REMOTE_ADDR'])) {
+				$the_ip = filter_var(sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+			} else {
+				$the_ip = false;
+			}
 		}
 		return $the_ip;
 	}

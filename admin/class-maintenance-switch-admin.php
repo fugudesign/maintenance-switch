@@ -116,14 +116,14 @@ class Maintenance_Switch_Admin
             
             // Add variables for tab persistence  
             // WordPress 3-layer security: Validation → Sanitization → Escaping
-            // GET for tab navigation (safe, no nonce needed for UI state)
+            // GET for tab navigation (safe read-only UI state, no nonce required by WordPress standards)
             $active_tab = 0;
-            if (isset($_GET['active_tab'])) {
-                $active_tab = intval(sanitize_text_field(wp_unslash($_GET['active_tab'])));
+            if (isset($_GET['active_tab'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only UI navigation state
+                $active_tab = intval(sanitize_text_field(wp_unslash($_GET['active_tab']))); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only UI navigation state
             }
             
-            // WordPress settings detection (handled by WordPress core)
-            $was_submitted = isset($_GET['settings-updated']);
+            // WordPress settings detection (handled by WordPress core with its own nonce)
+            $was_submitted = isset($_GET['settings-updated']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress core redirect parameter
             
             wp_localize_script($this->plugin_name, 'maintenance_switch_admin', array(
                 'active_tab' => $active_tab,
@@ -201,12 +201,12 @@ class Maintenance_Switch_Admin
         // Only apply to our settings page redirects after valid WordPress settings submission
         if (strpos($location, 'options-general.php') !== false && 
             strpos($location, 'page=maintenance-switch') !== false &&
-            isset($_POST['active_tab']) &&
-            isset($_POST['option_page']) && $_POST['option_page'] === 'maintenance_switch_group') {
+            isset($_POST['active_tab']) && // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Validated by WordPress settings form nonce
+            isset($_POST['option_page']) && $_POST['option_page'] === 'maintenance_switch_group') { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- WordPress core settings handling
             
             // WordPress 3-layer security: Validation → Sanitization → Escaping
             // This runs after WordPress has validated the nonce for the settings form
-            $active_tab = intval(sanitize_text_field(wp_unslash($_POST['active_tab'])));
+            $active_tab = intval(sanitize_text_field(wp_unslash($_POST['active_tab']))); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- WordPress settings form provides nonce validation
             
             // Add active_tab parameter to the redirect URL
             $separator = strpos($location, '?') !== false ? '&' : '?';

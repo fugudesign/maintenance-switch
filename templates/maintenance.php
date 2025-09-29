@@ -14,9 +14,12 @@ if (!defined('WPINC')) {
 }
 
 // Displaying this page during the maintenance mode
-// WordPress 3-layer security: unslash first, then sanitize
-$server_protocol = isset($_SERVER['SERVER_PROTOCOL']) ? wp_unslash($_SERVER['SERVER_PROTOCOL']) : 'HTTP/1.0';
-$protocol = sanitize_text_field($server_protocol);
+// WordPress 3-layer security: Validation → Sanitization → Escaping
+if (isset($_SERVER['SERVER_PROTOCOL'])) {
+	$protocol = sanitize_text_field(wp_unslash($_SERVER['SERVER_PROTOCOL']));
+} else {
+	$protocol = 'HTTP/1.0';
+}
 
 if ('HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol)
 	$protocol = 'HTTP/1.0';
