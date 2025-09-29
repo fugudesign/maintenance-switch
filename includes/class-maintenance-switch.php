@@ -333,7 +333,8 @@ class Maintenance_Switch
 
 		if (!empty($this->notices)) {
 			foreach ($this->notices as $key => $notice) {
-				echo $notice;
+				// WordPress 3-layer security: Validation → Sanitization → Escaping
+				echo wp_kses_post($notice); // Allow HTML but escape dangerous content
 			}
 		}
 	}
@@ -932,7 +933,9 @@ class Maintenance_Switch
 		} elseif (array_key_exists('HTTP_X_FORWARDED_FOR', $headers) && filter_var($headers['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 			$the_ip = $headers['HTTP_X_FORWARDED_FOR'];
 		} else {
-			$the_ip = filter_var(sanitize_text_field($_SERVER['REMOTE_ADDR']), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+			// WordPress 3-layer security: Validation → Sanitization → Escaping
+			$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? wp_unslash($_SERVER['REMOTE_ADDR']) : '';
+			$the_ip = filter_var(sanitize_text_field($remote_addr), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
 		}
 		return $the_ip;
 	}
@@ -1119,7 +1122,7 @@ class Maintenance_Switch
 
 			$args = array(
 				'id' => 'ms-switch-button',
-				'title' => '<span class="ab-icon dashicons-admin-tools"></span><span class="ab-label">' . __('Maintenance', $this->plugin_name) . '</span>',
+				'title' => '<span class="ab-icon dashicons-admin-tools"></span><span class="ab-label">' . __('Maintenance', 'maintenance-switch') . '</span>',
 				'href' => '#',
 				'meta' => array(
 					'class' => 'toggle-button ' . ($this->status ? 'active' : ''),

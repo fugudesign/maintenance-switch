@@ -53,9 +53,11 @@ if (defined('WPINC')) {
 
 // Displaying this page during the maintenance mode
 if (function_exists('sanitize_text_field') && function_exists('wp_unslash')) {
-    $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_PROTOCOL'])) : 'HTTP/1.0';
+    // WordPress 3-layer security: unslash first, then sanitize
+    $server_protocol = isset($_SERVER['SERVER_PROTOCOL']) ? wp_unslash($_SERVER['SERVER_PROTOCOL']) : 'HTTP/1.0';
+    $protocol = sanitize_text_field($server_protocol);
 } else {
-    // Fallback when WordPress functions not available
+    // Fallback when WordPress functions not available - sanitize directly
     $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? htmlspecialchars($_SERVER['SERVER_PROTOCOL'], ENT_QUOTES, 'UTF-8') : 'HTTP/1.0';
 }
 
@@ -78,10 +80,13 @@ if (!empty($_POST['preview-code'])) {
     // 2. SANITIZATION: Clean the input using WordPress standards
     if (function_exists('wp_unslash') && function_exists('wp_kses_post')) {
         // WordPress is loaded - use official sanitization
-        $preview_html = wp_kses_post(wp_unslash($_POST['preview-code']));
+        // WordPress 3-layer security: unslash first, then sanitize
+        $preview_code = isset($_POST['preview-code']) ? wp_unslash($_POST['preview-code']) : '';
+        $preview_html = wp_kses_post($preview_code);
     } else {
         // Fallback when WordPress isn't loaded - strict text-only approach
-        $preview_html = htmlspecialchars(stripslashes($_POST['preview-code']), ENT_QUOTES, 'UTF-8');
+        $preview_code = isset($_POST['preview-code']) ? $_POST['preview-code'] : '';
+        $preview_html = htmlspecialchars(stripslashes($preview_code), ENT_QUOTES, 'UTF-8');
     }
     
     // 3. ESCAPING: Output is already escaped by wp_kses_post or htmlspecialchars above

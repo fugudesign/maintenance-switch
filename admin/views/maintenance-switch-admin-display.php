@@ -82,7 +82,7 @@ class Maintenance_Switch_Admin_Display
 				?>
 				<p class="submit">
 					<?php submit_button(__('Save Settings', "maintenance-switch"), 'primary', 'submit', false); ?>
-					<a id="page-preview" class="button-secondary"><?php _e('Preview page', "maintenance-switch") ?></a>
+					<a id="page-preview" class="button-secondary"><?php _e('Preview page', 'maintenance-switch') ?></a>
 				</p>
 			</form>
 
@@ -312,11 +312,13 @@ class Maintenance_Switch_Admin_Display
 		global $wp_roles;
 		foreach ($wp_roles->get_names() as $role_value => $role_name) {
 			printf(
-				'<p class="inline-checkbox"><input id="ms_switch_roles" name="maintenance_switch_settings[ms_switch_roles][]" type="checkbox" value="' . $role_value . '" %s>' . $role_name . '</p>',
-				(isset($this->maintenance_switch_settings['ms_switch_roles']) && in_array($role_value, (array) $this->maintenance_switch_settings['ms_switch_roles'])) ? 'checked' : ''
+				'<p class="inline-checkbox"><input id="ms_switch_roles" name="maintenance_switch_settings[ms_switch_roles][]" type="checkbox" value="%s" %s>%s</p>',
+				esc_attr($role_value), // WordPress 3-layer security: Escaping for attribute
+				(isset($this->maintenance_switch_settings['ms_switch_roles']) && in_array($role_value, (array) $this->maintenance_switch_settings['ms_switch_roles'])) ? 'checked' : '',
+				esc_html($role_name) // WordPress 3-layer security: Escaping for content
 			);
 		}
-		printf('<p class="description">%s</p>', __('The user roles can access the maintenance button in the adminbar and so switch the maintenance mode.', "maintenance-switch"));
+		printf('<p class="description">%s</p>', esc_html__('The user roles can access the maintenance button in the adminbar and so switch the maintenance mode.', 'maintenance-switch'));
 	}
 
 	/**
@@ -330,8 +332,10 @@ class Maintenance_Switch_Admin_Display
 		global $wp_roles;
 		foreach ($wp_roles->get_names() as $role_value => $role_name) {
 			printf(
-				'<p class="inline-checkbox"><input id="ms_allowed_roles" name="maintenance_switch_settings[ms_allowed_roles][]" type="checkbox" value="' . $role_value . '" %s>' . $role_name . '</p>',
-				(isset($this->maintenance_switch_settings['ms_allowed_roles']) && in_array($role_value, (array) $this->maintenance_switch_settings['ms_allowed_roles'])) ? 'checked' : ''
+				'<p class="inline-checkbox"><input id="ms_allowed_roles" name="maintenance_switch_settings[ms_allowed_roles][]" type="checkbox" value="%s" %s>%s</p>',
+				esc_attr($role_value), // WordPress 3-layer security: Escaping for attribute
+				(isset($this->maintenance_switch_settings['ms_allowed_roles']) && in_array($role_value, (array) $this->maintenance_switch_settings['ms_allowed_roles'])) ? 'checked' : '',
+				esc_html($role_name) // WordPress 3-layer security: Escaping for content
 			);
 		}
 		printf('<p class="description">%s</p>', __('The user roles can bypass the maintenance mode and see the site like online.', "maintenance-switch"));
@@ -347,11 +351,11 @@ class Maintenance_Switch_Admin_Display
 	{
 		printf(
 			'<input id="ms_allowed_ips" name="maintenance_switch_settings[ms_allowed_ips]" size="60" value="%s"><button id="addmyip" class="button-secondary" data-ip="%s">%s</button>',
-			isset($this->maintenance_switch_settings['ms_allowed_ips']) ? $this->maintenance_switch_settings['ms_allowed_ips'] : '',
-			$this->plugin->get_user_ip(),
-			__('Add my IP', "maintenance-switch")
+			esc_attr(isset($this->maintenance_switch_settings['ms_allowed_ips']) ? $this->maintenance_switch_settings['ms_allowed_ips'] : ''), // WordPress 3-layer security: Escaping for attribute
+			esc_attr($this->plugin->get_user_ip()), // WordPress 3-layer security: Escaping for attribute  
+			esc_html__('Add my IP', 'maintenance-switch') // WordPress 3-layer security: Escaping for content
 		);
-		printf('<p class="description">%s</p>', __('The IP list can bypass the maintenance mode and see the site like online, comma separated.', "maintenance-switch"));
+		printf('<p class="description">%s</p>', esc_html__('The IP list can bypass the maintenance mode and see the site like online, comma separated.', 'maintenance-switch'));
 	}
 
 	/**
@@ -389,12 +393,12 @@ class Maintenance_Switch_Admin_Display
 		);
 		printf('<p class="description inline-description">%s</p>', __('Use a file in your theme to display maintenance page instead of the HTML field above.', "maintenance-switch"));
 		print ('<p class="infos messages">');
-		printf('<input id="ms_preview_theme_file" type="hidden" name="ms_preview_theme_file" value="%s">', $theme_file_url);
+		printf('<input id="ms_preview_theme_file" type="hidden" name="ms_preview_theme_file" value="%s">', esc_url($theme_file_url)); // WordPress 3-layer security: Escaping for URL
 		printf(
 			'<div class="message message-%s"><p><strong>%s</strong>: %s</p></div></p>',
-			$theme_file_exists ? 'success' : 'error',
-			$this->plugin->get_current_theme()->Name,
-			MS_THEME_FILENAME . ' ' . ($theme_file_exists ? __('exists', "maintenance-switch") : __('is missing', "maintenance-switch"))
+			esc_attr($theme_file_exists ? 'success' : 'error'), // WordPress 3-layer security: Escaping for attribute
+			esc_html($this->plugin->get_current_theme()->Name), // WordPress 3-layer security: Escaping for content
+			esc_html(MS_THEME_FILENAME) . ' ' . esc_html($theme_file_exists ? __('exists', 'maintenance-switch') : __('is missing', 'maintenance-switch')) // WordPress 3-layer security: Escaping for content
 		);
 	}
 
@@ -423,8 +427,8 @@ class Maintenance_Switch_Admin_Display
 
 			printf(
 				'<li class="nav-tab"><a href="#%1$s">%2$s</a></li>',
-				$section['id'],     /** %1$s - The ID of the tab */
-				$section['title']   /** %2$s - The Title of the section */
+				esc_attr($section['id']),     /** %1$s - The ID of the tab - WordPress 3-layer security: Escaping for attribute */
+				esc_html($section['title'])   /** %2$s - The Title of the section - WordPress 3-layer security: Escaping for content */
 			);
 
 		endforeach;
@@ -435,7 +439,7 @@ class Maintenance_Switch_Admin_Display
 
 			printf(
 				'<div id="%1$s">',
-				$section['id']      /** %1$s - The ID of the tab */
+				esc_attr($section['id'])      /** %1$s - The ID of the tab - WordPress 3-layer security: Escaping for attribute */
 			);
 
 			if (!isset($section['title']))

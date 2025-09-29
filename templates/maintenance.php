@@ -14,7 +14,9 @@ if (!defined('WPINC')) {
 }
 
 // Displaying this page during the maintenance mode
-$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? sanitize_text_field($_SERVER['SERVER_PROTOCOL']) : 'HTTP/1.0';
+// WordPress 3-layer security: unslash first, then sanitize
+$server_protocol = isset($_SERVER['SERVER_PROTOCOL']) ? wp_unslash($_SERVER['SERVER_PROTOCOL']) : 'HTTP/1.0';
+$protocol = sanitize_text_field($server_protocol);
 
 if ('HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol)
 	$protocol = 'HTTP/1.0';

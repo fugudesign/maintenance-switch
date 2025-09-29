@@ -115,21 +115,15 @@ class Maintenance_Switch_Admin
             wp_enqueue_code_editor(['file' => $this->plugin_name . '.php']);
             
             // Add variables for tab persistence  
-            // Check both GET and POST for active_tab (GET survives WordPress redirect)
+            // WordPress 3-layer security: Validation → Sanitization → Escaping
+            // GET for tab navigation (safe, no nonce needed for UI state)
             $active_tab = 0;
             if (isset($_GET['active_tab'])) {
-                $active_tab = intval(sanitize_text_field($_GET['active_tab']));
-            } elseif (isset($_POST['active_tab'])) {
-                $active_tab = intval(sanitize_text_field($_POST['active_tab']));
+                $active_tab = intval(sanitize_text_field(wp_unslash($_GET['active_tab'])));
             }
             
-            // Better detection for WordPress options form submission
-            $was_submitted = (
-                isset($_GET['settings-updated']) || // After redirect from options.php
-                isset($_POST['submit']) || 
-                isset($_POST['option_page']) ||
-                (isset($_POST['action']) && $_POST['action'] === 'update')
-            );
+            // WordPress settings detection (handled by WordPress core)
+            $was_submitted = isset($_GET['settings-updated']);
             
             wp_localize_script($this->plugin_name, 'maintenance_switch_admin', array(
                 'active_tab' => $active_tab,
@@ -173,8 +167,8 @@ class Maintenance_Switch_Admin
 
         // Adds option page in admin settings
         add_options_page(
-            __('Maintenance Switch', $this->plugin_name),
-            __('Maintenance Switch', $this->plugin_name),
+            __('Maintenance Switch', 'maintenance-switch'),
+            __('Maintenance Switch', 'maintenance-switch'),
             'manage_options',
             $this->plugin_name,
             array($view, 'maintenance_switch_create_admin_page')
@@ -191,7 +185,7 @@ class Maintenance_Switch_Admin
 
         return array_merge(
             array(
-                'settings' => '<a href="' . admin_url('options-general.php?page=' . $this->plugin_name) . '">' . __('Settings', $this->plugin_name) . '</a>'
+                'settings' => '<a href="' . admin_url('options-general.php?page=' . $this->plugin_name) . '">' . __('Settings', 'maintenance-switch') . '</a>'
             ),
             $links
         );
@@ -204,12 +198,15 @@ class Maintenance_Switch_Admin
      */
     public function preserve_active_tab_in_redirect($location, $status)
     {
-        // Only apply to our settings page redirects
+        // Only apply to our settings page redirects after valid WordPress settings submission
         if (strpos($location, 'options-general.php') !== false && 
             strpos($location, 'page=maintenance-switch') !== false &&
-            isset($_POST['active_tab'])) {
+            isset($_POST['active_tab']) &&
+            isset($_POST['option_page']) && $_POST['option_page'] === 'maintenance_switch_group') {
             
-            $active_tab = intval(sanitize_text_field($_POST['active_tab']));
+            // WordPress 3-layer security: Validation → Sanitization → Escaping
+            // This runs after WordPress has validated the nonce for the settings form
+            $active_tab = intval(sanitize_text_field(wp_unslash($_POST['active_tab'])));
             
             // Add active_tab parameter to the redirect URL
             $separator = strpos($location, '?') !== false ? '&' : '?';

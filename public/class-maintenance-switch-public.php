@@ -99,7 +99,8 @@ class Maintenance_Switch_Public
 	public function set_ajaxurl()
 	{
 		if (is_admin_bar_showing()):
-			echo "<script type='text/javascript'>var ajaxurl = '" . admin_url('admin-ajax.php') . "';</script>";
+			// WordPress 3-layer security: Validation → Sanitization → Escaping
+			echo "<script type='text/javascript'>var ajaxurl = '" . esc_url(admin_url('admin-ajax.php')) . "';</script>";
 		endif;
 	}
 
