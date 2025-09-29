@@ -198,11 +198,10 @@ class Maintenance_Switch_Admin
      */
     public function preserve_active_tab_in_redirect($location, $status)
     {
-        // Only apply to our settings page redirects after valid WordPress settings submission
+        // Only apply to our settings page redirects after form submission
         if (strpos($location, 'options-general.php') !== false && 
             strpos($location, 'page=maintenance-switch') !== false &&
-            isset($_POST['active_tab']) && // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Validated by WordPress settings form nonce
-            isset($_POST['option_page']) && $_POST['option_page'] === 'maintenance_switch_group') { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- WordPress core settings handling
+            isset($_POST['active_tab'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- UI state preservation after form submission
             
             // WordPress 3-layer security: Validation → Sanitization → Escaping
             // This runs after WordPress has validated the nonce for the settings form

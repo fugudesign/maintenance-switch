@@ -91,13 +91,16 @@
 
     $("#page-preview").on("click", function (e) {
       e.preventDefault();
+      
       var form = $("#preview-form");
       var theme = $("#ms_use_theme").prop("checked");
+      
       if (theme) {
         var url = $("#ms_preview_theme_file").val();
         form.attr("action", url).submit();
       } else {
         var html = $("#ms_page_html").val();
+        
         // Clear only the preview-code input if it exists, preserve nonce
         form.find("input[name='preview-code']").remove();
         form.append(
@@ -108,7 +111,14 @@
             value: html,
           })
         );
-        form.attr("action", form.data("default-action")).submit();
+        
+        var defaultAction = form.data("default-action");
+        form.attr("action", defaultAction);
+        
+        // Ensure new window opens - force target behavior
+        var newWindow = window.open("", "ms-preview");
+        form.attr("target", "ms-preview");
+        form.submit();
       }
     });
 

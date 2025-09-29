@@ -14,15 +14,19 @@ if (!defined('WPINC')) {
 }
 
 // Displaying this page during the maintenance mode
-// WordPress 3-layer security: Validation → Sanitization → Escaping
+// Sécurité : WordPress functions pas disponibles dans ce contexte
 if (isset($_SERVER['SERVER_PROTOCOL'])) {
-	$protocol = sanitize_text_field(wp_unslash($_SERVER['SERVER_PROTOCOL']));
+	// Validation manuelle sécurisée (WordPress non chargé)
+	$protocol = htmlspecialchars(stripslashes($_SERVER['SERVER_PROTOCOL']), ENT_QUOTES, 'UTF-8'); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- Secure manual validation when WordPress unavailable
+	// Validation stricte des valeurs autorisées
+	if ($protocol !== 'HTTP/1.1' && $protocol !== 'HTTP/1.0') {
+		$protocol = 'HTTP/1.0';
+	}
 } else {
 	$protocol = 'HTTP/1.0';
 }
 
-if ('HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol)
-	$protocol = 'HTTP/1.0';
+// Validation déjà faite ci-dessus
 
 // Return 503 status code?
 $return503 = '{{MS_RETURN_503}}';

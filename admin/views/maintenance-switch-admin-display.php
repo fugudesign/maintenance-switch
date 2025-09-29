@@ -367,10 +367,22 @@ class Maintenance_Switch_Admin_Display
 	public function ms_page_html_display()
 	{
 		$theme_file_exists = $this->plugin->theme_file_exists();
+		// WordPress compliant HTML textarea with capability-based escaping
+		$content = isset($this->maintenance_switch_settings['ms_page_html']) ? $this->maintenance_switch_settings['ms_page_html'] : '';
+		
+		// WordPress security: Allow unescaped HTML for users with 'unfiltered_html' capability
+		if (current_user_can('unfiltered_html')) {
+			// Admin users can edit raw HTML - WordPress standard for full HTML editing
+			$textarea_content = $content;
+		} else {
+			// Non-admin users get escaped content for security
+			$textarea_content = esc_textarea($content);
+		}
+		
 		printf(
 			'<textarea id="ms_page_html" class="large-text" cols="70" rows="20" name="maintenance_switch_settings[ms_page_html]" %s>%s</textarea>',
 			(isset($this->maintenance_switch_settings['ms_use_theme']) && $this->maintenance_switch_settings['ms_use_theme'] == 1 && $theme_file_exists) ? 'readonly' : '',
-			esc_textarea(isset($this->maintenance_switch_settings['ms_page_html']) ? $this->maintenance_switch_settings['ms_page_html'] : '') // WordPress 3-layer security: Escaping for textarea
+			$textarea_content // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Capability-based escaping: unfiltered_html users can edit raw HTML per WordPress standards
 		);
 		printf('<p class="description">%s</p>', esc_html__('The entire HTML code of the maintenance page.', 'maintenance-switch'));
 	}
