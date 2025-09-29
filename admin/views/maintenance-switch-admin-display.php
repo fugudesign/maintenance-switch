@@ -82,11 +82,11 @@ class Maintenance_Switch_Admin_Display
 				?>
 				<p class="submit">
 					<?php submit_button(__('Save Settings', "maintenance-switch"), 'primary', 'submit', false); ?>
-					<a id="page-preview" class="button-secondary"><?php _e('Preview page', 'maintenance-switch') ?></a>
+					<a id="page-preview" class="button-secondary"><?php esc_html_e('Preview page', 'maintenance-switch') ?></a>
 				</p>
 			</form>
 
-			<h2><?php _e('Default settings', "maintenance-switch"); ?></h2>
+			<h2><?php esc_html_e('Default settings', 'maintenance-switch'); ?></h2>
 
 			<form id="restore-settings-form" action="<?php echo esc_url($plugin_settings_url); ?>" method="POST" class="inline-form">
 				<input type="hidden" name="action" value="restore_settings" />
@@ -298,7 +298,7 @@ class Maintenance_Switch_Admin_Display
 			'<p class="inline-checkbox"><input id="ms_error_503" name="maintenance_switch_settings[ms_error_503]" type="checkbox" value="1" %s></p>',
 			(isset($this->maintenance_switch_settings['ms_error_503']) && $this->maintenance_switch_settings['ms_error_503'] == 1) ? 'checked' : ''
 		);
-		printf('<p class="description inline-description">%s</p>', __('The maintenance page returns the error code 503 "Service unavailable" (recommanded).', "maintenance-switch"));
+		printf('<p class="description inline-description">%s</p>', esc_html__('The maintenance page returns the error code 503 "Service unavailable" (recommanded).', 'maintenance-switch'));
 	}
 
 	/**
@@ -338,7 +338,7 @@ class Maintenance_Switch_Admin_Display
 				esc_html($role_name) // WordPress 3-layer security: Escaping for content
 			);
 		}
-		printf('<p class="description">%s</p>', __('The user roles can bypass the maintenance mode and see the site like online.', "maintenance-switch"));
+		printf('<p class="description">%s</p>', esc_html__('The user roles can bypass the maintenance mode and see the site like online.', 'maintenance-switch'));
 	}
 
 	/**
@@ -370,9 +370,9 @@ class Maintenance_Switch_Admin_Display
 		printf(
 			'<textarea id="ms_page_html" class="large-text" cols="70" rows="20" name="maintenance_switch_settings[ms_page_html]" %s>%s</textarea>',
 			(isset($this->maintenance_switch_settings['ms_use_theme']) && $this->maintenance_switch_settings['ms_use_theme'] == 1 && $theme_file_exists) ? 'readonly' : '',
-			isset($this->maintenance_switch_settings['ms_page_html']) ? $this->maintenance_switch_settings['ms_page_html'] : ''
+			esc_textarea(isset($this->maintenance_switch_settings['ms_page_html']) ? $this->maintenance_switch_settings['ms_page_html'] : '') // WordPress 3-layer security: Escaping for textarea
 		);
-		printf('<p class="description">%s</p>', __('The entire HTML code of the maintenance page.', "maintenance-switch"));
+		printf('<p class="description">%s</p>', esc_html__('The entire HTML code of the maintenance page.', 'maintenance-switch'));
 	}
 
 	/**
@@ -391,7 +391,7 @@ class Maintenance_Switch_Admin_Display
 			(isset($this->maintenance_switch_settings['ms_use_theme']) && $this->maintenance_switch_settings['ms_use_theme'] == 1 && $theme_file_exists) ? 'checked' : '',
 			$theme_file_exists ? '' : 'disabled'
 		);
-		printf('<p class="description inline-description">%s</p>', __('Use a file in your theme to display maintenance page instead of the HTML field above.', "maintenance-switch"));
+		printf('<p class="description inline-description">%s</p>', esc_html__('Use a file in your theme to display maintenance page instead of the HTML field above.', 'maintenance-switch'));
 		print ('<p class="infos messages">');
 		printf('<input id="ms_preview_theme_file" type="hidden" name="ms_preview_theme_file" value="%s">', esc_url($theme_file_url)); // WordPress 3-layer security: Escaping for URL
 		printf(
