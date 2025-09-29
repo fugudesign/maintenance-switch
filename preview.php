@@ -63,24 +63,26 @@ if ('HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol)
 header('Content-Type: text/html; charset=utf-8');
 
 if (!empty($_POST['preview-code'])) {
-    if (function_exists('wp_kses_post')) {
-        echo wp_kses_post(wp_unslash(sanitize_textarea_field($_POST['preview-code'])));
-    } else {
-        // Fallback: output HTML directly for preview (admin-only context)
-        // Clean the input but preserve HTML structure
-        $html = stripslashes($_POST['preview-code']);
-        
-        // Basic security: remove dangerous tags and attributes
-        $dangerous_tags = ['script', 'iframe', 'object', 'embed', 'form', 'input', 'textarea'];
-        foreach ($dangerous_tags as $tag) {
-            $html = preg_replace('/<\s*' . $tag . '[^>]*>.*?<\s*\/\s*' . $tag . '\s*>/is', '', $html);
-            $html = preg_replace('/<\s*' . $tag . '[^>]*\/?>/is', '', $html);
+    // WordPress 3-layer security approach: Validation → Sanitization → Escaping
+    
+    // 1. VALIDATION: Verify the data type and presence
+    if (!is_string($_POST['preview-code'])) {
+        if (function_exists('wp_die')) {
+            wp_die(__('Invalid data format provided.'));
+        } else {
+            die('Invalid data format provided.');
         }
-        
-        // Remove dangerous attributes
-        $html = preg_replace('/\s*on\w+\s*=\s*["\'][^"\']*["\']/i', '', $html);
-        $html = preg_replace('/javascript\s*:/i', '', $html);
-        
-        echo $html;
     }
+    
+    // 2. SANITIZATION: Clean the input using WordPress standards
+    if (function_exists('wp_unslash') && function_exists('wp_kses_post')) {
+        // WordPress is loaded - use official sanitization
+        $preview_html = wp_kses_post(wp_unslash($_POST['preview-code']));
+    } else {
+        // Fallback when WordPress isn't loaded - strict text-only approach
+        $preview_html = htmlspecialchars(stripslashes($_POST['preview-code']), ENT_QUOTES, 'UTF-8');
+    }
+    
+    // 3. ESCAPING: Output is already escaped by wp_kses_post or htmlspecialchars
+    echo $preview_html;
 }

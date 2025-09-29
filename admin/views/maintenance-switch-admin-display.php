@@ -223,16 +223,27 @@ class Maintenance_Switch_Admin_Display
 			$sanitary_values['ms_allowed_roles'] = $input['ms_allowed_roles'];
 		}
 
+		// WordPress 3-layer security: Validation → Sanitization → Escaping
 		if (isset($input['ms_allowed_ips'])) {
-			$sanitary_values['ms_allowed_ips'] = sanitize_text_field(str_replace(' ', '', $input['ms_allowed_ips']));
+			// 1. VALIDATION: Check if input exists and is string
+			if (is_string($input['ms_allowed_ips'])) {
+				// 2. SANITIZATION: Clean input using WordPress standards
+				$sanitary_values['ms_allowed_ips'] = sanitize_text_field(str_replace(' ', '', $input['ms_allowed_ips']));
+			}
 		}
 
 		if (isset($input['ms_error_503'])) {
+			// 1. VALIDATION: Check if input exists
+			// 2. SANITIZATION: Cast to integer (built-in PHP sanitization)
 			$sanitary_values['ms_error_503'] = (int) $input['ms_error_503'];
 		}
 
 		if (isset($input['ms_page_html'])) {
-			$sanitary_values['ms_page_html'] = esc_textarea($input['ms_page_html']);
+			// 1. VALIDATION: Check if input exists and is string
+			if (is_string($input['ms_page_html'])) {
+				// 2. SANITIZATION: Use WordPress textarea sanitization
+				$sanitary_values['ms_page_html'] = esc_textarea($input['ms_page_html']);
+			}
 		}
 
 		if (isset($input['ms_use_theme'])) {

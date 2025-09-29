@@ -1078,8 +1078,11 @@ class Maintenance_Switch
 	public function toggle_status_callback()
 	{
 
-		// Check nonce for security
+		// WordPress 3-layer security for AJAX endpoint
+		// 1. VALIDATION: Check if nonce exists and is string
 		$nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
+		// 2. SANITIZATION: Done by sanitize_text_field() and wp_unslash()
+		// 3. ESCAPING: Not needed for verification (internal use)
 		if (empty($nonce) || !wp_verify_nonce($nonce, 'maintenance_switch_toggle')) {
 			wp_send_json_error('Invalid nonce');
 			wp_die();
