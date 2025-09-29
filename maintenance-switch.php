@@ -40,7 +40,7 @@ define('MS_SLUG', 'maintenance-switch');
  * Path of the maintenance.php file.
  * @since    1.3.6
  */
-define('PLUGIN_VERSION', '1.6.0');
+define('PLUGIN_VERSION', '1.6.4');
 
 /**
  * The config file
