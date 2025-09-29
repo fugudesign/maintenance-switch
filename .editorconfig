@@ -1,6 +1,4 @@
 # EditorConfig for WordPress Plugin Development
-# https://editorconfig.org/
-
 root = true
 
 [*]
@@ -17,17 +15,6 @@ indent_size = 2
 [*.md]
 trim_trailing_whitespace = false
 
-[{package.json,.travis.yml}]
-indent_size = 2
-
 [*.php]
 indent_style = tab
 indent_size = 4
-
-[{composer.json,package.json}]
-indent_style = space
-indent_size = 2
-
-[*.{yml,yaml}]
-indent_style = space
-indent_size = 2

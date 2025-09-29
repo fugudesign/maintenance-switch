@@ -274,35 +274,35 @@ class Maintenance_Switch
 				case 'restore_settings':
 
 					if ($this->restore_default_settings())
-						$this->notice('success', __('Default settings successfuly restored.', MS_SLUG));
+						$this->notice('success', __('Default settings successfuly restored.', "maintenance-switch"));
 					else
-						$this->notice('error', __('Default settings was not restored.', MS_SLUG));
+						$this->notice('error', __('Default settings was not restored.', "maintenance-switch"));
 					break;
 
 				case 'restore_html':
 
 					if ($this->restore_html_setting()) {
-						$this->notice('success', __('HTML code successfuly restored.', MS_SLUG));
+						$this->notice('success', __('HTML code successfuly restored.', "maintenance-switch"));
 					} else {
-						$this->notice('error', __('HTML code could was not restored.', MS_SLUG));
+						$this->notice('error', __('HTML code could was not restored.', "maintenance-switch"));
 					}
 					break;
 
 				case 'create_theme_file':
 
 					if ($this->create_theme_file()) {
-						$this->notice('success', __('The theme file was created successfuly.', MS_SLUG));
+						$this->notice('success', __('The theme file was created successfuly.', "maintenance-switch"));
 					} else {
-						$this->notice('error', __('The theme file was not created.', MS_SLUG));
+						$this->notice('error', __('The theme file was not created.', "maintenance-switch"));
 					}
 					break;
 
 				case 'delete_theme_file':
 
 					if ($this->delete_theme_file()) {
-						$this->notice('success', __('The theme file was deleted successfuly', MS_SLUG));
+						$this->notice('success', __('The theme file was deleted successfuly', "maintenance-switch"));
 					} else {
-						$this->notice('error', __('The theme file was not deleted.', MS_SLUG));
+						$this->notice('error', __('The theme file was not deleted.', "maintenance-switch"));
 					}
 					break;
 

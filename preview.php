@@ -31,13 +31,13 @@ if (!defined('WPINC')) {
 if (defined('WPINC')) {
     // Security check: only allow admin users
     if (function_exists('current_user_can') && !current_user_can('manage_options')) {
-        wp_die(__('Insufficient permissions to access this page.'));
+        wp_die(esc_html(__('Insufficient permissions to access this page.', 'maintenance-switch')));
     }
 
     // Security check: verify nonce
     if (!empty($_POST['preview-code'])) {
-        if (function_exists('wp_verify_nonce') && (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'maintenance_switch_preview'))) {
-            wp_die(__('Security check failed.'));
+        if (function_exists('wp_verify_nonce') && (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'maintenance_switch_preview'))) {
+            wp_die(esc_html(__('Security check failed.', 'maintenance-switch')));
         }
     }
 }
@@ -52,10 +52,11 @@ if (defined('WPINC')) {
  */
 
 // Displaying this page during the maintenance mode
-if (function_exists('sanitize_text_field')) {
-    $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? sanitize_text_field($_SERVER['SERVER_PROTOCOL']) : 'HTTP/1.0';
+if (function_exists('sanitize_text_field') && function_exists('wp_unslash')) {
+    $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_PROTOCOL'])) : 'HTTP/1.0';
 } else {
-    $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? strip_tags($_SERVER['SERVER_PROTOCOL']) : 'HTTP/1.0';
+    // Fallback when WordPress functions not available
+    $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? htmlspecialchars($_SERVER['SERVER_PROTOCOL'], ENT_QUOTES, 'UTF-8') : 'HTTP/1.0';
 }
 
 if ('HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol)
@@ -68,7 +69,7 @@ if (!empty($_POST['preview-code'])) {
     // 1. VALIDATION: Verify the data type and presence
     if (!is_string($_POST['preview-code'])) {
         if (function_exists('wp_die')) {
-            wp_die(__('Invalid data format provided.'));
+            wp_die(esc_html(__('Invalid data format provided.', 'maintenance-switch')));
         } else {
             die('Invalid data format provided.');
         }
@@ -83,6 +84,7 @@ if (!empty($_POST['preview-code'])) {
         $preview_html = htmlspecialchars(stripslashes($_POST['preview-code']), ENT_QUOTES, 'UTF-8');
     }
     
-    // 3. ESCAPING: Output is already escaped by wp_kses_post or htmlspecialchars
-    echo $preview_html;
+    // 3. ESCAPING: Output is already escaped by wp_kses_post or htmlspecialchars above
+    // wp_kses_post() already escapes the output safely
+    echo $preview_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }

@@ -34,10 +34,10 @@ $default_html = '
 	<div id="container">
 		<h1>' . get_bloginfo('sitename') . '</h1>
 		<p>
-			' . __('In a permanent effort to improve our services, we currently are performing upgrades on our website.', MS_SLUG) . '<br />
-			' . __('We apologize for the inconvenience, but we will be pleased to see you back in a very few minutes.', MS_SLUG) . '
+			' . __('In a permanent effort to improve our services, we currently are performing upgrades on our website.', "maintenance-switch") . '<br />
+			' . __('We apologize for the inconvenience, but we will be pleased to see you back in a very few minutes.', "maintenance-switch") . '
 		</p>
-		<p>' . __('The maintenance team.', MS_SLUG) . '</p>
+		<p>' . __('The maintenance team.', "maintenance-switch") . '</p>
 	</div>
 </body>
 </html>';
@@ -78,7 +78,7 @@ define('MS_PHP_FILE_ACTIVE', WP_CONTENT_DIR . '/maintenance.php');
  * Path of the .maintenance template file.
  * @since    1.0.0
  */
-define('MS_DOT_FILE_TEMPLATE', WP_PLUGIN_DIR . '/maintenance-switch/templates/.maintenance');
+define('MS_DOT_FILE_TEMPLATE', WP_PLUGIN_DIR . '/maintenance-switch/templates/maintenance-template.txt');
 
 /**
  * Path of the .maintenance file.

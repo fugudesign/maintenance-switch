@@ -81,32 +81,32 @@ class Maintenance_Switch_Admin_Display
 				$this->do_settings_sections_tabs('maintenance-switch');
 				?>
 				<p class="submit">
-					<?php submit_button(__('Save Settings', MS_SLUG), 'primary', 'submit', false); ?>
-					<a id="page-preview" class="button-secondary"><?php _e('Preview page', MS_SLUG) ?></a>
+					<?php submit_button(__('Save Settings', "maintenance-switch"), 'primary', 'submit', false); ?>
+					<a id="page-preview" class="button-secondary"><?php _e('Preview page', "maintenance-switch") ?></a>
 				</p>
 			</form>
 
-			<h2><?php _e('Default settings', MS_SLUG); ?></h2>
+			<h2><?php _e('Default settings', "maintenance-switch"); ?></h2>
 
 			<form id="restore-settings-form" action="<?php echo esc_url($plugin_settings_url); ?>" method="POST" class="inline-form">
 				<input type="hidden" name="action" value="restore_settings" />
-				<?php submit_button(__('Restore all settings', MS_SLUG), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to retore all the default settings?', MS_SLUG))); ?>
+				<?php submit_button(__('Restore all settings', "maintenance-switch"), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to retore all the default settings?', "maintenance-switch"))); ?>
 			</form>
 
 			<form id="restore-html-form" action="<?php echo esc_url($plugin_settings_url); ?>" method="POST" class="inline-form">
 				<input type="hidden" name="action" value="restore_html" />
-				<?php submit_button(__('Restore page HTML', MS_SLUG), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to retore the default HTML code?', MS_SLUG))); ?>
+				<?php submit_button(__('Restore page HTML', "maintenance-switch"), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to retore the default HTML code?', "maintenance-switch"))); ?>
 			</form>
 
 			<?php if (!$this->plugin->theme_file_exists()): ?>
 				<form id="create-theme-file" action="<?php echo esc_url($plugin_settings_url); ?>" method="POST" class="inline-form">
 					<input type="hidden" name="action" value="create_theme_file" />
-					<?php submit_button(__('Create file in the theme', MS_SLUG), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to create the file in your theme?', MS_SLUG))); ?>
+					<?php submit_button(__('Create file in the theme', "maintenance-switch"), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to create the file in your theme?', "maintenance-switch"))); ?>
 				</form>
 			<?php else: ?>
 				<form id="delete-theme-file" action="<?php echo esc_url($plugin_settings_url); ?>" method="POST" class="inline-form">
 					<input type="hidden" name="action" value="delete_theme_file" />
-					<?php submit_button(__('Delete file in the theme', MS_SLUG), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to delete the file in your theme?', MS_SLUG))); ?>
+					<?php submit_button(__('Delete file in the theme', "maintenance-switch"), 'secondary', 'submit', false, array('data-msg' => __('Are you sure you want to delete the file in your theme?', "maintenance-switch"))); ?>
 				</form>
 			<?php endif; ?>
 
@@ -136,14 +136,14 @@ class Maintenance_Switch_Admin_Display
 
 		add_settings_section(
 			'maintenance_switch_display_section', // id
-			__('Display', MS_SLUG), // title
+			__('Display', "maintenance-switch"), // title
 			array($this, 'maintenance_switch_display_section_info'), // callback
 			'maintenance-switch' // page
 		);
 
 		add_settings_field(
 			'ms_page_html', // id
-			__('Maintenance page HTML:', MS_SLUG), // title
+			__('Maintenance page HTML:', "maintenance-switch"), // title
 			array($this, 'ms_page_html_display'), // callback
 			'maintenance-switch', // page
 			'maintenance_switch_display_section' // section
@@ -151,7 +151,7 @@ class Maintenance_Switch_Admin_Display
 
 		add_settings_field(
 			'ms_use_theme', // id
-			__('Use theme file:', MS_SLUG), // title
+			__('Use theme file:', "maintenance-switch"), // title
 			array($this, 'ms_use_theme_display'), // callback
 			'maintenance-switch', // page
 			'maintenance_switch_display_section' // section
@@ -159,14 +159,14 @@ class Maintenance_Switch_Admin_Display
 
 		add_settings_section(
 			'maintenance_switch_permissions_section', // id
-			__('Permissions', MS_SLUG), // title
+			__('Permissions', "maintenance-switch"), // title
 			array($this, 'maintenance_switch_permissions_section_info'), // callback
 			'maintenance-switch' // page
 		);
 
 		add_settings_field(
 			'ms_switch_roles', // id
-			__('Switch ability:', MS_SLUG), // title
+			__('Switch ability:', "maintenance-switch"), // title
 			array($this, 'ms_switch_roles_display'), // callback
 			'maintenance-switch', // page
 			'maintenance_switch_permissions_section' // section
@@ -174,7 +174,7 @@ class Maintenance_Switch_Admin_Display
 
 		add_settings_field(
 			'ms_allowed_roles', // id
-			__('Bypass ability:', MS_SLUG), // title
+			__('Bypass ability:', "maintenance-switch"), // title
 			array($this, 'ms_allowed_roles_display'), // callback
 			'maintenance-switch', // page
 			'maintenance_switch_permissions_section' // section
@@ -190,14 +190,14 @@ class Maintenance_Switch_Admin_Display
 
 		add_settings_section(
 			'maintenance_switch_core_section', // id
-			__('Behavior', MS_SLUG), // title
+			__('Behavior', "maintenance-switch"), // title
 			array($this, 'maintenance_switch_core_section_info'), // callback
 			'maintenance-switch' // page
 		);
 
 		add_settings_field(
 			'ms_error_503', // id
-			__('Code 503:', MS_SLUG), // title
+			__('Code 503:', "maintenance-switch"), // title
 			array($this, 'ms_error_503_display'), // callback
 			'maintenance-switch', // page
 			'maintenance_switch_core_section' // section
@@ -261,7 +261,7 @@ class Maintenance_Switch_Admin_Display
 	 */
 	public function maintenance_switch_core_section_info()
 	{
-		// printf( '<p class="description">%s</p>', __( 'Ajust the behavior of the plugin.', MS_SLUG ) );
+		// printf( '<p class="description">%s</p>', __( 'Ajust the behavior of the plugin.', "maintenance-switch" ) );
 	}
 
 	/**
@@ -272,7 +272,7 @@ class Maintenance_Switch_Admin_Display
 	 */
 	public function maintenance_switch_permissions_section_info()
 	{
-		// printf( '<p class="description">%s</p>', __( 'Ajust the access and switch permissions.', MS_SLUG ) );
+		// printf( '<p class="description">%s</p>', __( 'Ajust the access and switch permissions.', "maintenance-switch" ) );
 	}
 
 	/**
@@ -283,7 +283,7 @@ class Maintenance_Switch_Admin_Display
 	 */
 	public function maintenance_switch_display_section_info()
 	{
-		// printf( '<p class="description">%s</p>', __( 'Ajust the appearance of the maintenance page', MS_SLUG ) );
+		// printf( '<p class="description">%s</p>', __( 'Ajust the appearance of the maintenance page', "maintenance-switch" ) );
 	}
 
 	/**
@@ -298,7 +298,7 @@ class Maintenance_Switch_Admin_Display
 			'<p class="inline-checkbox"><input id="ms_error_503" name="maintenance_switch_settings[ms_error_503]" type="checkbox" value="1" %s></p>',
 			(isset($this->maintenance_switch_settings['ms_error_503']) && $this->maintenance_switch_settings['ms_error_503'] == 1) ? 'checked' : ''
 		);
-		printf('<p class="description inline-description">%s</p>', __('The maintenance page returns the error code 503 "Service unavailable" (recommanded).', MS_SLUG));
+		printf('<p class="description inline-description">%s</p>', __('The maintenance page returns the error code 503 "Service unavailable" (recommanded).', "maintenance-switch"));
 	}
 
 	/**
@@ -316,7 +316,7 @@ class Maintenance_Switch_Admin_Display
 				(isset($this->maintenance_switch_settings['ms_switch_roles']) && in_array($role_value, (array) $this->maintenance_switch_settings['ms_switch_roles'])) ? 'checked' : ''
 			);
 		}
-		printf('<p class="description">%s</p>', __('The user roles can access the maintenance button in the adminbar and so switch the maintenance mode.', MS_SLUG));
+		printf('<p class="description">%s</p>', __('The user roles can access the maintenance button in the adminbar and so switch the maintenance mode.', "maintenance-switch"));
 	}
 
 	/**
@@ -334,7 +334,7 @@ class Maintenance_Switch_Admin_Display
 				(isset($this->maintenance_switch_settings['ms_allowed_roles']) && in_array($role_value, (array) $this->maintenance_switch_settings['ms_allowed_roles'])) ? 'checked' : ''
 			);
 		}
-		printf('<p class="description">%s</p>', __('The user roles can bypass the maintenance mode and see the site like online.', MS_SLUG));
+		printf('<p class="description">%s</p>', __('The user roles can bypass the maintenance mode and see the site like online.', "maintenance-switch"));
 	}
 
 	/**
@@ -349,9 +349,9 @@ class Maintenance_Switch_Admin_Display
 			'<input id="ms_allowed_ips" name="maintenance_switch_settings[ms_allowed_ips]" size="60" value="%s"><button id="addmyip" class="button-secondary" data-ip="%s">%s</button>',
 			isset($this->maintenance_switch_settings['ms_allowed_ips']) ? $this->maintenance_switch_settings['ms_allowed_ips'] : '',
 			$this->plugin->get_user_ip(),
-			__('Add my IP', MS_SLUG)
+			__('Add my IP', "maintenance-switch")
 		);
-		printf('<p class="description">%s</p>', __('The IP list can bypass the maintenance mode and see the site like online, comma separated.', MS_SLUG));
+		printf('<p class="description">%s</p>', __('The IP list can bypass the maintenance mode and see the site like online, comma separated.', "maintenance-switch"));
 	}
 
 	/**
@@ -368,7 +368,7 @@ class Maintenance_Switch_Admin_Display
 			(isset($this->maintenance_switch_settings['ms_use_theme']) && $this->maintenance_switch_settings['ms_use_theme'] == 1 && $theme_file_exists) ? 'readonly' : '',
 			isset($this->maintenance_switch_settings['ms_page_html']) ? $this->maintenance_switch_settings['ms_page_html'] : ''
 		);
-		printf('<p class="description">%s</p>', __('The entire HTML code of the maintenance page.', MS_SLUG));
+		printf('<p class="description">%s</p>', __('The entire HTML code of the maintenance page.', "maintenance-switch"));
 	}
 
 	/**
@@ -387,14 +387,14 @@ class Maintenance_Switch_Admin_Display
 			(isset($this->maintenance_switch_settings['ms_use_theme']) && $this->maintenance_switch_settings['ms_use_theme'] == 1 && $theme_file_exists) ? 'checked' : '',
 			$theme_file_exists ? '' : 'disabled'
 		);
-		printf('<p class="description inline-description">%s</p>', __('Use a file in your theme to display maintenance page instead of the HTML field above.', MS_SLUG));
+		printf('<p class="description inline-description">%s</p>', __('Use a file in your theme to display maintenance page instead of the HTML field above.', "maintenance-switch"));
 		print ('<p class="infos messages">');
 		printf('<input id="ms_preview_theme_file" type="hidden" name="ms_preview_theme_file" value="%s">', $theme_file_url);
 		printf(
 			'<div class="message message-%s"><p><strong>%s</strong>: %s</p></div></p>',
 			$theme_file_exists ? 'success' : 'error',
 			$this->plugin->get_current_theme()->Name,
-			MS_THEME_FILENAME . ' ' . ($theme_file_exists ? __('exists', MS_SLUG) : __('is missing', MS_SLUG))
+			MS_THEME_FILENAME . ' ' . ($theme_file_exists ? __('exists', "maintenance-switch") : __('is missing', "maintenance-switch"))
 		);
 	}
 
