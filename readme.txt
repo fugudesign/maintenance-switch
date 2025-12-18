@@ -3,7 +3,7 @@ Contributors: fugudesign
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JYBDJCKL3FCE8
 Tags: maintenance, coming soon, offline, switch, construction
 Requires at least: 3.5
-Tested up to: 6.8
+Tested up to: 6.9
 Stable tag: 1.7.0
 Requires PHP: 8.3
 License: GPLv2 or later
