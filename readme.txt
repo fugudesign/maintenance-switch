@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: maintenance, coming soon, offline, switch, construction
 Requires at least: 3.5
 Tested up to: 6.9
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 Requires PHP: 8.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -108,6 +108,19 @@ Yes, use the settings page to enable the theme file support.
 4. The "Behavior" tab of the settings page allow you to change the http error code returned by the maintenance page.
 
 == Changelog ==
+
+= 1.7.1 =
+* WordPress 6.9 compatibility confirmed
+* Improved WordPress Coding Standards compliance
+* Global variables now properly prefixed with maintenance_switch_
+* Functions renamed with correct prefix for better naming conventions
+* Added backward compatibility wrappers for smooth updates
+* Code quality improvements and optimizations
+
+= 1.7.0 =
+* WordPress 6.8 compatibility tested
+* Enhanced security improvements
+* Code modernization
 
 = 1.6.0 =
 * WordPress 6.3 compatibility tested
