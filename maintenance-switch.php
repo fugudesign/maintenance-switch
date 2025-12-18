@@ -50,8 +50,9 @@ require_once plugin_dir_path(__FILE__) . 'includes/config.php';
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-maintenance-switch-activator.php
+ * @since 1.0.0
  */
-function activate_maintenance_switch()
+function maintenance_switch_activate()
 {
 	require_once plugin_dir_path(__FILE__) . 'includes/class-maintenance-switch-activator.php';
 	Maintenance_Switch_Activator::activate();
@@ -60,21 +61,13 @@ function activate_maintenance_switch()
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-maintenance-switch-deactivator.php
+ * @since 1.0.0
  */
-function deactivate_maintenance_switch()
+function maintenance_switch_deactivate()
 {
 	require_once plugin_dir_path(__FILE__) . 'includes/class-maintenance-switch-deactivator.php';
 	Maintenance_Switch_Deactivator::deactivate();
 }
-
-register_activation_hook(__FILE__, 'activate_maintenance_switch');
-register_deactivation_hook(__FILE__, 'deactivate_maintenance_switch');
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path(__FILE__) . 'includes/class-maintenance-switch.php';
 
 /**
  * Begins execution of the plugin.
@@ -83,13 +76,44 @@ require plugin_dir_path(__FILE__) . 'includes/class-maintenance-switch.php';
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
-function run_maintenance_switch()
+function maintenance_switch_run()
 {
-
 	$plugin = new Maintenance_Switch();
 	$plugin->run();
-
 }
-run_maintenance_switch();
+
+/**
+ * Backward compatibility wrappers for legacy function names.
+ * These ensure smooth updates for existing installations.
+ * @since 1.0.0
+ * @deprecated Will be removed in a future version.
+ */
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Backward compatibility wrapper
+function activate_maintenance_switch() {
+	maintenance_switch_activate();
+}
+
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Backward compatibility wrapper
+function deactivate_maintenance_switch() {
+	maintenance_switch_deactivate();
+}
+
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Backward compatibility wrapper
+function run_maintenance_switch() {
+	maintenance_switch_run();
+}
+
+// Register hooks with new function names
+register_activation_hook(__FILE__, 'maintenance_switch_activate');
+register_deactivation_hook(__FILE__, 'maintenance_switch_deactivate');
+
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require plugin_dir_path(__FILE__) . 'includes/class-maintenance-switch.php';
+
+// Start the plugin
+maintenance_switch_run();
