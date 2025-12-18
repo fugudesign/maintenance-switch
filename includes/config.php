@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Default value for ms_page_html
  * @since    1.0.0
  */
-$default_html = '
+$ms_default_html = '
 <!DOCTYPE html><html lang="fr-FR">
 <head>
 	<meta charset="UTF-8">
@@ -48,7 +48,7 @@ $default_html = '
  */
 define('MS_DEFAULT_SETTINGS', json_encode(array(
 
-	'ms_page_html' => $default_html,
+	'ms_page_html' => $ms_default_html,
 	'ms_error_503' => 1,
 	'ms_switch_roles' => array('administrator'),
 	'ms_allowed_roles' => array('administrator'),
