@@ -3,9 +3,9 @@ Contributors: fugudesign
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JYBDJCKL3FCE8
 Tags: maintenance, coming soon, offline, switch, construction
 Requires at least: 3.5
-Tested up to: 6.9
-Stable tag: 1.7.1
-Requires PHP: 8.3
+Tested up to: 7.0
+Stable tag: 1.7.2
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,11 @@ Yes, use the settings page to enable the theme file support.
 4. The "Behavior" tab of the settings page allow you to change the http error code returned by the maintenance page.
 
 == Changelog ==
+
+= 1.7.2 =
+* WordPress 7.0 compatibility confirmed
+* Updated minimum PHP requirement to 7.4 (aligned with WordPress 7.0)
+* Admin CSS updated to use WordPress CSS variables for compatibility with the new Modern admin theme
 
 = 1.7.1 =
 * WordPress 6.9 compatibility confirmed

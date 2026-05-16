@@ -55,7 +55,8 @@ textarea {
 }
 
 ul.nav-tab-wrapper {
-  border-bottom: 1px solid #ccc;
+  // Use WP CSS variable with fallback for WP 7.0 Modern admin theme compatibility
+  border-bottom: 1px solid var(--wp-admin-border-color, #ccc);
   margin: 0;
   padding-top: 9px;
   padding-bottom: 0;
@@ -65,20 +66,22 @@ ul.nav-tab-wrapper {
     margin-bottom: 0;
 
     &.ui-tabs-active {
-      border-bottom: 1px solid #f1f1f1;
-      background: #f1f1f1;
-      color: #000;
+      // Use the page background variable instead of hardcoded #f1f1f1
+      // which no longer matches in WP 7.0's Modern admin theme
+      border-bottom: 1px solid var(--wp-admin-color-background, var(--color-surface, #f0f0f1));
+      background: var(--wp-admin-color-background, var(--color-surface, #f0f0f1));
+      color: var(--wp-admin-color-text, #1e1e1e);
       margin-bottom: -1px;
 
       a {
-        color: #000;
+        color: var(--wp-admin-color-text, #1e1e1e);
       }
     }
 
     a {
       display: block;
       text-decoration: none;
-      color: #555;
+      color: var(--wp-admin-color-text-secondary, #50575e);
 
       &:focus {
         outline: 0;
@@ -92,7 +95,7 @@ ul.nav-tab-wrapper {
 
 .ui-tabs-panel {
   padding: 20px 0 30px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--wp-admin-border-color, #ccc);
 }
 
 .CodeMirror {
