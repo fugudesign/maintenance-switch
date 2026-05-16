@@ -1,0 +1,32 @@
+# Fichiers exclus du package de déploiement WordPress.org (SVN)
+# Ces fichiers sont nécessaires au développement local mais ne doivent
+# pas être inclus dans la version publiée sur WordPress.org.
+
+# Fichiers cachés / dotfiles de développement
+.editorconfig
+.gitignore
+.gitattributes
+.distignore
+
+# Outils éditeur
+.vscode/
+.idea/
+
+# Outils de build
+node_modules/
+package.json
+package-lock.json
+gulpfile.js
+
+# Tests
+tests/
+phpunit.xml
+phpunit.xml.dist
+
+# Fichiers de configuration développement
+phpcs.xml
+.phpcs.xml
+
+# Sources SCSS (seuls les CSS compilés sont nécessaires)
+admin/css/*.scss
+assets/css/*.scss
