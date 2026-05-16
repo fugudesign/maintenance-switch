@@ -43,6 +43,8 @@ jQuery(document).ready(function () {
               break;
           }
           elt.removeClass(":hover");
+          // Remove focus state after toggle to avoid blue highlight persisting
+          elt.find("a").blur();
         } else {
           console.error("AJAX Error:", response);
         }
