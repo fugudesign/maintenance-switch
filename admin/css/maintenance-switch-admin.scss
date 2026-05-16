@@ -7,6 +7,11 @@ textarea[readonly] {
   color: #999;
 }
 
+// Align the IP input with the adjacent button
+#ms_allowed_ips {
+  vertical-align: middle;
+}
+
 textarea {
   width: 95%;
 }

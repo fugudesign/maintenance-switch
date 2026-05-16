@@ -350,7 +350,7 @@ class Maintenance_Switch_Admin_Display
 	public function ms_allowed_ips_display()
 	{
 		printf(
-			'<input id="ms_allowed_ips" name="maintenance_switch_settings[ms_allowed_ips]" size="60" value="%s"><button id="addmyip" class="button-secondary" data-ip="%s">%s</button>',
+			'<input id="ms_allowed_ips" name="maintenance_switch_settings[ms_allowed_ips]" type="text" class="regular-text" value="%s"> <button id="addmyip" class="button-secondary" data-ip="%s">%s</button>',
 			esc_attr(isset($this->maintenance_switch_settings['ms_allowed_ips']) ? $this->maintenance_switch_settings['ms_allowed_ips'] : ''), // WordPress 3-layer security: Escaping for attribute
 			esc_attr($this->plugin->get_user_ip()), // WordPress 3-layer security: Escaping for attribute  
 			esc_html__('Add my IP', 'maintenance-switch') // WordPress 3-layer security: Escaping for content
