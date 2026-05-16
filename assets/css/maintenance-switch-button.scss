@@ -91,6 +91,12 @@ $orange: #f47920;
         &.active {
           .ab-item {
             background: $red;
+            color: #fff !important;
+          }
+
+          .ab-icon:before,
+          .ab-label {
+            color: #fff !important;
           }
 
           &.core {
@@ -103,6 +109,7 @@ $orange: #f47920;
         &.active:hover {
           .ab-item {
             background: $red;
+            color: #fff !important;
           }
         }
       }
