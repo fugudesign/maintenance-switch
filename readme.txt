@@ -113,6 +113,11 @@ Yes, use the settings page to enable the theme file support.
 * WordPress 7.0 compatibility confirmed
 * Updated minimum PHP requirement to 7.4 (aligned with WordPress 7.0)
 * Admin CSS updated to use WordPress CSS variables for compatibility with the new Modern admin theme
+* Fix: admin bar icon color now inherits native WordPress styles (was grey instead of white)
+* Fix: admin bar button text and icon stay white on red background when maintenance is active
+* Fix: admin bar button focus state cleared after toggle (no more blue highlight)
+* Fix: IP address input field aligned with adjacent button (added type="text" and class="regular-text")
+* Added .distignore to exclude dev files from WordPress.org deployment package
 
 = 1.7.1 =
 * WordPress 6.9 compatibility confirmed
