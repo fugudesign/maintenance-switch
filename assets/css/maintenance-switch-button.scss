@@ -34,7 +34,7 @@ $orange: #f47920;
     -ms-transform: rotate(360deg);
   }
 }
-@-keyframes spin1 {
+@keyframes spin1 {
   0% {
     transform: rotate(0deg);
   }
@@ -75,13 +75,6 @@ $orange: #f47920;
   ul {
     li {
       &#wp-admin-bar-ms-switch-button {
-        .ab-label {
-          color: #eee !important;
-        }
-
-        .ab-icon:before {
-          color: rgba(240, 245, 250, 0.6) !important;
-        }
 
         .ab-icon.dashicons-admin-generic {
           -webkit-animation: spin1 2s infinite linear;
