@@ -110,8 +110,10 @@ Yes, use the settings page to enable the theme file support.
 == Changelog ==
 
 = 1.7.3 =
-* WordPress 7.1 compatibility confirmed (tested against 7.1-RC3)
-* Fix: text domain loading hooked back on `init` instead of `plugins_loaded` (removes the "_load_textdomain_just_in_time" notice introduced by WordPress 6.7's stricter translation timing checks)
+* WordPress 7.1 compatibility confirmed (tested against 7.1-RC3), verified with the official Plugin Check tool
+* Fix: Requires at least raised from 3.5 to 5.0 to match the actual minimum WordPress version required by functions used (wp_unslash, wp_enqueue_code_editor)
+* Fix: removed manual translation loading (deprecated since WordPress 4.6; translations are auto-loaded for WordPress.org-hosted plugins)
+* Fix: replaced discouraged unlink() with wp_delete_file()
 
 = 1.7.2 =
 * WordPress 7.0 compatibility confirmed
