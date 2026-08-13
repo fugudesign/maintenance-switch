@@ -117,7 +117,6 @@ class Maintenance_Switch
 		$this->current_theme = wp_get_theme();
 
 		$this->load_dependencies();
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 	}
@@ -128,7 +127,6 @@ class Maintenance_Switch
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Maintenance_Switch_Loader. Orchestrates the hooks of the plugin.
-	 * - Maintenance_Switch_i18n. Defines internationalization functionality.
 	 * - Maintenance_Switch_Admin. Defines all hooks for the admin area.
 	 * - Maintenance_Switch_Public. Defines all hooks for the public side of the site.
 	 *
@@ -148,12 +146,6 @@ class Maintenance_Switch
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-maintenance-switch-loader.php';
 
 		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-maintenance-switch-i18n.php';
-
-		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-maintenance-switch-admin.php';
@@ -165,25 +157,6 @@ class Maintenance_Switch
 		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-maintenance-switch-public.php';
 
 		$this->loader = new Maintenance_Switch_Loader();
-
-	}
-
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the Maintenance_Switch_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function set_locale()
-	{
-
-		$plugin_i18n = new Maintenance_Switch_i18n();
-		$plugin_i18n->set_domain($this->plugin_name);
-
-		$this->loader->add_action('init', $plugin_i18n, 'load_plugin_textdomain');
 
 	}
 
@@ -985,8 +958,8 @@ class Maintenance_Switch
 			if ($check_core && $this->_check_core_file($file))
 				return false;
 
-			if (unlink($file))
-				return true;
+			wp_delete_file($file);
+			return ! file_exists($file);
 		}
 		return false;
 	}
