@@ -109,6 +109,10 @@ Yes, use the settings page to enable the theme file support.
 
 == Changelog ==
 
+= 1.7.3 =
+* WordPress 7.1 compatibility confirmed (tested against 7.1-RC3)
+* Fix: text domain loading hooked back on `init` instead of `plugins_loaded` (removes the "_load_textdomain_just_in_time" notice introduced by WordPress 6.7's stricter translation timing checks)
+
 = 1.7.2 =
 * WordPress 7.0 compatibility confirmed
 * Updated minimum PHP requirement to 7.4 (aligned with WordPress 7.0)
