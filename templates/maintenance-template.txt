@@ -24,12 +24,14 @@ if ( ! function_exists( 'MS_user_logged_in' ) ) {
 $allowed_users = array( {{MS_ALLOWED_USERS}} );
 $allowed_ips = array( {{MS_ALLOWED_IPS}} );
 $user_logged_in = MS_user_logged_in();
-$user_ip = $_SERVER["REMOTE_ADDR"];
+// Absent in CLI contexts (system cron, scripts loading wp-load.php).
+$user_ip = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
+$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
 $exception = false;
 
 if ( is_admin() ) $exception = true;
-if ( stristr($_SERVER['REQUEST_URI'], '/wp-admin') ) $exception = true;
-if ( stristr($_SERVER['REQUEST_URI'], '/wp-login.php') ) $exception = true;
+if ( stristr($request_uri, '/wp-admin') ) $exception = true;
+if ( stristr($request_uri, '/wp-login.php') ) $exception = true;
 if ( ! empty( $user_logged_in ) && in_array( $user_logged_in, $allowed_users ) ) $exception = true;
 if ( ! empty( $user_ip ) && in_array( $user_ip, $allowed_ips ) ) $exception = true;
 
