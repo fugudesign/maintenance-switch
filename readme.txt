@@ -3,7 +3,7 @@ Contributors: fugudesign
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JYBDJCKL3FCE8
 Tags: maintenance, coming soon, offline, switch, construction
 Requires at least: 5.0
-Tested up to: 7.1
+Tested up to: 7.2
 Stable tag: 1.7.3
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -108,6 +108,12 @@ Yes, use the settings page to enable the theme file support.
 4. The "Behavior" tab of the settings page allow you to change the http error code returned by the maintenance page.
 
 == Changelog ==
+
+= 1.7.4 =
+* WordPress 7.2 compatibility confirmed (tested against 7.2-RC3), verified with the official Plugin Check tool
+* PHP 8.6 compatibility confirmed
+* Fix: "translation loading triggered too early" notice (default maintenance page strings are now built on demand instead of at plugin load)
+* Fix: undefined array key warnings for REMOTE_ADDR / REQUEST_URI when WordPress is loaded from the command line (e.g. system cron) during maintenance
 
 = 1.7.3 =
 * WordPress 7.1 compatibility confirmed (tested against 7.1-RC3), verified with the official Plugin Check tool
