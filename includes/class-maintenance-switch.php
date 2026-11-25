@@ -113,7 +113,6 @@ class Maintenance_Switch
 
 		$this->plugin_name = MS_SLUG;
 		$this->version = PLUGIN_VERSION;
-		$this->default_settings = json_decode(MS_DEFAULT_SETTINGS, true);
 		$this->current_theme = wp_get_theme();
 
 		$this->load_dependencies();
@@ -409,7 +408,7 @@ class Maintenance_Switch
 	{
 
 		// Get defaults settings
-		$defaults = $this->default_settings;
+		$defaults = $this->get_default_settings();
 
 		// Get settings
 		$settings = $this->get_the_settings();
@@ -614,7 +613,7 @@ class Maintenance_Switch
 	public function restore_default_settings()
 	{
 
-		$settings = $this->default_settings;
+		$settings = $this->get_default_settings();
 		return update_option('maintenance_switch_settings', $settings);
 	}
 
@@ -627,7 +626,7 @@ class Maintenance_Switch
 	{
 
 		$settings = $this->get_the_settings();
-		$settings['ms_page_html'] = $this->default_settings['ms_page_html'];
+		$settings['ms_page_html'] = $this->get_default_settings()['ms_page_html'];
 		return update_option('maintenance_switch_settings', $settings);
 	}
 
@@ -679,7 +678,7 @@ class Maintenance_Switch
 
 		$theme_file = $this->get_theme_file_path();
 		if (!$this->theme_file_exists()) {
-			return $this->_create_file($theme_file, $this->default_settings['ms_page_html']);
+			return $this->_create_file($theme_file, $this->get_default_settings()['ms_page_html']);
 		}
 		return false;
 	}
@@ -810,6 +809,9 @@ class Maintenance_Switch
 	public function get_default_settings()
 	{
 
+		if (null === $this->default_settings) {
+			$this->default_settings = maintenance_switch_default_settings();
+		}
 		return $this->default_settings;
 	}
 

@@ -16,10 +16,17 @@ if ( ! defined( 'WPINC' ) ) {
  */
 
 /**
- * Default value for ms_page_html
- * @since    1.0.0
+ * Default settings values.
+ *
+ * Built on demand rather than at file load: the default HTML contains
+ * translated strings, and translations must not be loaded before `init`.
+ *
+ * @since    1.3.0
+ * @since    1.7.4 Replaces the MS_DEFAULT_SETTINGS constant.
+ * @return   array
  */
-$maintenance_switch_default_html = '
+function maintenance_switch_default_settings() {
+	$default_html = '
 <!DOCTYPE html><html lang="fr-FR">
 <head>
 	<meta charset="UTF-8">
@@ -42,19 +49,15 @@ $maintenance_switch_default_html = '
 </body>
 </html>';
 
-/**
- * Default settings values
- * @since    1.3.0
- */
-define('MS_DEFAULT_SETTINGS', json_encode(array(
-
-	'ms_page_html' => $maintenance_switch_default_html,
-	'ms_error_503' => 1,
-	'ms_switch_roles' => array('administrator'),
-	'ms_allowed_roles' => array('administrator'),
-	'ms_allowed_ips' => '',
-	'ms_use_theme' => 0,
-)));
+	return array(
+		'ms_page_html'     => $default_html,
+		'ms_error_503'     => 1,
+		'ms_switch_roles'  => array('administrator'),
+		'ms_allowed_roles' => array('administrator'),
+		'ms_allowed_ips'   => '',
+		'ms_use_theme'     => 0,
+	);
+}
 
 /**
  * Default value for maintenance_switch_status option
